@@ -15,8 +15,8 @@
 LearnIn is the next generation learning management system. Provides constant monitoring of students in the progress of teaching. Create courses and tasks, issue grades for students, check uploaded files by students, add course and task referential files, prepare statistics, and more.
 
 <div align="center">
-    <img src="screenshots/dashboard.jpg" alt="dashboard">
-    **LearnIn dashboard**
+<img src="screenshots/dashboard.jpg" alt="dashboard">
+*LearnIn dashboard*
 </div>
 
 # Features
