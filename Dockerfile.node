@@ -1,0 +1,12 @@
+FROM node:18.8.0-alpine3.16 as npm
+CMD ["npm", "start"]
+
+WORKDIR /var/www/html
+
+COPY package.json ./
+
+RUN npm install
+
+CMD npm run watch-poll
+
+EXPOSE 3000

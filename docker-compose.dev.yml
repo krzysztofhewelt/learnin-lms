@@ -1,0 +1,55 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
+    container_name: app
+    restart: always
+    depends_on:
+      - mariadb
+    volumes:
+      - ./:/var/www/html
+      - /var/www/html/vendor
+      - node_modules:/var/www/html/node_modules
+    ports:
+      - 80:80
+    networks:
+      - learnin_network
+
+  mariadb:
+    image: mariadb
+    container_name: mariadb
+    restart: always
+    ports:
+      - ${DB_PORT}:3306
+    env_file:
+      - ./.env
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - learnin_network
+  client:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.node
+    container_name: client
+    restart: always
+    ports:
+      - 3000:3000
+      - 3001:3001
+    volumes:
+      - ./:/var/www/html
+      - node_modules:/var/www/html/node_modules
+    depends_on:
+      - app
+
+volumes:
+  db_data:
+  node_modules:
+networks:
+  learnin_network:
