@@ -16,7 +16,7 @@ LearnIn is the next generation learning management system. Provides constant mon
 
 <div align="center">
     <img src="screenshots/dashboard.jpg" alt="dashboard">
-    _LearnIn dashboard_
+    **LearnIn dashboard**
 </div>
 
 # Features
