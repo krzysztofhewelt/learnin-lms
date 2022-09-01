@@ -136,7 +136,7 @@ use(i18nVue, {
     <img src="screenshots/tasks.jpg" alt="tasks">
     <img src="screenshots/marks.jpg" alt="marks">
     <img src="screenshots/courseView.jpg" alt="course view">
-    <img src="screenshots/taskView.jpg" alt="task view">
+    <img src="screenshots/tasksView.jpg" alt="task view">
     <img src="screenshots/studentUploads.jpg" alt="students uploads">
     <img src="screenshots/studentMarks.jpg" alt="students marks">
     <img src="screenshots/statistics.jpg" alt="statistics">
