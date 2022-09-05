@@ -111,6 +111,7 @@ use(i18nVue, {
 ```
 
 # Used technologies
+- HTML5
 - PHP Laravel Framework v9.8.1
 - MariaDB
 - Apache
