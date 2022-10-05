@@ -11,33 +11,35 @@
         <LoadingScreen v-if="loading" />
         <div class="grid grid-cols-3 grid-rows-1 divide-x">
             <div class="col-span-3 p-12 lg:col-span-2">
-                <div class="mb-6 lg:flex lg:justify-between pr-10">
+                <div class="mb-6 lg:flex lg:justify-between">
                     <h1 class="my-auto text-xl font-bold">
                         {{ $t('task.task_details') }}
                     </h1>
-                    <div v-if="isTeacher || isAdmin">
-                        <router-link :to="{name: 'MarksTask', params: {id: $route.params.id}}" class="manage_btn">
+                    <div class="flex flex-col md:flex-row gap-2" v-if="isTeacher">
+                        <router-link :to="{name: 'MarksTask', params: {id: $route.params.id}}" class="manage_btn justify-center">
                             <Edit class="w-4 h-4 mr-1" />
                             {{ $t('task.issue_grades') }}
                         </router-link>
 
-                        <router-link :to="{name: 'TaskStudentUploads', params: {id: $route.params.id}}" class="manage_btn ml-2">
+                        <router-link :to="{name: 'TaskStudentUploads', params: {id: $route.params.id}}" class="manage_btn justify-center">
                             <Edit class="w-4 h-4 mr-1" />
                             {{ $t('task.student_files') }}
                         </router-link>
 
-                        <button class="manage_btn ml-2" @click="moreDropdown = !moreDropdown">
-                            <More class="w-5 h-5" />
-                        </button>
-
-                        <Dropdown v-if="moreDropdown">
-                            <router-link :to="{name: 'TasksEdit', params: {id: $route.params.id}}" class="block w-full no-underline text-blue-600 font-bold p-2">
-                                {{ $t('general.edit') }}
-                            </router-link>
-                            <button class="w-full p-2 text-red-400 font-bold" @click="showDeleteResourceModal('task', $route.params.id)">
-                                {{ $t('general.delete') }}
+                        <div class="justify-center">
+                            <button class="manage_btn w-full" @click="moreDropdown = !moreDropdown">
+                                <More class="w-5 h-5 mx-auto" />
                             </button>
-                        </Dropdown>
+
+                            <Dropdown v-if="moreDropdown">
+                                <router-link :to="{name: 'TasksEdit', params: {id: $route.params.id}}" class="block w-full no-underline text-blue-600 font-bold p-2">
+                                    {{ $t('general.edit') }}
+                                </router-link>
+                                <button class="w-full p-2 text-red-400 font-bold" @click="showDeleteResourceModal('task', $route.params.id)">
+                                    {{ $t('general.delete') }}
+                                </button>
+                            </Dropdown>
+                        </div>
                     </div>
                 </div>
                 <div class="border-b-[1px] pb-6">
@@ -152,7 +154,7 @@
                     <div class="border-b-[1px] pb-3">
                         <h1 class="mb-2 text-xl font-bold">{{ $t('files.files_to_download') }}</h1>
                         <button class="manage_btn"
-                                v-if="isTeacher || isAdmin"
+                                v-if="isTeacher"
                                 @click="showUploadsModal('task_ref')">
                             <Upload class="w-4 h-4 mr-1" />
                             {{ $t('files.upload_files') }}
@@ -173,7 +175,7 @@
                             </Popper>
                         </span>
                         <button class="font-semibold text-red-400 hover:text-red-600"
-                                v-if="isTeacher || isAdmin"
+                                v-if="isTeacher"
                                 @click="showDeleteResourceModal('taskRef', file.id)">
                             {{ $t('general.delete') }}
                         </button>

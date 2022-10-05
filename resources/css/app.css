@@ -11,13 +11,13 @@
 }
 
 .submit_btn {
-    @apply transition ease-in-out inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-bold text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 no-underline
+    @apply transition ease-in-out inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-center text-sm font-bold text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 no-underline
 }
 
 .submit_btn_disabled {
-    @apply transition ease-in-out inline-flex items-center rounded-md border border-transparent bg-gray-400 px-4 py-2 text-sm font-bold text-white shadow-sm hover:bg-gray-500 focus:outline-none focus:ring-4 focus:ring-indigo-300 no-underline cursor-not-allowed
+    @apply transition ease-in-out inline-flex items-center rounded-md border border-transparent bg-gray-400 px-4 py-2 text-center text-sm font-bold text-white shadow-sm hover:bg-gray-500 focus:outline-none focus:ring-4 focus:ring-indigo-300 no-underline cursor-not-allowed
 }
 
 .normal_btn {
-    @apply transition ease-in-out inline-flex items-center shadow-md rounded-md border border-transparent bg-blue-500 px-4 py-2 text-sm font-bold text-white shadow-sm hover:bg-blue-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300 no-underline
+    @apply transition ease-in-out inline-flex items-center shadow-md rounded-md border border-transparent bg-blue-500 px-4 py-2 text-center text-sm font-bold text-white shadow-sm hover:bg-blue-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300 no-underline
 }

@@ -26,35 +26,37 @@
 
     <div class="flex flex-col relative w-full h-fit break-words rounded-lg bg-white shadow-xl">
         <LoadingScreen v-if="loading" />
-        <div class="grid grid-cols-3 grid-rows-1 divide-x">
+        <div class="grid grid-cols-3 grid-rows-1 lg:divide-x">
             <div class="col-span-3 p-12 lg:col-span-2">
                 <div class="lg:flex lg:justify-between mb-6">
                     <h1 class="my-auto text-xl font-bold">
                         {{ $t('course.course_details') }}
                     </h1>
-                    <div v-if="isTeacher || isAdmin">
-                        <button class="manage_btn" @click="showAssignmentModal">
+                    <div class="flex flex-col md:flex-row gap-2" v-if="isTeacher || isAdmin">
+                        <button class="manage_btn justify-center" @click="showAssignmentModal">
                             <Edit class="w-4 h-4 mr-1" />
                             {{ $t('course.assign_to_course') }}
                         </button>
 
-                        <button class="manage_btn ml-2" @click="moreDropdown = !moreDropdown">
-                            <More class="w-5 h-5" />
-                        </button>
-
-                        <Dropdown v-if="moreDropdown">
-                            <router-link :to="{name: 'CoursesEdit', params: {id: $route.params.id}}" class="block w-full no-underline text-blue-600 font-bold p-2">
-                                {{ $t('general.edit') }}
-                            </router-link>
-
-                            <button class="w-full p-2 text-red-400 font-bold" @click="showDeleteResourceModal('course', $route.params.id)">
-                                {{ $t('general.delete') }}
+                        <div class="justify-center">
+                            <button class="manage_btn w-full" @click="moreDropdown = !moreDropdown">
+                                <More class="w-5 h-5 mx-auto" />
                             </button>
-                        </Dropdown>
+
+                            <Dropdown v-if="moreDropdown">
+                                <router-link :to="{name: 'CoursesEdit', params: {id: $route.params.id}}" class="block w-full no-underline text-blue-600 font-bold p-2">
+                                    {{ $t('general.edit') }}
+                                </router-link>
+
+                                <button class="w-full p-2 text-red-400 font-bold" @click="showDeleteResourceModal('course', $route.params.id)">
+                                    {{ $t('general.delete') }}
+                                </button>
+                            </Dropdown>
+                        </div>
                     </div>
                 </div>
                 <h1 class="my-5 text-3xl font-bold">{{ course.name }}</h1>
-                <div class="border-b-[1px] py-3">
+                <div class="border-b-[1px] py-4">
                     <div class="grid grid-cols-1 text-center space-y-3 lg:space-y-0 lg:grid-cols-4 lg:divide-x">
                         <div>
                             <div class="text-zinc-400">{{ $t('course.categories_label') }}</div>
@@ -97,7 +99,7 @@
                         </div>
                         <div>
                             <button class="manage_btn"
-                                    v-if="isTeacher || isAdmin"
+                                    v-if="isTeacher"
                                     @click="showCategoryModal(course.id, { id: -1, name: '' }, 'create')">
                                 <Add class="w-4 h-4 mr-1" />
                                 {{ $t('general.add_new') }}
@@ -111,7 +113,7 @@
                         <div>
                             <router-link :to="{name:'TasksInCategory', params: {id: category.id}}" class="block font-bold text-purple-800 no-underline hover:text-purple-500">{{ category.name }}</router-link>
                         </div>
-                        <div v-if="isTeacher || isAdmin">
+                        <div v-if="isTeacher">
                             <button class="px-2 font-semibold text-blue-600 hover:text-blue-900"
                                     @click="showCategoryModal(course.id, { id: category.id, name: category.name }, 'edit')">
                                 {{ $t('general.edit') }}
@@ -129,7 +131,7 @@
                     <div class="border-b-[1px] pb-3">
                         <h1 class="mb-2 text-xl font-bold">{{ $t('files.files_to_download') }}</h1>
                         <button class="manage_btn"
-                                v-if="isTeacher || isAdmin"
+                                v-if="isTeacher"
                                 @click="showUploadsModal('course_file')">
                             <Upload class="w-4 h-4 mr-1" />
                             {{ $t('files.upload_files') }}
@@ -150,7 +152,7 @@
                             </Popper>
                         </div>
                         <button class="font-semibold text-red-400 hover:text-red-600"
-                                v-if="isTeacher || isAdmin"
+                                v-if="isTeacher"
                                 @click="showDeleteResourceModal('courseFile', file.id)">
                             {{ $t('general.delete') }}
                         </button>

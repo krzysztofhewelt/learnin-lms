@@ -8,24 +8,24 @@
     <div class="relative mb-6 mt-6 w-full min-w-0 break-words rounded-lg bg-white shadow-xl">
         <LoadingScreen v-if="loading" />
         <div class="px-6">
-            <div class="w-full px-4 text-right">
-                <div class="mt-32 py-6 px-3 sm:mt-0">
-                    <button class="mb-1 rounded no-underline bg-pink-500 px-4 py-2 text-xs font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-pink-600 sm:mr-2"
+            <div class="w-full md:px-4">
+                <div class="mt-32 py-6 px-3 sm:mt-0 text-center flex flex-col md:flex-row justify-end gap-3">
+                    <button class="rounded no-underline bg-pink-500 px-4 py-2 text-xs font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-pink-600"
                             v-if="isUserTeacher && this.$route.name === 'ProfileUser'"
                             @click="showEditableTeacherModal">
                         {{ $t('user.teacher_edit') }}
                     </button>
 
-                    <router-link :to="{name:'UsersEdit', params:{id:$route.params.id}}" v-if="this.$route.name === 'UsersView' && isAdmin" class="mb-1 rounded bg-pink-500 px-4 py-2 text-xs font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-pink-600 sm:mr-2 no-underline">
+                    <router-link :to="{name:'UsersEdit', params:{id:$route.params.id}}" v-if="this.$route.name === 'UsersView' && isAdmin" class="rounded bg-pink-500 px-4 py-2 text-xs font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-pink-600 no-underline">
                         {{ $t('user.edit_this_user') }}
                     </router-link>
 
-                    <router-link :to="{name: 'ProfileChangePassword'}" v-if="this.$route.name === 'ProfileUser'" class="mb-1 rounded no-underline bg-pink-500 px-4 py-2 text-xs font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-pink-600 sm:mr-2">
+                    <router-link :to="{name: 'ProfileChangePassword'}" v-if="this.$route.name === 'ProfileUser'" class="rounded bg-pink-500 px-4 py-2 text-xs font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-pink-600 no-underline">
                         {{ $t('user.change_password_button') }}
                     </router-link>
                 </div>
             </div>
-            <div class="mt-12 text-center">
+            <div class="mt-10 text-center">
                 <h3 v-if="isUserTeacher" class="mb-2 text-4xl font-semibold leading-normal text-slate-700">
                     {{ teacher.scien_degree }} {{ user.name }} {{ user.surname }}
                 </h3>

@@ -14,11 +14,11 @@
                 <b>{{ $t('task.available_to_label') }}:</b> {{ getFormattedDate(task.available_to) || $t('general.not_available') }}<br>
             </p>
 
-            <button class="normal_btn w-fit" @click="downloadAll(task.id)">
+            <button class="normal_btn w-fit mb-3 mr-3" @click="downloadAll(task.id)">
                 {{ $t('task.download_zip') }}
             </button>
 
-            <router-link :to="{name:'MarksTask', params:{id:$route.params.id}}" class="normal_btn ml-3">
+            <router-link :to="{name:'MarksTask', params:{id:$route.params.id}}" class="normal_btn">
                 {{ $t('task.issue_grades') }}
             </router-link>
 

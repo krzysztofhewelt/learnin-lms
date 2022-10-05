@@ -99,7 +99,7 @@ const routes = [
         component: PassRoute,
         children: [
             { path: '', name: 'MarksUser', component: UserMarks, meta: { role: ['student'] } },
-            { path: 'task/:id', name: 'MarksTask', component: TaskMarks, meta: { role: ['teacher', 'admin'] } }
+            { path: 'task/:id', name: 'MarksTask', component: TaskMarks, meta: { role: ['teacher'] } }
         ]
     },
 
@@ -123,10 +123,10 @@ const routes = [
         children: [
             { path: '', name: 'TasksUser', component: TaskList },
             { path: 'category/:id', name: 'TasksInCategory', component: TaskList },
-            { path: 'create', name: 'TasksCreate', component: TaskForm, meta: { role: ['teacher', 'admin'] } },
-            { path: 'edit/:id', name: 'TasksEdit', component: TaskForm, meta: { role: ['teacher', 'admin'] } },
+            { path: 'create', name: 'TasksCreate', component: TaskForm, meta: { role: ['teacher'] } },
+            { path: 'edit/:id', name: 'TasksEdit', component: TaskForm, meta: { role: ['teacher'] } },
             { path: 'show/:id', name: 'TasksView', component: TaskView },
-            { path: 'student-uploads/:id', name: 'TaskStudentUploads', component: TaskStudentUploads, meta: { role: ['teacher', 'admin'] } }
+            { path: 'student-uploads/:id', name: 'TaskStudentUploads', component: TaskStudentUploads, meta: { role: ['teacher'] } }
         ]
     },
 
@@ -139,7 +139,7 @@ const routes = [
 ]
 
 const router = createRouter({
-    history: createWebHistory(process.env.MIX_BASE_URL),
+    history: createWebHistory(),
     routes
 })
 

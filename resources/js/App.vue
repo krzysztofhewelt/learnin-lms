@@ -4,7 +4,7 @@
             <TheSidebar />
         </template>
         <div class="w-full overflow-auto"
-             :class="{ 'p-14' : this.$route.name !== 'Login' }">
+             :class="{ 'p-6 md:p-14' : this.$route.name !== 'Login' }">
             <router-view :key="$route.fullPath"></router-view>
         </div>
     </div>
