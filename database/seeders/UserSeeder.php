@@ -16,6 +16,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+
         // default admin account
         User::create([
             'account_role' => 'admin',
@@ -27,22 +28,25 @@ class UserSeeder extends Seeder
             'active' => 1
         ]);
 
-//        // teachers
-//        User::factory(5)
-//            ->create([
-//                'account_role' => 'teacher'
-//            ])
-//            ->each(function ($user) {
-//                Teacher::factory(1)->create(['user_ID' => $user->id]);
-//            });
-//
-//        // students
-//        User::factory(15)
-//            ->create([
-//                'account_role' => 'student'
-//            ])
-//            ->each(function ($user) {
-//                Student::factory(1)->create(['user_ID' => $user->id]);
-//            });
+        // teachers
+        User::factory(5)
+            ->sequence(fn ($sequence) => ['email' => 'teacher' . $sequence->index + 1 . '@email.com'])
+            ->create([
+                'account_role' => 'teacher',
+            ])
+            ->each(function ($user) {
+                Teacher::factory(1)->create(['user_ID' => $user->id]);
+            });
+
+
+        // students
+        User::factory(15)
+            ->sequence(fn ($sequence) => ['email' => 'student' . $sequence->index + 1 . '@email.com'])
+            ->create([
+                'account_role' => 'student',
+            ])
+            ->each(function ($user) {
+                Student::factory(1)->create(['user_ID' => $user->id]);
+            });
     }
 }
