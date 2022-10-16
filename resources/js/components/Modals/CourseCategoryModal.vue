@@ -5,7 +5,7 @@
                 <div class="w-full">
                     <BaseInputGroup
                         id="name"
-                        :label="$t('course.course_name')"
+                        :label="$t('course.course_category')"
                         type="text"
                         :required="true"
                         v-model="category.name"
