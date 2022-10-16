@@ -17,6 +17,8 @@
 
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
+        <link rel="icon" href="favicon.ico">
+
     </head>
     <body class="antialiased font-sans">
 
