@@ -6,7 +6,7 @@
                  class="font-bold cursor-pointer py-0.5"
                  @click="$router.push({name:'UsersView', params: {id:user.id}})">
 
-                {{ user.name }} {{ user.surname }}
+                {{ user.surname }} {{ user.name }}
                 <span v-if="user.account_role === 'teacher'" class="bg-red-100 text-red-900 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-200">
                     {{ $t('user.teacher') }}
                 </span>

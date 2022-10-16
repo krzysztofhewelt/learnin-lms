@@ -45,7 +45,7 @@
                 </BaseRow>
             </tr>
         </BaseTable>
-        <div class="text-right mt-2">
+        <div class="text-right mt-2" v-if="marksForTask.length > 0">
             <ButtonSubmit :loading="loading" @click="handleSubmit" />
         </div>
     </form>

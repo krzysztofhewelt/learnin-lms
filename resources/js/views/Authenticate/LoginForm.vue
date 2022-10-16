@@ -33,6 +33,22 @@
                     </button>
                 </div>
             </form>
+
+            <div class="mt-3">
+                <h3 class="font-bold mb-0">Przykładowe dane logowania</h3>
+                Wybierz konto, na jakie chcesz się zalogować:
+                <ul class="list-disc">
+                    <li class="cursor-pointer" @click="setCredentials('email@email.com', 'Admin#12345')"><b>administrator</b></li>
+                    <li class="cursor-pointer" @click="setCredentials('teacher1@email.com', 'User#12345')"><b>prowadzący 1.</b></li>
+                    <li class="cursor-pointer" @click="setCredentials('teacher2@email.com', 'User#12345')"><b>prowadzący 2.</b></li>
+                    <li class="cursor-pointer" @click="setCredentials('student1@email.com', 'User#12345')"><b>student 1.</b></li>
+                    <li class="cursor-pointer" @click="setCredentials('student2@email.com', 'User#12345')"><b>student 2.</b></li>
+                    <li class="cursor-pointer" @click="setCredentials('student3@email.com', 'User#12345')"><b>student 3.</b></li>
+                    <li class="cursor-pointer" @click="setCredentials('student4@email.com', 'User#12345')"><b>student 4.</b></li>
+                    <li class="cursor-pointer" @click="setCredentials('student5@email.com', 'User#12345')"><b>student 5.</b></li>
+                </ul>
+                <b>Ponadto można wykorzystać z innych użytkowników wygenerowanych przez system.<br>Hasło: User#12345</b>
+            </div>
         </div>
     </div>
 </template>
@@ -76,6 +92,11 @@ export default {
                     toast.success(this.$t('auth.logged_successfully'))
                     router.push('/')
                 })
+        },
+
+        setCredentials(email, password) {
+            this.email = email
+            this.password = password
         }
     },
 }

@@ -1,13 +1,15 @@
 <template>
     <Modal v-model="showModal" :title="$t('course.assign_to_course')" wrapper-class="modal-wrapper">
-        <h4 class="font-bold">Instrukcja wyszukiwania:</h4>
-        <p>Możesz wyszukiwać użytkowników po: imieniu, nazwisku, numerze indeksu, adresie email, a także po typie konta:
-            <span class="bg-orange-300">teacher (prowadzący)</span>, <span class="bg-green-300">student</span>, <span class="bg-red-300">admin</span>
+        <h4 class="font-bold">{{ $t('select.assignment_instruction_title') }}:</h4>
+        <p>
+            {{ $t('select.assignment_instruction_explain') }}
+            <span class="bg-orange-300">{{ $t('select.assignment_instruction_teacher') }}</span>, <span class="bg-green-300">{{ $t('select.assignment_instruction_student') }}</span>, <span class="bg-red-300">{{ $t('select.assignment_instruction_admin') }}</span>
         </p>
 
+        <label class="font-bold" for="participants">{{ $t('select.assignment_select_label') }}:</label>
         <Multiselect
             v-model="participants"
-            id="ajax"
+            id="participants"
             label="name"
             track-by="id"
             :placeholder="$t('user.type_to_search')"
@@ -28,7 +30,7 @@
 
             <template #tag="{ option, remove }">
                 <span class="py-0.5 px-2 mx-1 my-1 rounded-lg inline-block" :class="getTagColorForUser(option.account_role)">
-                    <span>{{ option.name }} {{ option.surname }}</span>
+                    <span>{{ option.surname }} {{ option.name }}</span>
                     <span class="ml-1 font-bold" @click="remove(option)">
                         <Close class="inline text-red-800 cursor-pointer w-4 h-4" />
                     </span>
@@ -36,7 +38,7 @@
             </template>
 
             <template #option="{option}">
-                <span>{{ option.name }} {{ option.surname }} - {{ option.account_role }}</span>
+                <span>{{ option.surname }} {{ option.name }} - {{ option.account_role }}</span>
             </template>
 
             <template #noResult>

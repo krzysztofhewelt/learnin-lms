@@ -37,7 +37,8 @@ class Course extends Model
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'course_enrollments', 'course_ID', 'user_ID')
-            ->orderByDesc('account_role');
+            ->orderByDesc('account_role')
+			->orderBy('surname');
     }
 
     public function tasks(): HasMany
@@ -126,8 +127,8 @@ class Course extends Model
 
     public function getCourseDetails(int $courseId) : ?Course
     {
-        return $this->with(['users:id,name,surname,account_role', 'categories', 'courseFiles'])
-            ->find($courseId);
+        return $this->with(['users:id,surname,name,account_role', 'categories', 'courseFiles'])
+			->find($courseId);
     }
 
     public function getCourseParticipantsIds(int $courseId) : ?Array

@@ -14,8 +14,9 @@
                 <div class="font-bold text-2xl">{{ $t('dashboard.newest_courses') }}</div>
                 <router-link :to="{name: 'CoursesUser'}" class="normal_btn">{{ $t('general.show_more') }}</router-link>
             </div>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                <div v-if="courses.length === 0 && !loading" class="mt-6 text-2xl font-bold">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8"
+                 v-if="!loading">
+                <div v-if="courses.length === 0" class="mt-6 text-2xl font-bold">
                     {{ $t('general.no_data') }}
                 </div>
 
@@ -25,7 +26,7 @@
                             {{ course.name }}
                         </router-link>
 
-                        <div class="">
+                        <div>
                             {{ course.description && course.description.slice(0,100) }}
                             {{ course.description && course.description.length > 100 ? '...' : '' }}
                         </div>
@@ -152,7 +153,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 
