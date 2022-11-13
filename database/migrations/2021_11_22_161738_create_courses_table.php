@@ -13,12 +13,15 @@ class CreateCoursesTable extends Migration
      */
     public function up()
     {
-        Schema::create('courses', function (Blueprint $table) {
-            $table->id()->autoIncrement()->index();
-            $table->string('name', 60);
-            $table->text('description')->nullable();
-            $table->dateTime('available_from');
-            $table->dateTime('available_to')->nullable();
+        Schema::create("courses", function (Blueprint $table) {
+            $table
+                ->id()
+                ->autoIncrement()
+                ->index();
+            $table->string("name", 60);
+            $table->text("description")->nullable();
+            $table->dateTime("available_from");
+            $table->dateTime("available_to")->nullable();
         });
     }
 
@@ -29,6 +32,6 @@ class CreateCoursesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('courses');
+        Schema::dropIfExists("courses");
     }
 }

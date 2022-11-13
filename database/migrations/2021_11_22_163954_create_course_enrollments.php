@@ -13,12 +13,23 @@ class CreateCourseEnrollments extends Migration
      */
     public function up()
     {
-        Schema::create('course_enrollments', function (Blueprint $table) {
-            $table->id()->autoIncrement()->index();
-            $table->unsignedBigInteger('user_ID');
-            $table->unsignedBigInteger('course_ID');
-            $table->foreign('user_ID')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('course_ID')->references('id')->on('courses')->onDelete('cascade');
+        Schema::create("course_enrollments", function (Blueprint $table) {
+            $table
+                ->id()
+                ->autoIncrement()
+                ->index();
+            $table->unsignedBigInteger("user_ID");
+            $table->unsignedBigInteger("course_ID");
+            $table
+                ->foreign("user_ID")
+                ->references("id")
+                ->on("users")
+                ->onDelete("cascade");
+            $table
+                ->foreign("course_ID")
+                ->references("id")
+                ->on("courses")
+                ->onDelete("cascade");
         });
     }
 
@@ -29,6 +40,6 @@ class CreateCourseEnrollments extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('course_enrollments');
+        Schema::dropIfExists("course_enrollments");
     }
 }

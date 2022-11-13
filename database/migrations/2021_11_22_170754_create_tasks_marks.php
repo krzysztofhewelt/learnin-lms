@@ -13,16 +13,27 @@ class CreateTasksMarks extends Migration
      */
     public function up()
     {
-        Schema::create('tasks_marks', function (Blueprint $table) {
-            $table->id()->autoIncrement()->index();
-            $table->unsignedBigInteger('user_ID');
-            $table->unsignedBigInteger('task_ID');
-            $table->float('points');
-            $table->float('mark');
-            $table->text('description')->nullable();
-            $table->date('updated_at');
-            $table->foreign('user_ID')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('task_ID')->references('id')->on('tasks')->onDelete('cascade');
+        Schema::create("tasks_marks", function (Blueprint $table) {
+            $table
+                ->id()
+                ->autoIncrement()
+                ->index();
+            $table->unsignedBigInteger("user_ID");
+            $table->unsignedBigInteger("task_ID");
+            $table->float("points");
+            $table->float("mark");
+            $table->text("description")->nullable();
+            $table->date("updated_at");
+            $table
+                ->foreign("user_ID")
+                ->references("id")
+                ->on("users")
+                ->onDelete("cascade");
+            $table
+                ->foreign("task_ID")
+                ->references("id")
+                ->on("tasks")
+                ->onDelete("cascade");
         });
     }
 
@@ -33,6 +44,6 @@ class CreateTasksMarks extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tasks_marks');
+        Schema::dropIfExists("tasks_marks");
     }
 }

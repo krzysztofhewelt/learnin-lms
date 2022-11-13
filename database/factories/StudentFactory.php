@@ -19,10 +19,17 @@ class StudentFactory extends Factory
         $year = $this->faker->numberBetween(2018, 2022);
 
         return [
-            'field_of_study' => $this->faker->randomElement(['Computer Science', 'Electronics and telecommunication', 'Electrotechnics']),
-            'semester' => $this->faker->numberBetween(1, 7),
-            'year_of_study' => $year . ' ' . ++$year,
-            'mode_of_study' => $this->faker->randomElement(['stationary', 'non-stationary'])
+            "field_of_study" => $this->faker->randomElement([
+                "Computer Science",
+                "Electronics and telecommunication",
+                "Electrotechnics",
+            ]),
+            "semester" => $this->faker->numberBetween(1, 7),
+            "year_of_study" => $year . " " . ++$year,
+            "mode_of_study" => $this->faker->randomElement([
+                "stationary",
+                "non-stationary",
+            ]),
         ];
     }
 }

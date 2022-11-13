@@ -4,6 +4,6 @@
 
 <script>
 export default {
-    name: "PassRoute"
-}
+    name: "PassRoute",
+};
 </script>

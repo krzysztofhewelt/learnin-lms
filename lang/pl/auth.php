@@ -1,8 +1,7 @@
 <?php
 
 return [
-
-    /*
+	/*
     |--------------------------------------------------------------------------
     | Authentication Language Lines
     |--------------------------------------------------------------------------
@@ -13,15 +12,15 @@ return [
     |
     */
 
-    'email' => 'Email',
-    'password' => 'Hasło',
-    'sign_in' => 'Zaloguj',
-    'forgot_password' => 'Nie pamiętasz hasła?',
-    'type_email' => 'Wpisz adres email',
-    'type_password' => 'Wpisz hasło',
-    'failed' => 'Email lub hasło jest nieprawidłowe.',
-    'not_activated' => 'Użytkownik jest zablokowany',
-    'incorrect_password' => 'Podane hasło nie jest prawidłowe.',
-    'throttle' => 'Zbyt dużo nieudanych prób logowania. Spróbuj ponownie za :seconds sekund.',
-    'logged_successfully' => 'Zalogowano pomyślnie'
+	'email' => 'Email',
+	'password' => 'Hasło',
+	'sign_in' => 'Zaloguj',
+	'forgot_password' => 'Nie pamiętasz hasła?',
+	'type_email' => 'Wpisz adres email',
+	'type_password' => 'Wpisz hasło',
+	'failed' => 'Email lub hasło jest nieprawidłowe.',
+	'not_activated' => 'Użytkownik jest zablokowany',
+	'incorrect_password' => 'Podane hasło nie jest prawidłowe.',
+	'throttle' => 'Zbyt dużo nieudanych prób logowania. Spróbuj ponownie za :seconds sekund.',
+	'logged_successfully' => 'Zalogowano pomyślnie',
 ];

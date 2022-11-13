@@ -14,16 +14,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Student extends Model
 {
-    use HasFactory;
+	use HasFactory;
 
-    protected $table = 'students_info';
-    protected $primaryKey = 'user_ID';
-    public $timestamps = false;
-    protected $guarded = [];
-    protected $hidden = ['pivot'];
+	protected $table = 'students_info';
+	protected $primaryKey = 'user_ID';
+	public $timestamps = false;
+	protected $guarded = [];
+	protected $hidden = ['pivot'];
 
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'user_ID', 'id');
-    }
+	public function user(): BelongsTo
+	{
+		return $this->belongsTo(User::class, 'user_ID', 'id');
+	}
 }

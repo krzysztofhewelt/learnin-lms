@@ -2,26 +2,29 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
-        "guzzlehttp/guzzle": "^7.2",
-        "laravel/framework": "^9.2",
-        "laravel/sanctum": "^2.14.1",
-        "laravel/tinker": "^2.7",
-        "laravel/ui": "^3.4",
-        "mcaskill/php-array-group-by": "^1.0",
-        "tymon/jwt-auth": "*",
-      "ext-zip": "*"
+        "ext-zip": "*",
+        "guzzlehttp/guzzle": "^7.5.0",
+        "laravel/framework": "^9.39.1",
+        "laravel/sanctum": "^2.15.1",
+        "laravel/tinker": "^2.7.2",
+        "laravel/ui": "^3.4.6",
+        "mcaskill/php-array-group-by": "^1.0.0",
+        "tymon/jwt-auth": "*"
     },
     "require-dev": {
-        "fakerphp/faker": "^1.9.1",
-        "laravel/sail": "^1.0.1",
-        "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^6.1",
-        "phpunit/phpunit": "^9.5.10",
-        "spatie/laravel-ignition": "^1.0"
+        "fakerphp/faker": "^1.20.0",
+        "laravel/sail": "^1.16.2",
+        "mockery/mockery": "^1.5.1",
+        "nunomaduro/collision": "^6.3.1",
+        "phpunit/phpunit": "^9.5.26",
+        "spatie/laravel-ignition": "^1.6.1"
     },
     "autoload": {
         "psr-4": {

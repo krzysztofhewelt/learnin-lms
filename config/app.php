@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Facade;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -15,7 +14,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    "name" => env("APP_NAME", "Laravel"),
 
     /*
     |--------------------------------------------------------------------------
@@ -28,7 +27,7 @@ return [
     |
     */
 
-    'env' => env('APP_ENV', 'production'),
+    "env" => env("APP_ENV", "production"),
 
     /*
     |--------------------------------------------------------------------------
@@ -41,7 +40,7 @@ return [
     |
     */
 
-    'debug' => (bool) env('APP_DEBUG', false),
+    "debug" => (bool) env("APP_DEBUG", false),
 
     /*
     |--------------------------------------------------------------------------
@@ -54,9 +53,9 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    "url" => env("APP_URL", "http://localhost"),
 
-    'asset_url' => env('ASSET_URL'),
+    "asset_url" => env("ASSET_URL"),
 
     /*
     |--------------------------------------------------------------------------
@@ -69,7 +68,7 @@ return [
     |
     */
 
-    'timezone' => env('TIMEZONE', 'UTC'),
+    "timezone" => env("TIMEZONE", "UTC"),
 
     /*
     |--------------------------------------------------------------------------
@@ -82,7 +81,7 @@ return [
     |
     */
 
-    'locale' => env('DEFAULT_LOCALE', 'en'),
+    "locale" => env("DEFAULT_LOCALE", "en"),
 
     /*
     |--------------------------------------------------------------------------
@@ -95,7 +94,7 @@ return [
     |
     */
 
-    'fallback_locale' => env('DEFAULT_FALLBACK_LOCALE', 'en'),
+    "fallback_locale" => env("DEFAULT_FALLBACK_LOCALE", "en"),
 
     /*
     |--------------------------------------------------------------------------
@@ -108,7 +107,7 @@ return [
     |
     */
 
-    'faker_locale' => env('FAKER_LOCALE', 'en_US'),
+    "faker_locale" => env("FAKER_LOCALE", "en_US"),
 
     /*
     |--------------------------------------------------------------------------
@@ -121,9 +120,9 @@ return [
     |
     */
 
-    'key' => env('APP_KEY'),
+    "key" => env("APP_KEY"),
 
-    'cipher' => 'AES-256-CBC',
+    "cipher" => "AES-256-CBC",
 
     /*
     |--------------------------------------------------------------------------
@@ -136,8 +135,7 @@ return [
     |
     */
 
-    'providers' => [
-
+    "providers" => [
         /*
          * Laravel Framework Service Providers...
          */
@@ -176,7 +174,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
     ],
 
     /*
@@ -190,8 +187,9 @@ return [
     |
     */
 
-    'aliases' => Facade::defaultAliases()->merge([
-        // 'ExampleClass' => App\Example\ExampleClass::class,
-    ])->toArray(),
-
+    "aliases" => Facade::defaultAliases()
+        ->merge([
+            // 'ExampleClass' => App\Example\ExampleClass::class,
+        ])
+        ->toArray(),
 ];

@@ -27,108 +27,153 @@ use App\Http\Controllers\LocaleController;
 |
 */
 
-
 // login user
-Route::post('login', [AuthController::class, 'login']);
+Route::post("login", [AuthController::class, "login"]);
 
 // refresh the JWT token
-Route::get('refresh', [AuthController::class, 'refresh']);
+Route::get("refresh", [AuthController::class, "refresh"]);
 
 // change user's locale
-Route::post('locale', [LocaleController::class, 'setLocale']);
+Route::post("locale", [LocaleController::class, "setLocale"]);
 
 // sites for authenticated users
-Route::middleware(['auth:api', 'localization'])->group(function() {
-
+Route::middleware(["auth:api", "localization"])->group(function () {
     // dashboard (home)
-    Route::get('dashboard', [DashboardController::class, 'getDashboard']);
+    Route::get("dashboard", [DashboardController::class, "getDashboard"]);
 
     // admin section
-    Route::prefix('admin')->group(function() {
-        Route::get('users', [AdminController::class, 'showAllUsers']);
-        Route::get('courses', [AdminController::class, 'showAllCourses']);
-        Route::get('tasks', [AdminController::class, 'showAllTasks']);
+    Route::prefix("admin")->group(function () {
+        Route::get("users", [AdminController::class, "showAllUsers"]);
+        Route::get("courses", [AdminController::class, "showAllCourses"]);
+        Route::get("tasks", [AdminController::class, "showAllTasks"]);
     });
 
     // user section
-    Route::prefix('users')->group(function() {
-        Route::post('update-teacher/{id}', [UserController::class, 'updateTeacher']);
-        Route::post('search', [UserController::class, 'searchUser']); // search user
-        Route::post('create-or-edit/{id}', [UserController::class, 'createOrUpdate']); // creating new user or updating existing user
-        Route::get('show/{id}', [UserController::class, 'getUserProfile']);
-        Route::delete('delete/{id}', [UserController::class, 'delete']);
-        Route::get('courses/{id}', [CourseController::class, 'showUserCourses']);
-        Route::get('teachers', [UserController::class, 'getAllTeachers']);
+    Route::prefix("users")->group(function () {
+        Route::post("update-teacher/{id}", [
+            UserController::class,
+            "updateTeacher",
+        ]);
+        Route::post("search", [UserController::class, "searchUser"]); // search user
+        Route::post("create-or-edit/{id}", [
+            UserController::class,
+            "createOrUpdate",
+        ]); // creating new user or updating existing user
+        Route::get("show/{id}", [UserController::class, "getUserProfile"]);
+        Route::delete("delete/{id}", [UserController::class, "delete"]);
+        Route::get("courses/{id}", [
+            CourseController::class,
+            "showUserCourses",
+        ]);
+        Route::get("teachers", [UserController::class, "getAllTeachers"]);
     });
 
     // personal account
-    Route::get('profile', [UserController::class, 'getUserProfile']);
+    Route::get("profile", [UserController::class, "getUserProfile"]);
 
     // change password controller
-    Route::post('change-password', [ChangeSelfPasswordController::class, 'changePassword']);
+    Route::post("change-password", [
+        ChangeSelfPasswordController::class,
+        "changePassword",
+    ]);
 
     // courses section
-    Route::prefix('courses')->group(function() {
-        Route::get('', [CourseController::class, 'showUserCourses']);
-        Route::post('search', [CourseController::class, 'searchCourse']); // search course
-        Route::post('create', [CourseController::class, 'create']);
-        Route::get('details/{id}', [CourseController::class, 'show']);
-        Route::patch('edit/{id}', [CourseController::class, 'update']);
-        Route::delete('delete/{id}', [CourseController::class, 'delete']);
+    Route::prefix("courses")->group(function () {
+        Route::get("", [CourseController::class, "showUserCourses"]);
+        Route::post("search", [CourseController::class, "searchCourse"]); // search course
+        Route::post("create", [CourseController::class, "create"]);
+        Route::get("details/{id}", [CourseController::class, "show"]);
+        Route::patch("edit/{id}", [CourseController::class, "update"]);
+        Route::delete("delete/{id}", [CourseController::class, "delete"]);
 
         // assign users to the course
-        Route::post('assign/{id}', [CourseController::class, 'assignUsers']);
+        Route::post("assign/{id}", [CourseController::class, "assignUsers"]);
     });
 
     // course categories section
-    Route::prefix('categories')->group(function() {
-        Route::get('show/{id}', [CourseCategoryController::class, 'show']);
-        Route::get('course/{id}', [CourseCategoryController::class, 'showCourseCategories']);
-        Route::patch('edit/{id}', [CourseCategoryController::class, 'update']);
-        Route::post('create/course/{id}', [CourseCategoryController::class, 'create']);
-        Route::delete('delete/{id}', [CourseCategoryController::class, 'delete']);
+    Route::prefix("categories")->group(function () {
+        Route::get("show/{id}", [CourseCategoryController::class, "show"]);
+        Route::get("course/{id}", [
+            CourseCategoryController::class,
+            "showCourseCategories",
+        ]);
+        Route::patch("edit/{id}", [CourseCategoryController::class, "update"]);
+        Route::post("create/course/{id}", [
+            CourseCategoryController::class,
+            "create",
+        ]);
+        Route::delete("delete/{id}", [
+            CourseCategoryController::class,
+            "delete",
+        ]);
     });
 
     // tasks section
-    Route::prefix('tasks')->group(function() {
-        Route::post('search', [TaskController::class, 'searchTask']);
-        Route::get('', [TaskController::class, 'getUserTasks']);
-        Route::get('show/category/{id}', [TaskController::class, 'getTasksForCategory']);
-        Route::post('create', [TaskController::class, 'create']);
-        Route::patch('edit/{id}', [TaskController::class, 'update']);
-        Route::get('show/{id}', [TaskController::class, 'show']);
-        Route::delete('delete/{id}', [TaskController::class, 'delete']);
+    Route::prefix("tasks")->group(function () {
+        Route::post("search", [TaskController::class, "searchTask"]);
+        Route::get("", [TaskController::class, "getUserTasks"]);
+        Route::get("show/category/{id}", [
+            TaskController::class,
+            "getTasksForCategory",
+        ]);
+        Route::post("create", [TaskController::class, "create"]);
+        Route::patch("edit/{id}", [TaskController::class, "update"]);
+        Route::get("show/{id}", [TaskController::class, "show"]);
+        Route::delete("delete/{id}", [TaskController::class, "delete"]);
 
         // get student uploaded files
-        Route::get('students_uploads/{id}', [TaskController::class, 'showStudentsUploads']);
+        Route::get("students_uploads/{id}", [
+            TaskController::class,
+            "showStudentsUploads",
+        ]);
 
         // make zip and download from student uploaded files
-        Route::get('students_uploads/{id}/zip', [DownloadController::class, 'generateZipAndDownload']);
+        Route::get("students_uploads/{id}/zip", [
+            DownloadController::class,
+            "generateZipAndDownload",
+        ]);
     });
 
     // task marks section
-    Route::prefix('marks')->group(function() {
-        Route::get('', [TaskMarkController::class, 'getUserMarks']);
-        Route::get('task/{id}', [TaskMarkController::class, 'getStudentsMarksForTask']);
-        Route::post('task/{id}', [TaskMarkController::class, 'updateStudentsMarksForTask']);
+    Route::prefix("marks")->group(function () {
+        Route::get("", [TaskMarkController::class, "getUserMarks"]);
+        Route::get("task/{id}", [
+            TaskMarkController::class,
+            "getStudentsMarksForTask",
+        ]);
+        Route::post("task/{id}", [
+            TaskMarkController::class,
+            "updateStudentsMarksForTask",
+        ]);
     });
 
     // statistics section
-    Route::prefix('statistics')->group(function() {
-        Route::get('task/{id}', [TaskStatsController::class, 'computeMarksForTask']);
-        Route::get('course/{course}/{categoryId}', [TaskStatsController::class, 'computeAvgMarksForCourseCategory']);
+    Route::prefix("statistics")->group(function () {
+        Route::get("task/{id}", [
+            TaskStatsController::class,
+            "computeMarksForTask",
+        ]);
+        Route::get("course/{course}/{categoryId}", [
+            TaskStatsController::class,
+            "computeAvgMarksForCourseCategory",
+        ]);
     });
 
-
     // upload section
-    Route::post('upload/{id}', [UploadController::class, 'uploadResources']);
+    Route::post("upload/{id}", [UploadController::class, "uploadResources"]);
 
     // download section
-    Route::post('download/{id}', [DownloadController::class, 'downloadResources']);
+    Route::post("download/{id}", [
+        DownloadController::class,
+        "downloadResources",
+    ]);
 
     // delete resources section
-    Route::post('delete-resource/{id}', [FileController::class, 'deleteResources']);
+    Route::post("delete-resource/{id}", [
+        FileController::class,
+        "deleteResources",
+    ]);
 
     // logout user
-    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post("logout", [AuthController::class, "logout"]);
 });

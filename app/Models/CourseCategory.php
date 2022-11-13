@@ -16,28 +16,28 @@ use Illuminate\Support\Collection;
  */
 class CourseCategory extends Model
 {
-    use HasFactory;
+	use HasFactory;
 
-    protected $table = 'course_categories';
-    public $timestamps = false;
-    protected $guarded = [];
-    protected $hidden = ['pivot'];
+	protected $table = 'course_categories';
+	public $timestamps = false;
+	protected $guarded = [];
+	protected $hidden = ['pivot'];
 
-    public function course() : BelongsTo
-    {
-        return $this->belongsTo(Course::class, 'course_ID', 'id');
-    }
+	public function course(): BelongsTo
+	{
+		return $this->belongsTo(Course::class, 'course_ID', 'id');
+	}
 
-    public function tasks(): HasMany
-    {
-        return $this->hasMany(Task::class, 'course_ID', 'id');
-    }
+	public function tasks(): HasMany
+	{
+		return $this->hasMany(Task::class, 'course_ID', 'id');
+	}
 
-    /*
-     * Business logic
-     */
-    public function getCourseCategory(int $courseCategoryId) : ?CourseCategory
-    {
-        return $this->find($courseCategoryId);
-    }
+	/*
+	 * Business logic
+	 */
+	public function getCourseCategory(int $courseCategoryId): ?CourseCategory
+	{
+		return $this->find($courseCategoryId);
+	}
 }

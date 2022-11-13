@@ -13,11 +13,18 @@ class CreateCourseCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('course_categories', function (Blueprint $table) {
-            $table->id()->autoIncrement()->index();
-            $table->unsignedBigInteger('course_ID');
-            $table->string('name', 45);
-            $table->foreign('course_ID')->references('id')->on('courses')->onDelete('cascade');
+        Schema::create("course_categories", function (Blueprint $table) {
+            $table
+                ->id()
+                ->autoIncrement()
+                ->index();
+            $table->unsignedBigInteger("course_ID");
+            $table->string("name", 45);
+            $table
+                ->foreign("course_ID")
+                ->references("id")
+                ->on("courses")
+                ->onDelete("cascade");
         });
     }
 
@@ -28,6 +35,6 @@ class CreateCourseCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('course_categories');
+        Schema::dropIfExists("course_categories");
     }
 }

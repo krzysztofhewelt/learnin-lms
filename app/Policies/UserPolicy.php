@@ -7,18 +7,18 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 
 class UserPolicy
 {
-    use HandlesAuthorization;
+	use HandlesAuthorization;
 
-    // everyone can show user profile only
-    // admin can edit and create user
+	// everyone can show user profile only
+	// admin can edit and create user
 
-    public function createUpdateDelete(User $user) : bool
-    {
-        return $user->isAdmin();
-    }
+	public function createUpdateDelete(User $user): bool
+	{
+		return $user->isAdmin();
+	}
 
-    public function updateTeacher(User $user, User $updatedUser) : bool
-    {
-        return ($user->isTeacher() && $updatedUser->id === $user->id);
-    }
+	public function updateTeacher(User $user, User $updatedUser): bool
+	{
+		return $user->isTeacher() && $updatedUser->id === $user->id;
+	}
 }

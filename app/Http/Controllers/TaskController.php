@@ -13,112 +13,124 @@ use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
-    private Course $courseModel;
-    private Task $taskModel;
-    private StudentFile $studentFileModel;
-    private TaskMark $taskMarkModel;
+	private Course $courseModel;
+	private Task $taskModel;
+	private StudentFile $studentFileModel;
+	private TaskMark $taskMarkModel;
 
-    public function __construct()
-    {
-        $this->courseModel = new Course();
-        $this->taskModel = new Task();
-        $this->studentFileModel = new StudentFile();
-        $this->taskMarkModel = new TaskMark();
-    }
+	public function __construct()
+	{
+		$this->courseModel = new Course();
+		$this->taskModel = new Task();
+		$this->studentFileModel = new StudentFile();
+		$this->taskMarkModel = new TaskMark();
+	}
 
-    public function searchTask(Request $request) : JsonResponse
-    {
-        $this->authorize('search-task');
+	public function searchTask(Request $request): JsonResponse
+	{
+		$this->authorize('search-task');
 
-        return response()->json($this->taskModel->searchTask($request->searchString));
-    }
+		return response()->json($this->taskModel->searchTask($request->searchString));
+	}
 
-    public function getUserTasks(): JsonResponse
-    {
-        $tasks = $this->taskModel->getTasksAllForUser(Auth::id());
-        return response()->json($tasks);
-    }
+	public function getUserTasks(): JsonResponse
+	{
+		$tasks = $this->taskModel->getTasksAllForUser(Auth::id());
+		return response()->json($tasks);
+	}
 
-    public function getTasksForCategory($categoryId) : JsonResponse
-    {
-        $tasks = $this->taskModel->getTasksForCategory($categoryId);
-        if($tasks == null)
-            return response()->json('');
+	public function getTasksForCategory($categoryId): JsonResponse
+	{
+		$tasks = $this->taskModel->getTasksForCategory($categoryId);
+		if ($tasks == null) {
+			return response()->json('');
+		}
 
-        return response()->json($tasks);
-    }
+		return response()->json($tasks);
+	}
 
-    public function create(TaskRequest $request): JsonResponse
-    {
-        $course = $this->courseModel->getCourse($request->course_ID);
-        if($course == null)
-            return response()->json(['error' => 'Course does not exists!'], 404);
+	public function create(TaskRequest $request): JsonResponse
+	{
+		$course = $this->courseModel->getCourse($request->course_ID);
+		if ($course == null) {
+			return response()->json(['error' => 'Course does not exists!'], 404);
+		}
 
-        $this->authorize('manage-task', $course);
+		$this->authorize('manage-task', $course);
 
-        $task = $this->taskModel->create($request->validated());
+		$task = $this->taskModel->create($request->validated());
 
-        return response()->json(['success' => 'Task added successfully', 'task_ID' => $task->id]);
-    }
+		return response()->json([
+			'success' => 'Task added successfully',
+			'task_ID' => $task->id,
+		]);
+	}
 
-    public function show(int $taskId): JsonResponse
-    {
-        $task = $this->taskModel->getTaskWithCategoryAndFiles($taskId);
-        if($task == null)
-            return response()->json(['error' => 'Task does not exists!'], 404);
+	public function show(int $taskId): JsonResponse
+	{
+		$task = $this->taskModel->getTaskWithCategoryAndFiles($taskId);
+		if ($task == null) {
+			return response()->json(['error' => 'Task does not exists!'], 404);
+		}
 
-        $this->authorize('show-task', $task->course);
+		$this->authorize('show-task', $task->course);
 
-        // get uploaded student files
-        $studentFiles = $this->studentFileModel->getUploadedFilesForTask(Auth::id(), $taskId);
+		// get uploaded student files
+		$studentFiles = $this->studentFileModel->getUploadedFilesForTask(Auth::id(), $taskId);
 
-        // get mark for this task
-        $studentMark = $this->taskMarkModel->getUserMarkForTask($taskId);
+		// get mark for this task
+		$studentMark = $this->taskMarkModel->getUserMarkForTask($taskId);
 
-        return response()->json([
-            'task' => $task,
-            'studentFiles' => $studentFiles,
-            'userMark' => $studentMark
-        ]);
-    }
+		return response()->json([
+			'task' => $task,
+			'studentFiles' => $studentFiles,
+			'userMark' => $studentMark,
+		]);
+	}
 
-    public function update(TaskRequest $request, int $taskId): JsonResponse
-    {
-        $task = $this->taskModel->getTask($taskId);
-        if($task == null)
-            return response()->json(['error' => 'Task does not exists!'], 404);
+	public function update(TaskRequest $request, int $taskId): JsonResponse
+	{
+		$task = $this->taskModel->getTask($taskId);
+		if ($task == null) {
+			return response()->json(['error' => 'Task does not exists!'], 404);
+		}
 
-        $this->authorize('manage-task', $task->course);
+		$this->authorize('manage-task', $task->course);
 
-        $task->update($request->validated());
+		$task->update($request->validated());
 
-        return response()->json(['success' => 'Task updated successfully', 'task_ID' => $task->id]);
-    }
+		return response()->json([
+			'success' => 'Task updated successfully',
+			'task_ID' => $task->id,
+		]);
+	}
 
-    public function delete(int $taskId): JsonResponse
-    {
-        $task = $this->taskModel->getTask($taskId);
-        if($task == null)
-            return response()->json(['error' => 'Task does not exists!'], 404);
+	public function delete(int $taskId): JsonResponse
+	{
+		$task = $this->taskModel->getTask($taskId);
+		if ($task == null) {
+			return response()->json(['error' => 'Task does not exists!'], 404);
+		}
 
-        $this->authorize('manage-task', $task->course);
+		$this->authorize('manage-task', $task->course);
 
-        $task->delete();
+		$task->delete();
 
-        return response()->json(['success' => 'Task deleted successfully']);
-    }
+		return response()->json(['success' => 'Task deleted successfully']);
+	}
 
-    public function showStudentsUploads(int $taskId): JsonResponse
-    {
-        $task = $this->taskModel->getTask($taskId);
-        if($task == null)
-            return response()->json(['error' => 'Task does not exists!'], 404);
+	public function showStudentsUploads(int $taskId): JsonResponse
+	{
+		$task = $this->taskModel->getTask($taskId);
+		if ($task == null) {
+			return response()->json(['error' => 'Task does not exists!'], 404);
+		}
 
-        $this->authorize('manage-task', $task->course);
+		$this->authorize('manage-task', $task->course);
 
-        return response()->json([
-            'task' => $task,
-            'student_files' => $this->studentFileModel->getStudentsUploadedFilesForTask($taskId),
-        ]);
-    }
+		return response()->json([
+			'task' => $task,
+			'student_files' => $this->studentFileModel->getStudentsUploadedFilesForTask($taskId),
+		]);
+	}
 }

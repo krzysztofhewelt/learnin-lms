@@ -10,23 +10,21 @@ use Illuminate\Support\Facades\Session;
 
 class Localization
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
-     */
-    public function handle(Request $request, Closure $next)
-    {
-        if (Auth::user() !== null) {
-            App::setLocale(Auth::user()->locale);
-        }
-        else
-        {
-            App::setLocale(env('DEFAULT_LOCALE'));
-        }
+	/**
+	 * Handle an incoming request.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+	 * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+	 */
+	public function handle(Request $request, Closure $next)
+	{
+		if (Auth::user() !== null) {
+			App::setLocale(Auth::user()->locale);
+		} else {
+			App::setLocale(env('DEFAULT_LOCALE'));
+		}
 
-        return $next($request);
-    }
+		return $next($request);
+	}
 }

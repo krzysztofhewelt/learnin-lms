@@ -1,6 +1,8 @@
 <template>
     <div class="relative">
-        <div class="absolute z-50 mt-2 bg-white rounded-md shadow-lg min-w-max py-2 px-4 right-0 w-fit cursor-auto">
+        <div
+            class="absolute right-0 z-50 mt-2 w-fit min-w-max cursor-auto rounded-md bg-white py-2 px-4 shadow-lg"
+        >
             <slot />
         </div>
     </div>
@@ -8,6 +10,6 @@
 
 <script>
 export default {
-    name: "Dropdown"
-}
+    name: "Dropdown",
+};
 </script>

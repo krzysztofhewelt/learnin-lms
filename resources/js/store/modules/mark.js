@@ -5,75 +5,75 @@ const mark = {
         loading: false,
         validationErrors: [],
         marksForTask: [],
-        task: {}
+        task: {},
     },
 
     actions: {
         async getStudentsMarksForTask({ commit }, taskId) {
-            commit('loading', true)
-            commit('clearValidationErrors')
+            commit("loading", true);
+            commit("clearValidationErrors");
 
-            await axios.get('/marks/task/' + taskId)
-                .then(
-                    response => {
-                        commit('setTask', response.data.task)
-                        commit('setMarksForTask', response.data.student_marks)
-                    }
-                )
-                .catch(
-                    error => {
-                        if(error.response.status === 422)
-                            commit('setValidationErrors', error.response.data.errors)
-                    }
-                )
+            await axios
+                .get("/marks/task/" + taskId)
+                .then((response) => {
+                    commit("setTask", response.data.task);
+                    commit("setMarksForTask", response.data.student_marks);
+                })
+                .catch((error) => {
+                    if (error.response.status === 422)
+                        commit(
+                            "setValidationErrors",
+                            error.response.data.errors
+                        );
+                });
 
-            commit('loading', false)
+            commit("loading", false);
         },
 
         // edit user marks
-        async editStudentsMarksForTask({ commit }, {taskId, studentsMarks}) {
-            commit('loading', true)
+        async editStudentsMarksForTask({ commit }, { taskId, studentsMarks }) {
+            commit("loading", true);
 
-            await axios.post('/marks/task/' + taskId, {marks: studentsMarks})
-                .then(
-                    () => {
-                        commit('clearValidationErrors')
-                        commit('loading', false)
-                    }
-                )
-                .catch(
-                    error => {
-                        if(error.response.status === 422)
-                            commit('setValidationErrors', error.response.data.error)
+            await axios
+                .post("/marks/task/" + taskId, { marks: studentsMarks })
+                .then(() => {
+                    commit("clearValidationErrors");
+                    commit("loading", false);
+                })
+                .catch((error) => {
+                    if (error.response.status === 422)
+                        commit(
+                            "setValidationErrors",
+                            error.response.data.error
+                        );
 
-                        commit('loading', false)
-                        throw error
-                    }
-                )
-        }
+                    commit("loading", false);
+                    throw error;
+                });
+        },
     },
 
     mutations: {
         loading(state, newLoadingStatus) {
-            state.loading = newLoadingStatus
+            state.loading = newLoadingStatus;
         },
 
         setValidationErrors(state, validationErrors) {
-            state.validationErrors = validationErrors
+            state.validationErrors = validationErrors;
         },
 
         clearValidationErrors(state) {
-            state.validationErrors = []
+            state.validationErrors = [];
         },
 
         setTask(state, task) {
-            state.task = task
+            state.task = task;
         },
 
         setMarksForTask(state, marks) {
-            state.marksForTask = marks
-        }
-    }
-}
+            state.marksForTask = marks;
+        },
+    },
+};
 
-export default mark
+export default mark;

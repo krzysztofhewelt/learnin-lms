@@ -8,10 +8,11 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TaskStatsPolicy
 {
-    use HandlesAuthorization;
+	use HandlesAuthorization;
 
-    public function viewAny(User $user, Course $course) : bool
-    {
-        return ($user->isTeacher() && $course->isTeacherOfCourse($user->id, $course->id)) || $user->isAdmin();
-    }
+	public function viewAny(User $user, Course $course): bool
+	{
+		return ($user->isTeacher() && $course->isTeacherOfCourse($user->id, $course->id)) ||
+			$user->isAdmin();
+	}
 }

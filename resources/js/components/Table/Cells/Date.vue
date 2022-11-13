@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import dayjs from "dayjs"
+import dayjs from "dayjs";
 
 export default {
     name: "Date",
@@ -11,14 +11,14 @@ export default {
     props: {
         value: {
             type: [String, null],
-            required: true
-        }
+            required: true,
+        },
     },
 
     computed: {
         getFormattedDate() {
-            return (this.value) ? dayjs(this.value).format('L LTS') : ''
-        }
+            return this.value ? dayjs(this.value).format("L LTS") : "";
+        },
     },
-}
+};
 </script>
