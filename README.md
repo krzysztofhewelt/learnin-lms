@@ -129,6 +129,8 @@ use(i18nVue, {
     - vuejs-paginate-next
     - vue-modal
 - Docker and Docker Compose
+- bundler: laravel-mix (webpack)
+- IDE and tools: Jetbrains PHPStorm, Postman, Jetbrains DataGrip
 
 # Screenshots
 <details>
