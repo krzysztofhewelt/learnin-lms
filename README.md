@@ -6,7 +6,7 @@
     <a href="#features">Features</a>&nbsp;&nbsp; | &nbsp;
     <a href="#getting-started">Getting started</a>&nbsp; | &nbsp;
     <a href="#configuration">Configuration</a>&nbsp; | &nbsp;
-    <a href="#used-technologies">Technologies</a>&nbsp; | &nbsp; 
+    <a href="#used-technologies-and-tools">Technologies and tools</a>&nbsp; | &nbsp; 
     <a href="#screenshots">Screenshots</a>&nbsp; | &nbsp;
     <a href="#license">License</a>
 </p>
@@ -110,7 +110,7 @@ use(i18nVue, {
 })
 ```
 
-# Used technologies
+# Used technologies and tools
 - HTML5
 - PHP Laravel Framework v9.8.1
 - MariaDB
