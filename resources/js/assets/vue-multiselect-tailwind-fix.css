@@ -1,9 +1,9 @@
 .multiselect__input,
 .multiselect__input:focus {
-    @apply border-0 shadow-none ring-0;
+	@apply border-0 shadow-none ring-0;
 }
 
 .ProseMirror,
 .ProseMirror-focused {
-    @apply border-0 shadow-none outline-none ring-0;
+	@apply border-0 shadow-none outline-none ring-0;
 }

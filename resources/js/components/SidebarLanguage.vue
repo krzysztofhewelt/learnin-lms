@@ -1,16 +1,16 @@
 <template>
-	<div class="cursor-pointer py-3 px-3">
+	<div class="cursor-pointer px-3 py-3">
 		<div
 			@click="dropdownOpen = !dropdownOpen"
 			class="font-bold text-gray-400 transition-all duration-300 hover:text-purple-600"
 		>
-			<img class="inline h-4 w-7" :alt="locale" />
+			<img :src="getCurrentLanguageImage" class="inline h-4 w-7" :alt="locale" />
 			<span class="ml-1.5">{{ $t('languages.' + locale) }}</span>
 		</div>
 
 		<div class="relative" v-if="dropdownOpen">
 			<div
-				class="absolute left-0 bottom-full z-50 mb-7 w-fit min-w-max rounded-md bg-white py-2 px-4 shadow-lg"
+				class="absolute bottom-full left-0 z-50 mb-7 w-fit min-w-max rounded-md bg-white px-4 py-2 shadow-lg"
 			>
 				<button
 					class="block py-2 text-gray-400 transition-all duration-300 hover:text-purple-600"
@@ -45,7 +45,11 @@ export default {
 	},
 
 	computed: {
-		...mapState('locale', ['locale'])
+		...mapState('locale', ['locale']),
+
+		getCurrentLanguageImage() {
+			return new URL(`../assets/${this.locale}.png`, import.meta.url).href;
+		}
 	},
 
 	methods: {

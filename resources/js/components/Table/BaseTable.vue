@@ -13,7 +13,7 @@
 					</BaseRowHeader>
 				</tr>
 			</thead>
-			<tbody class="divide-y divide-gray-200 overflow-y-scroll bg-white bg-transparent">
+			<tbody class="divide-y divide-gray-200 overflow-y-scroll bg-transparent bg-white">
 				<tr v-if="loading" class="text-center">
 					<BaseRow :colspan="columns.length">
 						<Loading class="inline h-4 w-4 animate-spin" />

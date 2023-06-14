@@ -1,9 +1,9 @@
 <template>
-    <img src="../assets/logo.png" alt="logo" />
+	<img src="../assets/logo.png" alt="logo" />
 </template>
 
 <script>
 export default {
-    name: "AppLogo",
+	name: 'AppLogo'
 };
 </script>

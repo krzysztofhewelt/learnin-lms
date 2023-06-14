@@ -1,7 +1,7 @@
 <?php
 
 return [
-    /*
+	/*
     |--------------------------------------------------------------------------
     | Default Mailer
     |--------------------------------------------------------------------------
@@ -12,9 +12,9 @@ return [
     |
     */
 
-    "default" => env("MAIL_MAILER", "smtp"),
+	'default' => env('MAIL_MAILER', 'smtp'),
 
-    /*
+	/*
     |--------------------------------------------------------------------------
     | Mailer Configurations
     |--------------------------------------------------------------------------
@@ -32,50 +32,50 @@ return [
     |
     */
 
-    "mailers" => [
-        "smtp" => [
-            "transport" => "smtp",
-            "host" => env("MAIL_HOST", "smtp.mailgun.org"),
-            "port" => env("MAIL_PORT", 587),
-            "encryption" => env("MAIL_ENCRYPTION", "tls"),
-            "username" => env("MAIL_USERNAME"),
-            "password" => env("MAIL_PASSWORD"),
-            "timeout" => null,
-        ],
+	'mailers' => [
+		'smtp' => [
+			'transport' => 'smtp',
+			'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+			'port' => env('MAIL_PORT', 587),
+			'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+			'username' => env('MAIL_USERNAME'),
+			'password' => env('MAIL_PASSWORD'),
+			'timeout' => null,
+		],
 
-        "ses" => [
-            "transport" => "ses",
-        ],
+		'ses' => [
+			'transport' => 'ses',
+		],
 
-        "mailgun" => [
-            "transport" => "mailgun",
-        ],
+		'mailgun' => [
+			'transport' => 'mailgun',
+		],
 
-        "postmark" => [
-            "transport" => "postmark",
-        ],
+		'postmark' => [
+			'transport' => 'postmark',
+		],
 
-        "sendmail" => [
-            "transport" => "sendmail",
-            "path" => env("MAIL_SENDMAIL_PATH", "/usr/sbin/sendmail -bs -i"),
-        ],
+		'sendmail' => [
+			'transport' => 'sendmail',
+			'path' => env('MAIL_SENDMAIL_PATH', '/usr/sbin/sendmail -bs -i'),
+		],
 
-        "log" => [
-            "transport" => "log",
-            "channel" => env("MAIL_LOG_CHANNEL"),
-        ],
+		'log' => [
+			'transport' => 'log',
+			'channel' => env('MAIL_LOG_CHANNEL'),
+		],
 
-        "array" => [
-            "transport" => "array",
-        ],
+		'array' => [
+			'transport' => 'array',
+		],
 
-        "failover" => [
-            "transport" => "failover",
-            "mailers" => ["smtp", "log"],
-        ],
-    ],
+		'failover' => [
+			'transport' => 'failover',
+			'mailers' => ['smtp', 'log'],
+		],
+	],
 
-    /*
+	/*
     |--------------------------------------------------------------------------
     | Global "From" Address
     |--------------------------------------------------------------------------
@@ -86,12 +86,12 @@ return [
     |
     */
 
-    "from" => [
-        "address" => env("MAIL_FROM_ADDRESS", "hello@example.com"),
-        "name" => env("MAIL_FROM_NAME", "Example"),
-    ],
+	'from' => [
+		'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
+		'name' => env('MAIL_FROM_NAME', 'Example'),
+	],
 
-    /*
+	/*
     |--------------------------------------------------------------------------
     | Markdown Mail Settings
     |--------------------------------------------------------------------------
@@ -102,9 +102,9 @@ return [
     |
     */
 
-    "markdown" => [
-        "theme" => "default",
+	'markdown' => [
+		'theme' => 'default',
 
-        "paths" => [resource_path("views/vendor/mail")],
-    ],
+		'paths' => [resource_path('views/vendor/mail')],
+	],
 ];

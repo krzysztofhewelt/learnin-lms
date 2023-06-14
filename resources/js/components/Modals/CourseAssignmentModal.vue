@@ -18,7 +18,8 @@
 			>{{ $t('select.assignment_select_label') }}:</label
 		>
 		<Multiselect
-			:v-model="participants"
+			:model-value="participants"
+			@update:modelValue="participants = $event"
 			id="participants"
 			label="name"
 			track-by="id"
@@ -40,7 +41,7 @@
 		>
 			<template #tag="{ option, remove }">
 				<span
-					class="mx-1 my-1 inline-block rounded-lg py-0.5 px-2"
+					class="mx-1 my-1 inline-block rounded-lg px-2 py-0.5"
 					:class="getTagColorForUser(option.account_role)"
 				>
 					<span>{{ option.surname }} {{ option.name }}</span>

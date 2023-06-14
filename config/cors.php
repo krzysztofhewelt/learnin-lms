@@ -18,11 +18,11 @@ return [
 
 	'allowed_methods' => ['GET', 'POST', 'PATCH', 'DELETE'],
 
-	'allowed_origins' => ['*'],
+	'allowed_origins' => ['http://127.0.0.1:8000'],
 
 	'allowed_origins_patterns' => [],
 
-	'allowed_headers' => ['Content-Type'],
+	'allowed_headers' => ['Content-Type', 'Authorization', 'X-Requested-With'],
 
 	'exposed_headers' => ['Authorization', 'Content-Disposition'],
 

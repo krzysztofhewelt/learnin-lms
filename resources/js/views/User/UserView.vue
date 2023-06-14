@@ -12,7 +12,7 @@
 		<div class="px-6">
 			<div class="w-full md:px-4">
 				<div
-					class="mt-32 flex flex-col justify-end gap-3 py-6 px-3 text-center sm:mt-0 md:flex-row"
+					class="mt-32 flex flex-col justify-end gap-3 px-3 py-6 text-center sm:mt-0 md:flex-row"
 				>
 					<button
 						class="rounded bg-pink-500 px-4 py-2 text-xs font-bold uppercase text-white no-underline shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-pink-600"
@@ -55,12 +55,12 @@
 				</h3>
 				<div
 					v-if="isUserStudent"
-					class="mt-0 mb-2 text-sm font-bold leading-normal text-slate-400"
+					class="mb-2 mt-0 text-sm font-bold leading-normal text-slate-400"
 				>
 					<i class="fas fa-map-marker-alt mr-2 text-lg text-slate-400"></i>
 					{{ user.identification_number }}
 				</div>
-				<div class="mt-10 mb-2 text-sm font-bold uppercase leading-normal text-slate-400">
+				<div class="mb-2 mt-10 text-sm font-bold uppercase leading-normal text-slate-400">
 					<i class="mr-2 text-lg text-slate-400">
 						<University class="inline h-5 w-5" />
 					</i>

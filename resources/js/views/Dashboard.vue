@@ -138,7 +138,7 @@
 				<User class="mx-auto h-40 w-40" />
 
 				<div class="py-4">
-					<h1 class="mt-3 mb-0 text-xl font-bold">
+					<h1 class="mb-0 mt-3 text-xl font-bold">
 						<template v-if="isTeacher && user.teacher">
 							{{ user.teacher.scien_degree }}
 						</template>

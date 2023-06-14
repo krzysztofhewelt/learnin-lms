@@ -3,21 +3,21 @@
 @tailwind utilities;
 
 .manage_btn {
-    @apply inline-flex cursor-pointer items-center rounded-md border border-gray-200 bg-white px-4 py-2 text-center text-sm font-bold text-slate-400 no-underline drop-shadow-sm transition ease-in-out hover:bg-gray-100 hover:text-indigo-500 focus:outline-none focus:ring-4 focus:ring-gray-100;
+	@apply inline-flex cursor-pointer items-center rounded-md border border-gray-200 bg-white px-4 py-2 text-center text-sm font-bold text-slate-400 no-underline drop-shadow-sm transition ease-in-out hover:bg-gray-100 hover:text-indigo-500 focus:outline-none focus:ring-4 focus:ring-gray-100;
 }
 
 .delete_btn {
-    @apply inline-flex cursor-pointer items-center rounded-md border border-red-200 bg-red-500 px-4 py-2 text-center text-sm font-bold text-white no-underline shadow-md drop-shadow-sm transition ease-in-out hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300;
+	@apply inline-flex cursor-pointer items-center rounded-md border border-red-200 bg-red-500 px-4 py-2 text-center text-sm font-bold text-white no-underline shadow-md drop-shadow-sm transition ease-in-out hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300;
 }
 
 .submit_btn {
-    @apply inline-flex cursor-pointer items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-center text-sm font-bold text-white no-underline shadow-sm transition ease-in-out hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300;
+	@apply inline-flex cursor-pointer items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-center text-sm font-bold text-white no-underline shadow-sm transition ease-in-out hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300;
 }
 
 .submit_btn_disabled {
-    @apply inline-flex cursor-not-allowed items-center rounded-md border border-transparent bg-gray-400 px-4 py-2 text-center text-sm font-bold text-white no-underline shadow-sm transition ease-in-out hover:bg-gray-500 focus:outline-none focus:ring-4 focus:ring-indigo-300;
+	@apply inline-flex cursor-not-allowed items-center rounded-md border border-transparent bg-gray-400 px-4 py-2 text-center text-sm font-bold text-white no-underline shadow-sm transition ease-in-out hover:bg-gray-500 focus:outline-none focus:ring-4 focus:ring-indigo-300;
 }
 
 .normal_btn {
-    @apply inline-flex cursor-pointer items-center rounded-md border border-transparent bg-blue-500 px-4 py-2 text-center text-sm font-bold text-white no-underline shadow-md shadow-sm transition ease-in-out hover:bg-blue-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300;
+	@apply inline-flex cursor-pointer items-center rounded-md border border-transparent bg-blue-500 px-4 py-2 text-center text-sm font-bold text-white no-underline shadow-md shadow-sm transition ease-in-out hover:bg-blue-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300;
 }

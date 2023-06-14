@@ -136,8 +136,8 @@ and change it also /resources/js/main.js file
 
 ```javascript
 use(i18nVue, {
-    lang: "en",
-    resolve: (lang) => require(`../../lang/${lang}.json`),
+	lang: 'en',
+	resolve: (lang) => require(`../../lang/${lang}.json`)
 });
 ```
 
