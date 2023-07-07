@@ -7,10 +7,10 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 
 class AdminPolicy
 {
-    use HandlesAuthorization;
+	use HandlesAuthorization;
 
-    public function viewAny(User $user): bool
-    {
-        return $user->isAdmin();
-    }
+	public function viewAny(User $user): bool
+	{
+		return $user->isAdmin();
+	}
 }

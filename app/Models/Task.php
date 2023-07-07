@@ -19,117 +19,126 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Task extends Model
 {
-    use HasFactory;
+	use HasFactory;
 
-    public $timestamps = false;
-    protected $guarded = [];
-    protected $hidden = ['pivot'];
+	public $timestamps = false;
+	protected $guarded = [];
+	protected $hidden = ['pivot'];
 
-    public function course(): BelongsTo
-    {
-        return $this->belongsTo(Course::class, 'course_ID', 'id');
-    }
+	public function course(): BelongsTo
+	{
+		return $this->belongsTo(Course::class, 'course_ID', 'id');
+	}
 
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(CourseCategory::class, 'course_category', 'id');
-    }
+	public function category(): BelongsTo
+	{
+		return $this->belongsTo(CourseCategory::class, 'course_category', 'id');
+	}
 
-    public function taskFiles(): HasMany
-    {
-        return $this->hasMany(TaskFile::class, 'task_ID', 'id')->orderByDesc('updated_at');
-    }
+	public function taskFiles(): HasMany
+	{
+		return $this->hasMany(TaskFile::class, 'task_ID', 'id')->orderByDesc('updated_at');
+	}
 
-    public function studentFiles(): HasMany
-    {
-        return $this->hasMany(StudentFile::class, 'task_ID', 'id')->orderByDesc('updated_at');
-    }
+	public function studentFiles(): HasMany
+	{
+		return $this->hasMany(StudentFile::class, 'task_ID', 'id')->orderByDesc('updated_at');
+	}
 
-    public function userMarks(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'tasks_marks', 'task_ID', 'user_ID')
-            ->withPivot('points', 'mark', 'description');
-    }
+	public function userMarks(): BelongsToMany
+	{
+		return $this->belongsToMany(User::class, 'tasks_marks', 'task_ID', 'user_ID')->withPivot(
+			'points',
+			'mark',
+			'description',
+		);
+	}
 
-    /*
-     * Business logic
-     */
-    public function getEndingSoonTasks() : ?Collection
-    {
-        $coursesIds = (new Course)->getUserCoursesId(Auth::id());
+	/*
+	 * Business logic
+	 */
+	public function getEndingSoonTasks(): ?Collection
+	{
+		$coursesIds = (new Course())->getUserCoursesId(Auth::id());
 
-        return $this->whereIn('course_ID', $coursesIds)
-            ->with('course', 'category')
-            ->orderBy('available_to', 'desc')
-            ->limit(6)
-            ->get();
-    }
+		return $this->whereIn('course_ID', $coursesIds)
+			->with('course', 'category')
+			->where('available_to', '>=', now())
+			->orderBy('available_to', 'asc')
+			->limit(6)
+			->get();
+	}
 
-    public function getAllTasksWithCourseAndCategory(): LengthAwarePaginator
-    {
-        return $this->with('course', 'category')
-            ->paginate(15);
-    }
+	public function getAllTasksWithCourseAndCategory(): LengthAwarePaginator
+	{
+		return $this->with('course', 'category')->paginate(15);
+	}
 
-    public function getTask(int $taskId) : ?Task
-    {
-        return $this->find($taskId);
-    }
+	public function getTask(int $taskId): ?Task
+	{
+		return $this->find($taskId);
+	}
 
-    public function getTaskCourseId(int $taskId) : int
-    {
-        return $this->where('id', $taskId)->pluck('course_ID')[0];
-    }
+	public function getTaskCourseId(int $taskId): int
+	{
+		return $this->where('id', $taskId)->pluck('course_ID')[0];
+	}
 
-    public function getTaskWithCategoryAndFiles(int $taskId): ?Task
-    {
-        return $this->with('course:id,name', 'category:id,name', 'taskFiles')
-            ->find($taskId);
-    }
+	public function getTaskWithCategoryAndFiles(int $taskId): ?Task
+	{
+		return $this->with('course:id,name', 'category:id,name', 'taskFiles')->find($taskId);
+	}
 
-    public function getTasksAllForUser(int $userId) : ?Collection
-    {
-        $coursesIds = (new Course)->getUserCoursesId($userId);
+	public function getTasksAllForUser(int $userId): ?Collection
+	{
+		$coursesIds = (new Course())->getUserCoursesId($userId);
 
-        return $this->whereIn('course_ID', $coursesIds)
-            ->with(['course:id,name', 'category', 'userMarks' => function($q) use($userId) {
-                $q->where('users.id', '=', $userId)->select('mark', 'points');
-            }])
-            ->get();
-    }
+		return $this->whereIn('course_ID', $coursesIds)
+			->with([
+				'course:id,name',
+				'category',
+				'userMarks' => function ($q) use ($userId) {
+					$q->where('users.id', '=', $userId)->select('mark', 'points');
+				},
+			])
+			->get();
+	}
 
-    public function getTasksForCategory(int $categoryId) : ?Collection
-    {
-        return $this->where('course_category', $categoryId)
-                    ->with(['course:id,name', 'category', 'userMarks' => function($q) {
-                        $q->where('users.id', '=', Auth::id())->select('mark', 'points');
-                    }])
-                    ->get();
-    }
+	public function getTasksForCategory(int $categoryId): ?Collection
+	{
+		return $this->where('course_category', $categoryId)
+			->with([
+				'course:id,name',
+				'category',
+				'userMarks' => function ($q) {
+					$q->where('users.id', '=', Auth::id())->select('mark', 'points');
+				},
+			])
+			->get();
+	}
 
-    public function getTasksIdsForCategory(int $categoryId): ?Collection
-    {
-        return $this->where('course_category', $categoryId)
-                    ->get()
-                    ->pluck('id');
-    }
+	public function getTasksIdsForCategory(int $categoryId): ?Collection
+	{
+		return $this->where('course_category', $categoryId)
+			->get()
+			->pluck('id');
+	}
 
-    public function searchTask(string $searchString) : LengthAwarePaginator
-    {
-        return $this
-            ->where(function($q) use ($searchString) {
-                $q->orWhere('name', 'like', '%' . $searchString . '%')
-                    ->orWhere('max_points', 'like', '%' . $searchString . '%')
-                    ->orWhere('available_from', 'like', '%' . $searchString . '%')
-                    ->orWhere('available_to', 'like', '%' . $searchString . '%')
-                    ->orWhereHas('course', function ($query) use ($searchString) {
-                        $query->where('name', '=', $searchString);
-                    })
-                    ->orWhereHas('category', function ($query) use ($searchString) {
-                        $query->where('name', '=', $searchString);
-                    });
-            })
-            ->with('course', 'category')
-            ->paginate(15);
-    }
+	public function searchTask(string $searchString): LengthAwarePaginator
+	{
+		return $this->where(function ($q) use ($searchString) {
+			$q->orWhere('name', 'like', '%' . $searchString . '%')
+				->orWhere('max_points', 'like', '%' . $searchString . '%')
+				->orWhere('available_from', 'like', '%' . $searchString . '%')
+				->orWhere('available_to', 'like', '%' . $searchString . '%')
+				->orWhereHas('course', function ($query) use ($searchString) {
+					$query->where('name', 'like', '%' . $searchString . '%');
+				})
+				->orWhereHas('category', function ($query) use ($searchString) {
+					$query->where('name', 'like', '%' . $searchString . '%');
+				});
+		})
+			->with('course', 'category')
+			->paginate(15);
+	}
 }

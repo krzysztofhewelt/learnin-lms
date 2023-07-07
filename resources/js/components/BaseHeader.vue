@@ -1,17 +1,16 @@
 <template>
-    <header class="text-right font-bold text-2xl mb-8">
-    </header>
+	<header class="mb-8 text-right text-2xl font-bold"></header>
 </template>
 
 <script>
-import {mapState} from "vuex"
-import dayjs from "dayjs"
+import { mapState } from 'vuex';
+import dayjs from 'dayjs';
 
 export default {
-    name: "BaseHeader",
+	name: 'BaseHeader',
 
-    computed: {
-        ...mapState('login', ['user'])
-    }
-}
+	computed: {
+		...mapState('login', ['user'])
+	}
+};
 </script>

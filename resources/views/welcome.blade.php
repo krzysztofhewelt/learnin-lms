@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#4f46e5">
 
         <title>Learnin</title>
 
@@ -15,15 +16,16 @@
             }
         </style>
 
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <!--<link rel="stylesheet" href="{{ asset('css/app.css') }}">-->
+        @vite('resources/css/app.css')
 
         <link rel="icon" href="favicon.ico">
 
     </head>
     <body class="antialiased font-sans">
-
         <div id="app"></div>
-        <script src="{{ asset('/js/main.js') }}"></script>
+
+        @vite('resources/js/main.js')
         <noscript>Your browser does not support JavaScript!</noscript>
     </body>
 </html>

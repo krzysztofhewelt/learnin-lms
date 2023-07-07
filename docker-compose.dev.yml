@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3.8'
 services:
   app:
     build:
@@ -33,6 +33,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     networks:
       - learnin_network
+
   client:
     build:
       context: .

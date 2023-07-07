@@ -14,33 +14,35 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class TaskFile extends Model
 {
-    use HasFactory;
+	use HasFactory;
 
-    protected $table = 'task_referential_files';
-    protected $guarded = [];
-    protected $hidden = ['pivot', 'filename'];
+	protected $table = 'task_referential_files';
+	protected $guarded = [];
+	protected $hidden = ['pivot', 'filename'];
 
-    public function task(): BelongsTo
-    {
-        return $this->belongsTo(Task::class, 'task_ID', 'id');
-    }
+	public function task(): BelongsTo
+	{
+		return $this->belongsTo(Task::class, 'task_ID', 'id');
+	}
 
-    /*
-     * Business logic
-     */
-    public function getFile(int $fileId) : ?TaskFile
-    {
-        return $this->find($fileId);
-    }
+	/*
+	 * Business logic
+	 */
+	public function getFile(int $fileId): ?TaskFile
+	{
+		return $this->find($fileId);
+	}
 
-    public function getCourse(int $fileId) : Course
-    {
-        return $this->getFile($fileId)->task->course;
-    }
+	public function getCourse(int $fileId): Course
+	{
+		return $this->getFile($fileId)->task->course;
+	}
 
-    public function getFileForTask(int $taskId, string $filenameOriginal) : ?TaskFile
-    {
-        return $this->where(['task_ID' => $taskId, 'filename_original' => $filenameOriginal])
-                    ->first();
-    }
+	public function getFileForTask(int $taskId, string $filenameOriginal): ?TaskFile
+	{
+		return $this->where([
+			'task_ID' => $taskId,
+			'filename_original' => $filenameOriginal,
+		])->first();
+	}
 }

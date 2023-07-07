@@ -2,7 +2,7 @@ FROM node:18.8.0-alpine3.16 as npm
 CMD ["npm", "start"]
 
 RUN mkdir -p /app
-COPY package.json webpack.mix.js package-lock.json tailwind.config.js postcss.config.js /app/
+COPY package.json webpack.mix.js.back package-lock.json tailwind.config.js postcss.config.js /app/
 COPY resources/ /app/resources/
 COPY lang/ app/lang/
 WORKDIR /app

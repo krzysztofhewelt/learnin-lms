@@ -1,119 +1,105 @@
 const admin = {
-    namespaced: true,
+	namespaced: true,
 
-    // all arrays have pagination
-    state: {
-        loading: false,
-        users: [],
-        courses: [],
-        tasks: [],
-    },
+	// all arrays have pagination
+	state: {
+		loading: false,
+		users: [],
+		courses: [],
+		tasks: []
+	},
 
-    actions: {
-        async getAllUsers({ commit }, page = 1) {
-            commit('loading', true)
+	actions: {
+		async getAllUsers({ commit }, page = 1) {
+			commit('loading', true);
 
-            await axios.get('/admin/users?page=' + page)
-                .then(
-                    response => {
-                        commit('setUsers', response.data)
-                    }
-                )
+			await axios.get('/admin/users?page=' + page).then((response) => {
+				commit('setUsers', response.data);
+			});
 
-            commit('loading', false)
-        },
+			commit('loading', false);
+		},
 
-        async getUser({ commit }, { search: searchString, page = 1}) {
-            commit('loading', true)
+		async getUser({ commit }, { search: searchString, page = 1 }) {
+			commit('loading', true);
 
-            await axios.post('/users/search?page=' + page, {
-                searchString: searchString
-            })
-                .then(
-                    response => {
-                        commit('setUsers', response.data)
-                    }
-                )
+			await axios
+				.post('/users/search?page=' + page, {
+					searchString: searchString
+				})
+				.then((response) => {
+					commit('setUsers', response.data);
+				});
 
-            commit('loading', false)
-        },
+			commit('loading', false);
+		},
 
+		async getAllCourses({ commit }, page = 1) {
+			commit('loading', true);
 
-        async getAllCourses({ commit }, page = 1) {
-            commit('loading', true)
+			await axios.get('/admin/courses?page=' + page).then((response) => {
+				commit('setCourses', response.data);
+			});
 
-            await axios.get('/admin/courses?page=' + page)
-                .then(
-                    response => {
-                        commit('setCourses', response.data)
-                    }
-                )
+			commit('loading', false);
+		},
 
-            commit('loading', false)
-        },
+		async getCourse({ commit }, { search: searchString, page = 1 }) {
+			commit('loading', true);
 
-        async getCourse({ commit }, {search: searchString, page = 1}) {
-            commit('loading', true)
+			await axios
+				.post('/courses/search?page=' + page, {
+					searchString: searchString
+				})
+				.then((response) => {
+					commit('setCourses', response.data);
+				});
 
-            await axios.post('/courses/search?page=' + page, {
-                searchString: searchString
-            })
-                .then(
-                    response => {
-                        commit('setCourses', response.data)
-                    }
-                )
+			commit('loading', false);
+		},
 
-            commit('loading', false)
-        },
+		async getAllTasks({ commit }, page = 1) {
+			commit('loading', true);
 
+			await axios.get('/admin/tasks?page=' + page).then((response) => {
+				commit('setTasks', response.data);
+			});
 
-        async getAllTasks({ commit }, page = 1) {
-            commit('loading', true)
+			commit('loading', false);
+		},
 
-            await axios.get('/admin/tasks?page=' + page)
-                .then(
-                    response => {
-                        commit('setTasks', response.data)
-                    }
-                )
+		async getTask({ commit }, { search: searchString, page = 1 }) {
+			commit('loading', true);
 
-            commit('loading', false)
-        },
+			await axios
+				.post('/tasks/search?page=' + page, {
+					searchString: searchString
+				})
+				.then((response) => {
+					commit('setTasks', response.data);
+				});
 
-        async getTask({ commit }, {search: searchString, page = 1}) {
-            commit('loading', true)
+			commit('loading', false);
+		}
+	},
 
-            await axios.post('/tasks/search?page=' + page, {
-                searchString: searchString
-            })
-                .then(
-                    response => {
-                        commit('setTasks', response.data)
-                    }
-                )
+	mutations: {
+		loading(state, newLoadingStatus) {
+			state.loading = newLoadingStatus;
+		},
 
-            commit('loading', false)
-        },
-    },
+		setUsers(state, users) {
+			state.users = users;
+		},
 
-    mutations: {
-        loading(state, newLoadingStatus) {
-            state.loading = newLoadingStatus
-        },
+		setCourses(state, courses) {
+			state.courses = courses;
+		},
 
-        setUsers(state, users) {
-            state.users = users
-        },
+		setTasks(state, tasks) {
+			state.tasks = tasks;
+		}
+	}
+};
 
-        setCourses(state, courses) {
-            state.courses = courses
-        },
-
-        setTasks(state, tasks) {
-            state.tasks = tasks
-        }
-    }
-}
-
-export default admin
+export default admin;

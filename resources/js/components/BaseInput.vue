@@ -1,36 +1,38 @@
 <template>
-    <input class="transition ease-in-out focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-           :type="type"
-           :placeholder="placeholder"
-           :value="modelValue"
-           :required="required"
-           @input="$emit('update:modelValue', $event.target.value)">
+	<input
+		class="w-full rounded-md border-gray-300 transition ease-in-out focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+		:type="type"
+		:placeholder="placeholder"
+		:value="modelValue"
+		:required="required"
+		@input="$emit('update:modelValue', $event.target.value)"
+	/>
 </template>
 
 <script>
 export default {
-    name: "BaseInput",
+	name: 'BaseInput',
 
     props: {
-        type: {
-            type: String,
-            default: "text"
-        },
+		type: {
+			type: String,
+			default: 'text'
+		},
 
-        placeholder: {
-            type: String,
-            default: ""
-        },
+		placeholder: {
+			type: String,
+			default: ''
+		},
 
-        required: {
-            type: Boolean,
-            default: false
-        },
+		required: {
+			type: Boolean,
+			default: false
+		},
 
-        modelValue: {
-            type: [String, Number],
-            default: "",
-        },
-    }
-}
+		modelValue: {
+			type: [String, Number],
+			default: ''
+		}
+	}
+};
 </script>

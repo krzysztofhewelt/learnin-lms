@@ -14,25 +14,25 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Teacher extends Model
 {
-    use HasFactory;
+	use HasFactory;
 
-    protected $table = 'teacher_info';
-    protected $primaryKey = 'user_ID';
-    public $timestamps = false;
-    protected $hidden = ['pivot'];
+	protected $table = 'teacher_info';
+	protected $primaryKey = 'user_ID';
+	public $timestamps = false;
+	protected $hidden = ['pivot'];
 
-    protected $guarded = [];
+	protected $guarded = [];
 
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'user_ID', 'id');
-    }
+	public function user(): BelongsTo
+	{
+		return $this->belongsTo(User::class, 'user_ID', 'id');
+	}
 
-    /*
-     * Business logic
-     */
-    public function getTeacherByUserId(int $userId): ?Teacher
-    {
-        return $this->where('user_ID', $userId)->first();
-    }
+	/*
+	 * Business logic
+	 */
+	public function getTeacherByUserId(int $userId): ?Teacher
+	{
+		return $this->where('user_ID', $userId)->first();
+	}
 }

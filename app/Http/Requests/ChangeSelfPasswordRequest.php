@@ -13,46 +13,52 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ChangeSelfPasswordRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize() : bool
-    {
-        return true;
-    }
+	/**
+	 * Determine if the user is authorized to make this request.
+	 *
+	 * @return bool
+	 */
+	public function authorize(): bool
+	{
+		return true;
+	}
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules() : array
-    {
-        return [
-            'current_password' => [
-                'required', function ($attribute, $value, $fail) {
-                    if (!Hash::check($value, User::find(Auth::id())->password)) {
-                        $fail(trans('auth.incorrect_password'));
-                    }
-                },
-            ],
-            'new_password' => [
-                'required',
-                'min:8',
-                'regex:/^.*(?=.{1,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
-                'different:current_password'
-            ]
-        ];
-    }
+	/**
+	 * Get the validation rules that apply to the request.
+	 *
+	 * @return array
+	 */
+	public function rules(): array
+	{
+		return [
+			'current_password' => [
+				'required',
+				function ($attribute, $value, $fail) {
+					if (!Hash::check($value, User::find(Auth::id())->password)) {
+						$fail(trans('auth.incorrect_password'));
+					}
+				},
+			],
+			'new_password' => [
+				'required',
+				'min:8',
+				'regex:/^.*(?=.{1,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
+				'different:current_password',
+			],
+		];
+	}
 
-    protected function failedValidation(Validator $validator): void
-    {
-        $errors = $validator->errors();
+	protected function failedValidation(Validator $validator): void
+	{
+		$errors = $validator->errors();
 
-        throw new HttpResponseException(response()->json([
-            'errors' => $errors
-        ], Response::HTTP_UNPROCESSABLE_ENTITY));
-    }
+		throw new HttpResponseException(
+			response()->json(
+				[
+					'errors' => $errors,
+				],
+				Response::HTTP_UNPROCESSABLE_ENTITY,
+			),
+		);
+	}
 }

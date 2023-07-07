@@ -10,37 +10,39 @@ use Symfony\Component\HttpFoundation\Response;
 
 class FileDownloadRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize() : bool
-    {
-        return true;
-    }
+	/**
+	 * Determine if the user is authorized to make this request.
+	 *
+	 * @return bool
+	 */
+	public function authorize(): bool
+	{
+		return true;
+	}
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules() : array
-    {
-        return [
-            'file_type' => [
-                'required',
-                Rule::in(['student_upload', 'task_ref', 'course_file'])
-            ]
-        ];
-    }
+	/**
+	 * Get the validation rules that apply to the request.
+	 *
+	 * @return array
+	 */
+	public function rules(): array
+	{
+		return [
+			'file_type' => ['required', Rule::in(['student_upload', 'task_ref', 'course_file'])],
+		];
+	}
 
-    protected function failedValidation(Validator $validator): void
-    {
-        $errors = $validator->errors();
+	protected function failedValidation(Validator $validator): void
+	{
+		$errors = $validator->errors();
 
-        throw new HttpResponseException(response()->json([
-            'errors' => $errors
-        ], Response::HTTP_UNPROCESSABLE_ENTITY));
-    }
+		throw new HttpResponseException(
+			response()->json(
+				[
+					'errors' => $errors,
+				],
+				Response::HTTP_UNPROCESSABLE_ENTITY,
+			),
+		);
+	}
 }

@@ -1,37 +1,37 @@
-version: "3.8"
+version: '3.8'
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: app
-    restart: always
-    depends_on:
-      - mariadb
-    ports:
-      - 80:80
-    networks:
-       - learnin_network
-    entrypoint: sh -c "sleep 3 && php /var/www/html/artisan migrate && apache2-foreground"
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: app
+        restart: always
+        depends_on:
+            - mariadb
+        ports:
+            - 80:80
+        networks:
+            - learnin_network
+        entrypoint: sh -c "sleep 3 && php /var/www/html/artisan migrate && apache2-foreground"
 
-  mariadb:
-    image: mariadb
-    container_name: mariadb
-    restart: always
-    ports:
-      - ${DB_PORT}:3306
-    env_file:
-      - ./.env
-    volumes:
-      - db_data:/var/lib/mysql
-    environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-    networks:
-      - learnin_network
+    mariadb:
+        image: mariadb
+        container_name: mariadb
+        restart: always
+        ports:
+            - ${DB_PORT}:3306
+        env_file:
+            - ./.env
+        volumes:
+            - db_data:/var/lib/mysql
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+        networks:
+            - learnin_network
 
 volumes:
-  db_data:
+    db_data:
 networks:
-  learnin_network:
+    learnin_network:
