@@ -13,7 +13,7 @@
 export default {
 	name: 'BaseInput',
 
-	props: {
+    props: {
 		type: {
 			type: String,
 			default: 'text'

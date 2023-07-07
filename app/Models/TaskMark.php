@@ -122,8 +122,6 @@ class TaskMark extends Model
 
 	public function getMarksForTaskAvg(int $taskId): array
 	{
-		DB::enableQueryLog();
-
 		$task = new Task();
 		$taskCourseId = $task->getTaskCourseId($taskId);
 
@@ -152,8 +150,7 @@ class TaskMark extends Model
 		return [
 			[
 				'taskAvg' => $taskAvg,
-				'studentMarks' => $studentsMarks,
-				DB::getQueryLog(),
+				'studentMarks' => $studentsMarks
 			],
 		];
 	}

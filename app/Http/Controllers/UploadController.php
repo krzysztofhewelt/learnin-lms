@@ -2,18 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\FileUploadRequest;
 use App\Models\Course;
 use App\Models\CourseFile;
 use App\Models\StudentFile;
 use App\Models\Task;
 use App\Models\TaskFile;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use function MongoDB\BSON\toJSON;
 
 class UploadController extends Controller
 {
