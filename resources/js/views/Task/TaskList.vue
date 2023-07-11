@@ -79,12 +79,12 @@
 				<div class="block text-xl font-bold">
 					{{ $t('mark.task_marked_label') }}
 				</div>
-				<div class="block text-zinc-400">
+				<div class="block">
 					<b>{{ $t('mark.mark') }}:</b> {{ task.user_marks[0].mark }}
 				</div>
-				<div class="block text-zinc-400">
+				<div class="block">
 					<b>{{ $t('mark.points') }}:</b>
-					{{ task.user_marks[0].points }} / {{ task.max_points }}
+                    {{ task.user_marks[0].points }}<span class="text-zinc-500"> / {{ task.max_points }}</span>
 				</div>
 			</div>
 		</div>

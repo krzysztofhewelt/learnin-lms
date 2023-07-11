@@ -22,7 +22,7 @@ return [
 	'accepted' => ':attribute musi być zaakceptowany.',
 	'accepted_if' => ':attribute musi być zaakceptowany kiedy :other jest równy :value.',
 	'active_url' => ':attribute nie jest prawidłowym adresem URL.',
-	'after' => 'Data musi być później niż data rozpoczęcia.',
+	'after' => 'Data musi być późniejsza niż data rozpoczęcia.',
 	'after_or_equal' => ':attribute musi być później lub równy :date.',
 	'alpha' => ':attribute może zawierać wyłącznie litery.',
 	'alpha_dash' => 'Pole może zawierać wyłącznie litery, cyfry, myślniki oraz znaki podkreślenia',
@@ -50,7 +50,7 @@ return [
 	'digits_between' => 'The :attribute must be between :min and :max digits.',
 	'dimensions' => 'The :attribute has invalid image dimensions.',
 	'distinct' => 'The :attribute field has a duplicate value.',
-	'email' => 'Pole nie jest prawidłowym adresem email.',
+	'email' => 'Podano nieprawidłowy adres email.',
 	'ends_with' => 'The :attribute must end with one of the following: :values.',
 	'enum' => 'The selected :attribute is invalid.',
 	'exists' => 'Zaznaczona wartość nie istnieje.',
@@ -93,7 +93,7 @@ return [
 		'array' => 'The :attribute must not have more than :max items.',
 		'file' => 'Rozmiar pliku :attribute nie może być wiekszy niż :max kilobajtów.',
 		'numeric' => 'The :attribute must not be greater than :max.',
-		'string' => 'This field must not be greater than :max characters.',
+		'string' => 'Pole nie może zawierać więcej niż :max znaków.',
 	],
 	'mimes' => 'The :attribute must be a file of type: :values.',
 	'mimetypes' => 'The :attribute must be a file of type: :values.',
@@ -151,6 +151,17 @@ return [
 		'password' => [
 			'regex' =>
 				'Hasło musi zawierać co najmniej jedną wielką i małą literę oraz znak specjalny oraz musi mieć co najmniej 8 znaków.',
+		],
+
+		'current_password' => [
+			'regex' =>
+				'Hasło musi zawierać co najmniej jedną wielką i małą literę oraz znak specjalny oraz musi mieć co najmniej 8 znaków.',
+		],
+
+		'new_password' => [
+			'regex' =>
+				'Hasło musi zawierać co najmniej jedną wielką i małą literę oraz znak specjalny oraz musi mieć co najmniej 8 znaków.',
+			'different' => 'Hasło musi różnić się od obecnego hasła.',
 		],
 
 		'email' => [

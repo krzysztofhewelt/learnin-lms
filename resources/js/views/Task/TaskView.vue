@@ -25,7 +25,7 @@
 								name: 'MarksTask',
 								params: { id: $route.params.id }
 							}"
-							class="manage_btn justify-center"
+							class="normal_btn justify-center"
 						>
 							<Edit class="mr-1 h-4 w-4" />
 							{{ $t('task.issue_grades') }}
@@ -36,18 +36,18 @@
 								name: 'TaskStudentUploads',
 								params: { id: $route.params.id }
 							}"
-							class="manage_btn justify-center"
+							class="normal_btn justify-center"
 						>
 							<Edit class="mr-1 h-4 w-4" />
 							{{ $t('task.student_files') }}
 						</router-link>
 
 						<div class="justify-center">
-							<button class="manage_btn w-full" @click="moreDropdown = !moreDropdown">
+							<button class="normal_btn w-full" @click.stop="moreDropdown = !moreDropdown">
 								<More class="mx-auto h-5 w-5" />
 							</button>
 
-							<Dropdown v-if="moreDropdown">
+							<Dropdown v-if="moreDropdown" v-click-outside="closeDropdown">
 								<router-link
 									:to="{
 										name: 'TasksEdit',
@@ -67,7 +67,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="border-b-[1px] pb-6">
+				<div class="pb-6">
 					<h1 class="my-5 inline text-3xl font-bold">
 						{{ task.name }}
 					</h1>
@@ -164,7 +164,7 @@
 								}}
 							</Popper>
 							<Popper v-else :content="getFormattedDate(task.available_to)" hover>
-								<div class="font-bold text-red-500">
+								<div class="font-bold text-green-600">
 									{{ $t('course.ended_course') }}
 								</div>
 							</Popper>
@@ -182,7 +182,7 @@
 						{{ $t('task.your_files') }}
 					</h1>
 					<button
-						class="manage_btn mb-2"
+						class="normal_btn mb-2"
 						v-if="studentCanUploadFiles"
 						@click="showUploadsModal('student_upload')"
 					>
@@ -224,7 +224,7 @@
 							<button
 								v-if="studentCanUploadFiles"
 								class="font-semibold text-red-400 hover:text-red-600"
-								@click="showDeleteResourceModal('studentFile', $route.params.id)"
+								@click="showDeleteResourceModal('studentFile', studentFile.id)"
 							>
 								{{ $t('general.delete') }}
 							</button>
@@ -242,7 +242,7 @@
 							{{ $t('files.files_to_download') }}
 						</h1>
 						<button
-							class="manage_btn"
+							class="normal_btn"
 							v-if="isTeacher"
 							@click="showUploadsModal('task_ref')"
 						>
@@ -300,6 +300,7 @@ import { mapActions, mapGetters, mapState } from 'vuex';
 import DeleteModal from '@/components/Modals/DeleteModal.vue';
 import LoadingScreen from '@/components/LoadingScreen.vue';
 import UploadModal from '@/components/Modals/UploadModal.vue';
+import download from '@/utils/download';
 
 export default {
 	name: 'TaskView',
@@ -368,36 +369,8 @@ export default {
 	},
 
 	methods: {
+        download,
 		...mapActions('task', ['showTask']),
-
-		download(fileId, fileType) {
-			axios
-				.post(
-					'/download/' + fileId,
-					{
-						file_type: fileType
-					},
-					{
-						responseType: 'blob'
-					}
-				)
-				.then((res) => {
-					let filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-					let matches = filenameRegex.exec(res.headers['content-disposition']);
-					let filename;
-
-					if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
-
-					let fileURL = window.URL.createObjectURL(new Blob([res.data]));
-					let fileLink = document.createElement('a');
-
-					fileLink.href = fileURL;
-					fileLink.setAttribute('download', filename);
-					document.body.appendChild(fileLink);
-
-					fileLink.click();
-				});
-		},
 
 		showDeleteResourceModal(resourceType, resourceId) {
 			this.showDeleteModal = true;
@@ -408,7 +381,11 @@ export default {
 		showUploadsModal(type) {
 			this.showUploadModal = true;
 			this.uploadResource.type = type;
-		}
+		},
+
+        closeDropdown() {
+            this.moreDropdown = false;
+        }
 	},
 
 	created() {

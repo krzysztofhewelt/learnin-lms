@@ -1,7 +1,7 @@
 <template>
-	<div class="shadow-xl" v-for="mark in infiniteMarks.data" :key="mark.id">
+	<div v-for="mark in infiniteMarks.data" :key="mark.id" class="mb-6">
 		<div
-			class="relative grid w-full grid-flow-row grid-cols-1 space-y-3 rounded-lg bg-white p-6 text-center lg:grid-cols-5 lg:space-y-0 lg:divide-x"
+			class="relative grid w-full grid-flow-row grid-cols-1 space-y-3 rounded-lg bg-white p-6 text-center shadow-xl lg:grid-cols-5 lg:space-y-0 lg:divide-x"
 		>
 			<div class="break-words px-4">
 				<router-link
@@ -55,28 +55,35 @@
 				</div>
 			</div>
 		</div>
-		<div class="w-full rounded-lg bg-gray-100 p-6 shadow-xl" v-if="mark.showDesc">
-			<h1 class="mb-2 text-xl font-bold">{{ $t('mark.comment') }}</h1>
-			<p class="whitespace-pre-line">
-				{{ mark.description }}
-			</p>
-		</div>
+		<Transition name="slidedown">
+			<div class="sticky w-full rounded-lg bg-gray-100 p-6" v-if="mark.showDesc">
+				<h1 class="mb-2 text-xl font-bold">{{ $t('mark.comment') }}</h1>
+				<p class="whitespace-pre-line">
+					{{ mark.description }}
+				</p>
+			</div>
+		</Transition>
 	</div>
 
 	<div class="text-center">
-		<button class="normal_btn" v-show="page < marks.last_page && !loading" @click="showMore">
-			{{ $t('general.show_more') }}
-		</button>
-
 		<div v-if="loading" class="mt-6 text-2xl">
 			<Loading class="inline h-4 w-4 animate-spin" />
 			{{ $t('general.loading') }}
 		</div>
-		<div v-if="marks.length === 0 && !loading" class="mt-6 text-2xl font-bold">
+
+		<div
+			v-if="marks.data && marks.data.length === 0 && !loading"
+			class="mt-6 text-2xl font-bold"
+		>
 			{{ $t('general.no_data') }}
 		</div>
 
-		<div v-if="page === marks.last_page && !loading" class="mt-6 text-2xl font-bold">
+        <div ref="load_more" v-observe-visibility="{ callback: loadMoreMarks, throttle: 300 }" v-if="!loading && page < marks.last_page"></div>
+
+		<div
+			v-if="page === marks.last_page && marks.data.length > 0 && !loading"
+			class="mt-6 text-2xl font-bold"
+		>
 			{{ $t('mark.all_marks') }}
 		</div>
 	</div>
@@ -108,17 +115,41 @@ export default {
 			if (this.page + 1 <= this.marks.last_page) {
 				this.page++;
 
-				this.getUserMarks({ userId: '', page: this.page }).then(() => {
+				this.getUserMarks({ page: this.page }).then(() => {
 					this.infiniteMarks.data.push(...this.marks.data);
 				});
+			}
+		},
+
+        loadMoreMarks(isVisible) {
+			if (isVisible) {
+                this.showMore()
 			}
 		}
 	},
 
 	created() {
-		this.getUserMarks({ userId: '', page: this.page }).then(() => {
+		this.getUserMarks({ page: this.page }).then(() => {
 			this.infiniteMarks = this.marks;
 		});
 	}
 };
 </script>
+
+<style>
+.slidedown-enter-active,
+.slidedown-leave-active {
+	transform-origin: top;
+	transition: transform 0.3s ease-in-out;
+}
+
+.slidedown-enter-to,
+.slidedown-leave-from {
+	transform: scaleY(1);
+}
+
+.slidedown-enter-from,
+.slidedown-leave-to {
+	transform: scaleY(0);
+}
+</style>

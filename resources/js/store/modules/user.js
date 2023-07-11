@@ -139,12 +139,14 @@ const user = {
 			commit('loading', false);
 		},
 
-		async getUserMarks({ dispatch, commit }, { userId = '', page = 1 }) {
+		async getUserMarks({ commit }, { page = 1 }) {
 			commit('loading', true);
 
-			const marksUrl = userId === '' ? '/marks?page=' + page : '/user/' + userId + '/marks';
-
-			await axios.get(marksUrl).then((response) => {
+			await axios.get('/marks', {
+                params: {
+                    page: page
+                }
+            }).then((response) => {
 				// paginate marks or not
 				commit('setMarks', response.data);
 			});
@@ -152,7 +154,7 @@ const user = {
 			commit('loading', false);
 		},
 
-		async updateTeacherInformations({ commit }, { userId, teacher }) {
+		async updateTeacherInformation({ commit }, { userId, teacher }) {
 			commit('loading', true);
 
 			await axios
@@ -163,6 +165,7 @@ const user = {
 				})
 				.catch((error) => {
 					commit('setValidationErrors', error.response.data.errors);
+					commit('loading', false);
 					throw error;
 				});
 
@@ -238,11 +241,15 @@ const user = {
 			return state.user.account_role && state.user.account_role.name === 'teacher';
 		},
 
-		getFormattedDate: (state) => (date) => {
+		isOwnAccount(state, _, rootState) {
+			return state.user.id === rootState.login.user.id;
+		},
+
+		getFormattedDate: () => (date) => {
 			return date !== null ? dayjs(date).format('L LT') : '';
 		},
 
-		getFormattedMarkDate: (state) => (date) => {
+		getFormattedMarkDate: () => (date) => {
 			return date !== null ? dayjs(date).format('L') : '';
 		},
 
@@ -303,7 +310,7 @@ const user = {
 			);
 		},
 
-		getTeachersInCourse: (state) => (course) => {
+		getTeachersInCourse: () => (course) => {
 			return course.users && course.users.filter((user) => user.account_role === 'teacher');
 		}
 	}

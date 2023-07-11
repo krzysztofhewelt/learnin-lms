@@ -1,5 +1,6 @@
 <template>
 	<div class="relative flex h-fit w-full flex-col break-words rounded-lg bg-white shadow-xl">
+		<LoadingScreen v-if="loading" />
 		<form @submit.prevent="handleSubmit">
 			<div class="p-6">
 				<h1 class="my-auto mb-4 block text-xl font-bold">
@@ -35,10 +36,11 @@ import BasePassword from '@/components/BasePassword.vue';
 import { useToast } from 'vue-toastification';
 import ButtonSubmit from '@/components/ButtonSubmit.vue';
 import router from '@/router';
+import LoadingScreen from '@/components/LoadingScreen.vue';
 
 export default {
 	name: 'ChangePassword',
-	components: { ButtonSubmit, BasePassword, BaseInputGroup },
+	components: { LoadingScreen, ButtonSubmit, BasePassword, BaseInputGroup },
 
 	data() {
 		return {

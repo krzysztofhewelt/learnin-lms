@@ -62,15 +62,16 @@
 					</div>
 
 					<div class="col-span-4 lg:col-span-1 lg:col-start-1">
-						<label for="course" class="text-sm font-medium text-gray-700"
-							>{{ $t('course.course') }}:</label
+						<MultiselectInputGroup
+							:label="$t('course.course')"
+							:required="true"
+							:validation-errors="validationErrors.course_ID"
+                            id="course"
 						>
-						<span class="ml-px font-bold text-red-600">*</span>
-						<div class="shadow-sm">
 							<Multiselect
+                                id="course"
 								v-model="task.course"
 								:options="courses"
-								id="course"
 								:loading="loading"
 								:placeholder="$t('general.select_one')"
 								select-label=""
@@ -89,24 +90,19 @@
 									{{ $t('select.no_options') }}
 								</template>
 							</Multiselect>
-						</div>
-						<span
-							class="mt-1 block font-bold text-red-400"
-							v-for="error in validationErrors.course_ID"
-						>
-							{{ error }}
-						</span>
+						</MultiselectInputGroup>
 					</div>
 					<div class="col-span-4 lg:col-span-1">
-						<label for="category" class="text-sm font-medium text-gray-700"
-							>{{ $t('course.course_category') }}:</label
+						<MultiselectInputGroup
+							:label="$t('course.course_category')"
+							:required="true"
+							:validation-errors="validationErrors.course_category"
+                            id="category"
 						>
-						<span class="ml-px font-bold text-red-600">*</span>
-						<div class="shadow-sm">
 							<Multiselect
+                                id="category"
 								v-model="task.category"
 								:options="courseCategories"
-								id="category"
 								:loading="loading"
 								:placeholder="$t('general.select_one')"
 								select-label=""
@@ -123,13 +119,7 @@
 									{{ $t('select.no_options') }}
 								</template>
 							</Multiselect>
-						</div>
-						<span
-							class="mt-1 block font-bold text-red-400"
-							v-for="error in validationErrors.course_category"
-						>
-							{{ error }}
-						</span>
+						</MultiselectInputGroup>
 					</div>
 				</div>
 			</div>
@@ -149,10 +139,12 @@ import Multiselect from 'vue-multiselect';
 import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
 import router from '@/router';
 import { useToast } from 'vue-toastification';
+import MultiselectInputGroup from '@/components/MultiselectInputGroup.vue';
 
 export default {
 	name: 'TaskForm',
 	components: {
+		MultiselectInputGroup,
 		ButtonSubmit,
 		BaseTextarea,
 		BaseInputGroup,
@@ -201,6 +193,8 @@ export default {
 
 			this.createOrEditTask(this.task)
 				.then((response) => {
+					console.log(response);
+
 					toast.success(this.$t('general.saved_successfully'));
 					router.push({
 						name: 'TasksView',

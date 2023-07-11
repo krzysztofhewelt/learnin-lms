@@ -18,8 +18,8 @@ class CourseFile extends Model
 	use HasFactory;
 
 	protected $table = 'course_files';
-	protected $guarded = [];
-	protected $hidden = ['pivot'];
+	protected $fillable = ['filename_original', 'course_ID'];
+	protected $hidden = ['pivot', 'filename'];
 
 	public function course(): BelongsTo
 	{

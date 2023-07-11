@@ -24,7 +24,7 @@
 				>
 					{{ $t('general.delete') }}
 				</button>
-				<button class="manage_btn" type="button" @click.prevent="showModal = false">
+				<button class="normal_btn" type="button" @click.prevent="showModal = false">
 					{{ $t('general.cancel') }}
 				</button>
 			</div>
@@ -38,6 +38,7 @@ import '@kouts/vue-modal/dist/vue-modal.css';
 import Warning from '@/components/Icons/Warning.vue';
 import { mapActions } from 'vuex';
 import { useToast } from 'vue-toastification';
+import router from '@/router';
 
 export default {
 	name: 'DeleteModal',
@@ -49,6 +50,11 @@ export default {
 
 	props: {
 		showModal: {
+			type: Boolean,
+			default: false
+		},
+
+		adminDelete: {
 			type: Boolean,
 			default: false
 		},
@@ -107,6 +113,9 @@ export default {
 
 			const toast = useToast();
 			toast.success(this.$t('general.removed_successfully'));
+
+			if (this.deletedResource.type === 'course' && !this.adminDelete)
+				router.push({ name: 'CoursesUser' });
 
 			this.$emit('closing');
 		}

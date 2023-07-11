@@ -7,10 +7,11 @@
 			:required="required"
 			:id="id"
 			@input="$emit('update:modelValue', $event.target.value)"
+			:class="{ 'border-red-600': validationErrors }"
 			>{{ modelValue }}</textarea
 		>
 	</div>
-	<span class="mt-1 block font-bold text-red-400" v-for="error in validationErrors">
+	<span class="mt-1 block text-sm font-bold text-red-400" v-for="error in validationErrors">
 		{{ error }}
 	</span>
 </template>

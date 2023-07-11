@@ -1,5 +1,4 @@
 import axios from 'axios';
-import router from '@/router';
 import dayjs from 'dayjs';
 
 const course = {
@@ -18,7 +17,7 @@ const course = {
 	actions: {
 		async getCourseDetails({ commit }, courseId) {
 			commit('loading', true);
-			commit('clearValidationErrors');
+            commit('resetCourse');
 
 			await axios.get('/courses/details/' + courseId).then((response) => {
 				commit('setCourse', {
@@ -58,7 +57,6 @@ const course = {
 				data: course
 			})
 				.then((response) => {
-					commit('setCourse', course);
 					commit('clearValidationErrors');
 					commit('loading', false);
 
@@ -81,7 +79,6 @@ const course = {
 				.then(() => {
 					commit('loading', false);
 					commit('resetCourse');
-					router.push({ name: 'CoursesUser' });
 				})
 				.catch(() => {
 					commit('loading', false);
@@ -92,8 +89,10 @@ const course = {
 			commit('loading', true);
 
 			await axios
-				.post('/delete-resource/' + courseFileId, {
-					file_type: 'course_file'
+				.delete('/delete-resource/' + courseFileId, {
+					params: {
+						file_type: 'course_file'
+					}
 				})
 				.then(() => {
 					commit(
@@ -123,7 +122,7 @@ const course = {
 			commit('loading', false);
 		},
 
-		async createOrEditCategory({ dispatch, commit }, { courseId, category }) {
+		async createOrEditCategory({ commit }, { courseId, category }) {
 			commit('loading', true);
 
 			await axios({
@@ -136,8 +135,11 @@ const course = {
 					name: category.name
 				}
 			})
-				.then(() => {
-					dispatch('getCourseCategories', courseId);
+				.then((response) => {
+					if (response.config.method === 'post') commit('addCourseCategory', category);
+					else commit('updateCourseCategory', category);
+
+					category.id = response.data.id;
 					commit('clearValidationErrors');
 					commit('loading', false);
 				})
@@ -196,10 +198,6 @@ const course = {
 			state.courseCategories = courseCategories;
 		},
 
-		setCourseCategoryTasks(state, tasks) {
-			state.courseCategoryTasks = tasks;
-		},
-
 		setCourseFiles(state, courseFiles) {
 			state.courseFiles = courseFiles;
 		},
@@ -209,19 +207,38 @@ const course = {
 			state.courseCategories = [];
 			state.courseUsers = [];
 			state.courseFiles = [];
+            state.validationErrors = [];
+		},
+
+		addCourseCategory(state, category) {
+			state.courseCategories.push(category);
+		},
+
+		updateCourseCategory(state, category) {
+			state.courseCategories.find((key) => key['id'] === category.id).name = category.name;
+		},
+
+		addCourseFiles(state, files) {
+			files.forEach((file) => {
+                state.courseFiles.unshift({
+                    filename_original: file.name,
+                    course_ID: state.course.id,
+
+                });
+            })
 		}
 	},
 
 	getters: {
-		getFormattedDate: (state) => (date) => {
+		getFormattedDate: () => (date) => {
 			return date !== null ? dayjs(date).format('L LT') : '';
 		},
 
-		getISODate: (state) => (date) => {
+		getISODate: () => (date) => {
 			return date !== null ? dayjs(date).format('YYYY-MM-DDTHH:mm') : '';
 		},
 
-		getRelativeTime: (state) => (date) => {
+		getRelativeTime: () => (date) => {
 			return date !== null ? dayjs().to(dayjs(date)) : '';
 		},
 
@@ -243,13 +260,6 @@ const course = {
 
 		isEnded(state) {
 			return state.course.available_to !== null && dayjs() > dayjs(state.course.available_to);
-		},
-
-		getTeachers(state) {
-			return (
-				state.courseUsers &&
-				state.courseUsers.filter((user) => user.account_role === 'teacher')
-			);
 		}
 	}
 };

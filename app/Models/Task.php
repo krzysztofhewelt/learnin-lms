@@ -124,21 +124,23 @@ class Task extends Model
 			->pluck('id');
 	}
 
-	public function searchTask(string $searchString): LengthAwarePaginator
+	public function searchTasks(string $searchString = null): LengthAwarePaginator
 	{
-		return $this->where(function ($q) use ($searchString) {
-			$q->orWhere('name', 'like', '%' . $searchString . '%')
-				->orWhere('max_points', 'like', '%' . $searchString . '%')
-				->orWhere('available_from', 'like', '%' . $searchString . '%')
-				->orWhere('available_to', 'like', '%' . $searchString . '%')
-				->orWhereHas('course', function ($query) use ($searchString) {
-					$query->where('name', 'like', '%' . $searchString . '%');
-				})
-				->orWhereHas('category', function ($query) use ($searchString) {
-					$query->where('name', 'like', '%' . $searchString . '%');
-				});
-		})
-			->with('course', 'category')
-			->paginate(15);
+		return $searchString == null
+			? $this->getAllTasksWithCourseAndCategory()
+			: $this->where(function ($q) use ($searchString) {
+				$q->orWhere('name', 'like', '%' . $searchString . '%')
+					->orWhere('max_points', 'like', '%' . $searchString . '%')
+					->orWhere('available_from', 'like', '%' . $searchString . '%')
+					->orWhere('available_to', 'like', '%' . $searchString . '%')
+					->orWhereHas('course', function ($query) use ($searchString) {
+						$query->where('name', 'like', '%' . $searchString . '%');
+					})
+					->orWhereHas('category', function ($query) use ($searchString) {
+						$query->where('name', 'like', '%' . $searchString . '%');
+					});
+			})
+				->with('course', 'category')
+				->paginate(15);
 	}
 }

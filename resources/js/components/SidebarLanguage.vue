@@ -1,7 +1,8 @@
 <template>
 	<div class="cursor-pointer px-3 py-3">
 		<div
-			@click="dropdownOpen = !dropdownOpen"
+			@click.stop="dropdownOpen = !dropdownOpen"
+			v-click-outside="closeDropdown"
 			class="font-bold text-gray-400 transition-all duration-300 hover:text-purple-600"
 		>
 			<img :src="getCurrentLanguageImage" class="inline h-4 w-7" :alt="locale" />
@@ -10,7 +11,7 @@
 
 		<div class="relative" v-if="dropdownOpen">
 			<div
-				class="absolute bottom-full left-0 z-50 mb-7 w-fit min-w-max rounded-md bg-white px-4 py-2 shadow-lg"
+				class="absolute left-0 z-10 mb-7 w-fit min-w-max rounded-md bg-white px-4 py-2 shadow-lg"
 			>
 				<button
 					class="block py-2 text-gray-400 transition-all duration-300 hover:text-purple-600"
@@ -34,9 +35,12 @@
 <script>
 import { loadLanguageAsync } from 'laravel-vue-i18n';
 import { mapActions, mapState } from 'vuex';
+import SidebarLink from '@/components/SidebarLink.vue';
+import Popper from 'vue3-popper';
 
 export default {
 	name: 'SidebarLanguage',
+	components: { SidebarLink, Popper },
 
 	data() {
 		return {
@@ -59,7 +63,11 @@ export default {
 			this.dropdownOpen = false;
 			loadLanguageAsync(lang);
 			this.setLocale(lang);
-		}
+		},
+
+        closeDropdown() {
+            this.dropdownOpen = false;
+        }
 	}
 };
 </script>

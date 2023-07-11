@@ -1,3 +1,7 @@
+.multiselect {
+	@apply border-gray-300 shadow-sm;
+}
+
 .multiselect__input,
 .multiselect__input:focus {
 	@apply border-0 shadow-none ring-0;
@@ -6,4 +10,12 @@
 .ProseMirror,
 .ProseMirror-focused {
 	@apply border-0 shadow-none outline-none ring-0;
+}
+
+.invalid .multiselect__tags {
+	@apply border-red-500;
+}
+
+.multiselect__placeholder {
+	@apply text-black;
 }

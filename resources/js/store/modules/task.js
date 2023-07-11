@@ -19,7 +19,6 @@ const task = {
 	},
 
 	actions: {
-		// show task
 		async showTask({ commit }, taskId) {
 			commit('loading', true);
 
@@ -73,7 +72,7 @@ const task = {
 		},
 
 		// delete task
-		async deleteTask({ dispatch, commit }, taskId) {
+		async deleteTask({ commit }, taskId) {
 			commit('loading', true);
 
 			await axios.delete('/tasks/delete/' + taskId).then(() => {
@@ -85,12 +84,14 @@ const task = {
 			commit('loading', false);
 		},
 
-		async deleteStudentFile({ commit }, fileId) {
+		async deleteStudentFile({ commit, state }, fileId) {
 			commit('loading', true);
 
 			await axios
-				.post('/delete-resource/' + fileId, {
-					file_type: 'student_upload'
+				.delete('/delete-resource/' + fileId, {
+					params: {
+						file_type: 'student_upload'
+					}
 				})
 				.then(() => {
 					commit(
@@ -102,12 +103,14 @@ const task = {
 			commit('loading', false);
 		},
 
-		async deleteTaskRefFile({ commit }, fileId) {
+		async deleteTaskRefFile({ commit, state }, fileId) {
 			commit('loading', true);
 
 			await axios
-				.post('/delete-resource/' + fileId, {
-					file_type: 'task_ref'
+				.delete('/delete-resource/' + fileId, {
+					params: {
+						file_type: 'task_ref'
+					}
 				})
 				.then(() => {
 					commit(
@@ -119,7 +122,7 @@ const task = {
 			commit('loading', false);
 		},
 
-		async getStudentFilesInTask({ dispatch, commit }, taskId) {
+		async getStudentFilesInTask({ commit }, taskId) {
 			commit('loading', true);
 
 			await axios.get('/tasks/students_uploads/' + taskId).then((response) => {
@@ -161,6 +164,7 @@ const task = {
 			state.taskRefFiles = [];
 			state.studentFiles = [];
 			state.userMark = {};
+            state.validationErrors = [];
 		},
 
 		setUserTasks(state, tasks) {
@@ -177,15 +181,15 @@ const task = {
 	},
 
 	getters: {
-		getFormattedDate: (state) => (date) => {
+		getFormattedDate: () => (date) => {
 			return date !== null ? dayjs(date).format('L LT') : '';
 		},
 
-		getFormattedMarkDate: (state) => (date) => {
+		getFormattedMarkDate: () => (date) => {
 			return date !== null ? dayjs(date).format('L') : '';
 		},
 
-		getRelativeTime: (state) => (date) => {
+		getRelativeTime: () => (date) => {
 			return date !== null ? dayjs().to(dayjs(date)) : '';
 		},
 
@@ -196,7 +200,7 @@ const task = {
 			);
 		},
 
-		getISODate: (state) => (date) => {
+		getISODate: () => (date) => {
 			return date !== null ? dayjs(date).format('YYYY-MM-DDTHH:mm') : '';
 		},
 

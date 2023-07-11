@@ -25,8 +25,6 @@ class Course extends Model
 
 	protected $fillable = ['name', 'description', 'available_from', 'available_to'];
 
-	//protected $primaryKey = 'id';
-
 	protected $hidden = ['pivot'];
 
 	public function users(): BelongsToMany
@@ -161,8 +159,10 @@ class Course extends Model
 			->pluck('id');
 	}
 
-	public function searchCourse(string $searchString): LengthAwarePaginator
+	public function searchCourses(string $searchString = null): LengthAwarePaginator
 	{
-		return $this->where('name', 'like', '%' . $searchString . '%')->paginate(15);
+		return $searchString == null
+			? $this->getAllCourses()
+			: $this->where('name', 'like', '%' . $searchString . '%')->paginate(15);
 	}
 }

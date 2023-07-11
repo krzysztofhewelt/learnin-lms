@@ -2,12 +2,14 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
 	darkMode: 'class',
+
 	content: [
 		'./public/index.html',
 		'./resources/**/*.blade.php',
 		'./resources/**/*.js',
 		'./resources/**/*.vue'
 	],
+
 	theme: {
 		extend: {
 			fontFamily: {
@@ -15,14 +17,8 @@ module.exports = {
 			},
 
 			colors: {
-				bgmain: '#ececfa'
+				bgmain: '#ECECFA'
 			}
-		}
-	},
-
-	variants: {
-		extend: {
-			opacity: ['disabled']
 		}
 	},
 

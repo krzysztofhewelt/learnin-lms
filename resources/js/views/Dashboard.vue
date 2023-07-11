@@ -53,8 +53,8 @@
 							<b>{{ $t('course.teachers') }}: </b>
 							<template v-for="(teacher, index) in course.users" :key="teacher.id">
 								<span v-if="index !== course.users.length - 1"
-									>{{ teacher.name }} {{ teacher.surname }},</span
-								>
+									>{{ teacher.name }} {{ teacher.surname }},
+								</span>
 								<span v-else>{{ teacher.name }} {{ teacher.surname }}</span>
 							</template>
 						</div>
@@ -250,7 +250,7 @@
 
 <script>
 import HamburgerIcon from '@/components/Icons/Hamburger.vue';
-import { mapGetters, mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 import User from '@/components/Icons/User.vue';
 import dayjs from 'dayjs';
 import LoadingScreen from '@/components/LoadingScreen.vue';

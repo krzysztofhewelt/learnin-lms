@@ -27,10 +27,11 @@ class CourseCategoryController extends Controller
 
 		$this->authorize('manage-course-categories', $course);
 
-		$this->courseCategoryModel->create($request->validated());
+		$category = $this->courseCategoryModel->create($request->validated());
 
 		return response()->json([
 			'success' => 'Course category added successfully',
+            'id' => $category->id
 		]);
 	}
 

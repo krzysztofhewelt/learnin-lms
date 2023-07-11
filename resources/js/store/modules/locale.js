@@ -2,7 +2,7 @@ const locale = {
 	namespaced: true,
 
 	state: {
-		locale: localStorage.getItem('locale') || 'pl'
+		locale: localStorage.getItem('locale') || process.env.DEFAULT_LOCALE
 	},
 
 	mutations: {

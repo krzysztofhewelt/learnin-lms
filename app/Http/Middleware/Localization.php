@@ -20,9 +20,11 @@ class Localization
 	{
 		if (Auth::user() !== null) {
 			App::setLocale(Auth::user()->locale);
+		} elseif($request->lang !== null) {
+			App::setLocale($request->lang);
 		} else {
-			App::setLocale(env('DEFAULT_LOCALE'));
-		}
+            App::setLocale(env('DEFAULT_LOCALE'));
+        }
 
 		return $next($request);
 	}

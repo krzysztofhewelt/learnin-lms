@@ -17,72 +17,80 @@
 		<label class="font-bold" for="participants"
 			>{{ $t('select.assignment_select_label') }}:</label
 		>
-		<Multiselect
-			:model-value="participants"
-			@update:modelValue="participants = $event"
-			id="participants"
-			label="name"
-			track-by="id"
-			:placeholder="$t('user.type_to_search')"
-			open-direction="bottom"
-			:options="users"
-			:multiple="true"
-			:searchable="true"
-			:loading="loading"
-			:internal-search="false"
-			:clear-on-select="false"
-			:show-labels="false"
-			:close-on-select="false"
-			:show-no-results="true"
-			:options-limit="200"
-			:max-height="600"
-			:hide-selected="true"
-			@search-change="debounceSearch"
-		>
-			<template #tag="{ option, remove }">
-				<span
-					class="mx-1 my-1 inline-block rounded-lg px-2 py-0.5"
-					:class="getTagColorForUser(option.account_role)"
-				>
-					<span>{{ option.surname }} {{ option.name }}</span>
-					<span class="ml-1 font-bold" @click="remove(option)">
-						<Close class="inline h-4 w-4 cursor-pointer text-red-800" />
+		<form @submit.prevent="handleSubmit">
+			<Multiselect
+				:model-value="participants"
+				@update:modelValue="participants = $event"
+				id="participants"
+				label="name"
+				track-by="id"
+				:placeholder="$t('user.type_to_search')"
+				open-direction="bottom"
+				:options="users"
+				:multiple="true"
+				:searchable="true"
+				:loading="loadingUsers"
+				:internal-search="false"
+				:clear-on-select="false"
+				:show-labels="false"
+				:close-on-select="false"
+				:show-no-results="true"
+				:options-limit="200"
+				:max-height="300"
+				:hide-selected="true"
+				@search-change="debounceSearch"
+			>
+				<template #tag="{ option, remove }">
+					<span
+						class="align-center mx-1 my-1 inline-flex justify-center rounded-lg px-2 py-0.5"
+						:class="getTagColorForUser(option.account_role)"
+					>
+						<span>{{ option.surname }} {{ option.name }}</span>
+						<Close
+							class="my-auto ml-1 h-4 w-4 cursor-pointer text-red-800"
+							@click="remove(option)"
+						/>
 					</span>
-				</span>
-			</template>
+				</template>
 
-			<template #option="{ option }">
-				<span>{{ option.surname }} {{ option.name }} - {{ option.account_role }}</span>
-			</template>
+				<template #option="{ option }">
+					<span>{{ option.surname }} {{ option.name }} - {{ option.account_role }}</span>
+				</template>
 
-			<template #noResult>
-				{{ $t('user.no_users_found') }}
-			</template>
+				<template #noResult>
+					{{ $t('user.no_users_found') }}
+				</template>
 
-			<template #noOptions>
-				{{ $t('select.no_options') }}
-			</template>
-		</Multiselect>
+				<template #noOptions>
+					{{ $t('select.no_options') }}
+				</template>
 
-		<span class="mt-1 block font-bold text-red-400" v-if="validationErrors.assignedUsers">
-			{{ $t('validation.validation_empty_assignedUsers') }}
-		</span>
+				<template #afterList>
+					<div
+						ref="load_more"
+						v-observe-visibility="{
+							callback: loadMoreUsers,
+							throttle: 300
+						}"
+						v-if="page + 1 <= lastPage && !loadingUsers"
+					></div>
+				</template>
+			</Multiselect>
 
-		<div class="modal-footer mt-4">
-			<div class="flex flex-row-reverse">
-				<button
-					class="submit_btn ml-3 mr-[15px]"
-					type="button"
-					@click="handleSubmit"
-					:disabled="loading"
-				>
-					{{ $t('general.save') }}
-				</button>
-				<button class="manage_btn" type="button" @click.prevent="showModal = false">
-					{{ $t('general.cancel') }}
-				</button>
+			<span class="mt-1 block font-bold text-red-400" v-if="validationErrors.assignedUsers">
+				{{ $t('validation.validation_empty_assignedUsers') }}
+			</span>
+
+			<div class="modal-footer mt-4">
+				<div class="flex flex-row-reverse">
+					<ButtonSubmit class="ml-3 mr-[15px]" :loading="loading" />
+
+					<button class="normal_btn" type="button" @click.prevent="showModal = false">
+						{{ $t('general.cancel') }}
+					</button>
+				</div>
 			</div>
-		</div>
+		</form>
 	</Modal>
 </template>
 
@@ -94,11 +102,15 @@ import { mapActions, mapState } from 'vuex';
 import { useToast } from 'vue-toastification';
 import Close from '@/components/Icons/Close.vue';
 import { debounce } from 'lodash';
+import ButtonSubmit from '@/components/ButtonSubmit.vue';
+import MultiselectInputGroup from '@/components/MultiselectInputGroup.vue';
 
 export default {
 	name: 'CourseAssignmentModal',
 
 	components: {
+        MultiselectInputGroup,
+		ButtonSubmit,
 		Close,
 		Modal: VueModal,
 		Multiselect
@@ -106,8 +118,11 @@ export default {
 
 	data() {
 		return {
-			loading: false,
-			users: []
+			loadingUsers: false,
+			users: [],
+            page: 1,
+			lastPage: 1,
+			searchString: ''
 		};
 	},
 
@@ -129,11 +144,16 @@ export default {
 	},
 
 	computed: {
-		...mapState('course', ['validationErrors'])
+		...mapState('course', ['validationErrors', 'loading'])
 	},
 
 	created() {
-		this.debounceSearch = debounce((query) => this.searchUsersFromSelect(query), 500);
+		this.debounceSearch = debounce((query) => {
+			this.users = [];
+			this.page = 1;
+			this.searchString = query;
+			this.searchUsersFromSelect(query, this.page);
+		}, 500);
 	},
 
 	methods: {
@@ -150,16 +170,21 @@ export default {
 			}
 		},
 
-		searchUsersFromSelect(option) {
+		searchUsersFromSelect(option, page) {
 			if (option !== '') {
-				this.loading = true;
+				this.loadingUsers = true;
 				axios
-					.post('/users/search', {
-						searchString: option
+					.get('/admin/users', {
+						params: {
+							page: page,
+							search: option
+						}
 					})
 					.then((response) => {
-						this.users = response.data.data;
-						this.loading = false;
+						this.users.push.apply(this.users, response.data.data);
+						this.page = response.data.current_page;
+						this.lastPage = response.data.last_page;
+						this.loadingUsers = false;
 					});
 			}
 		},
@@ -178,6 +203,10 @@ export default {
 				.catch(() => {
 					toast.error(this.$t('general.validation_errors'));
 				});
+		},
+
+		loadMoreUsers(isVisible) {
+			if (isVisible) this.searchUsersFromSelect(this.searchString, ++this.page);
 		}
 	}
 };

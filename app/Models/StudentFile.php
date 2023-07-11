@@ -19,6 +19,7 @@ class StudentFile extends Model
 	use HasFactory;
 
 	protected $table = 'users_tasks_uploads';
+    protected $fillable = ['filename_original', 'course_ID'];
 	protected $hidden = ['pivot', 'filename'];
 
 	public function task(): BelongsTo

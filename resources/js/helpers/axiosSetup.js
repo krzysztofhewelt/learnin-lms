@@ -3,6 +3,7 @@ import router from '@/router';
 import { useToast } from 'vue-toastification';
 import store from '@/store';
 import login from '@/store/modules/login';
+import { trans } from 'laravel-vue-i18n';
 
 const toast = useToast();
 
@@ -16,44 +17,48 @@ export default function setup() {
 			return response;
 		},
 		(error) => {
+			if (!error.response) {
+				return Promise.reject(error);
+			}
+
 			if (
 				error.response.status === 401 &&
 				error.response.config.url !== '/login' &&
 				error.response.config.url !== '/refresh'
 			) {
 				return store
-					.dispatch('login/refresh')
+					.dispatch('login/refreshToken')
 					.then(() => {
 						error.config.headers = {
 							Authorization: `Bearer ${login.state.token}`
 						};
 
-						return axios
-							.request(error.config)
-							.then(() => {
-								return router.go(0);
-							})
-							.catch(() => {
-								return router.push('/login');
-							});
+						error.config.data = error.config.data ? JSON.parse(error.config.data) : '';
+
+						return axios(error.config);
 					})
-					.catch(() => {
-						return router.push('/login');
+					.catch((error) => {
+						if (error.response.status === 401) {
+							toast.info('Musisz zalogować się ponownie');
+							return router.push('/login');
+						}
+
+						throw error;
 					});
 			}
 
 			if (error.response.status === 403) {
-				toast.error('Forbidden');
+				toast.error(trans('general.forbidden'));
 				return router.push('/');
 			}
 
 			if (error.response.status === 404) {
-				toast.error('This resource does not exists!');
+				toast.error(trans('general.not_exists'));
 				return router.push('/');
 			}
 
 			if (error.response.status === 500) {
-				toast.error('Bad request!');
+				toast.error(trans('general.bad_request'));
 				return router.push('/');
 			}
 

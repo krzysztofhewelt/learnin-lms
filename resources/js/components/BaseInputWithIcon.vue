@@ -13,10 +13,6 @@
 			:required="required"
 			@input="$emit('update:modelValue', $event.target.value)"
 		/>
-
-		<span class="mt-1 block font-bold text-red-400" v-for="error in validationErrors">
-			{{ error }}
-		</span>
 	</div>
 </template>
 
@@ -24,16 +20,12 @@
 import BaseInput from '@/components/BaseInput.vue';
 
 export default {
-	name: 'InputWithIcon',
+	name: 'BaseInputWithIcon',
 	components: { BaseInput },
 	props: {
 		type: {
 			type: String,
 			default: 'text'
-		},
-
-		validationErrors: {
-			type: Array
 		},
 
 		placeholder: {

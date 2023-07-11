@@ -28,7 +28,7 @@ use App\Http\Controllers\LocaleController;
 */
 
 // login user
-Route::post('login', [AuthController::class, 'login']);
+Route::post('login', [AuthController::class, 'login'])->middleware(['localization']);
 
 // refresh the JWT token
 Route::get('refresh', [AuthController::class, 'refresh']);
@@ -51,7 +51,6 @@ Route::middleware(['auth:api', 'localization'])->group(function () {
 	// user section
 	Route::prefix('users')->group(function () {
 		Route::post('update-teacher/{id}', [UserController::class, 'updateTeacher']);
-		Route::post('search', [UserController::class, 'searchUser']); // search user
 		Route::post('create-or-edit/{id}', [UserController::class, 'createOrUpdate']); // creating new user or updating existing user
 		Route::get('show/{id}', [UserController::class, 'getUserProfile']);
 		Route::delete('delete/{id}', [UserController::class, 'delete']);
@@ -68,7 +67,6 @@ Route::middleware(['auth:api', 'localization'])->group(function () {
 	// courses section
 	Route::prefix('courses')->group(function () {
 		Route::get('', [CourseController::class, 'showUserCourses']);
-		Route::post('search', [CourseController::class, 'searchCourse']); // search course
 		Route::post('create', [CourseController::class, 'create']);
 		Route::get('details/{id}', [CourseController::class, 'show']);
 		Route::patch('edit/{id}', [CourseController::class, 'update']);
@@ -89,7 +87,6 @@ Route::middleware(['auth:api', 'localization'])->group(function () {
 
 	// tasks section
 	Route::prefix('tasks')->group(function () {
-		Route::post('search', [TaskController::class, 'searchTask']);
 		Route::get('', [TaskController::class, 'getUserTasks']);
 		Route::get('show/category/{id}', [TaskController::class, 'getTasksForCategory']);
 		Route::post('create', [TaskController::class, 'create']);
@@ -130,7 +127,7 @@ Route::middleware(['auth:api', 'localization'])->group(function () {
 	Route::post('download/{id}', [DownloadController::class, 'downloadResources']);
 
 	// delete resources section
-	Route::post('delete-resource/{id}', [FileController::class, 'deleteResources']);
+	Route::delete('delete-resource/{id}', [FileController::class, 'deleteResources']);
 
 	// logout user
 	Route::post('logout', [AuthController::class, 'logout']);

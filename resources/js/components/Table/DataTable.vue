@@ -19,12 +19,12 @@
 				</InputWithIcon>
 			</div>
 			<div class="ml-2" v-if="search">
-				<button class="manage_btn" @click="$emit('refreshAction')">
-					<Refresh class="m-1 h-5 w-5 text-black" />
+				<button class="normal_btn" @click="$emit('refreshAction')">
+					<Refresh class="m-1 h-4 w-4" />
 				</button>
 			</div>
 			<div class="ml-2" v-if="canEdit">
-				<button class="normal_btn" @click="$emit('addAction')">
+				<button class="submit_btn" @click="$emit('addAction')">
 					<Add class="m-1 h-4 w-4" />
 				</button>
 			</div>
@@ -57,7 +57,7 @@
 				</div>
 			</BaseRow>
 			<BaseRow>
-				<div class="mr-3 inline-block w-2/6 bg-gray-200 px-6 py-3 lg:hidden">
+				<div class="inline-block w-2/6 bg-gray-200 p-3 align-middle lg:hidden">
 					{{ $t('general.actions') }}
 				</div>
 

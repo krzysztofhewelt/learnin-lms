@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
@@ -23,18 +24,18 @@ class AdminController extends Controller
 	public function showAllCourses(): JsonResponse
 	{
 		$this->authorize('view-admin-pages');
-		return response()->json($this->courseModel->getAllCourses());
+		return response()->json($this->courseModel->searchCourses(request()->search));
 	}
 
 	public function showAllUsers(): JsonResponse
 	{
-		$this->authorize('view-admin-pages');
-		return response()->json($this->userModel->getAllUsers());
+		// $this->authorize('view-admin-pages');
+		return response()->json($this->userModel->searchUsers(request()->search));
 	}
 
 	public function showAllTasks(): JsonResponse
 	{
 		$this->authorize('view-admin-pages');
-		return response()->json($this->taskModel->getAllTasksWithCourseAndCategory());
+		return response()->json($this->taskModel->searchTasks(request()->search));
 	}
 }

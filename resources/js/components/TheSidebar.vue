@@ -120,7 +120,7 @@
 				</div>
 			</nav>
 
-			<div class="relative sticky w-full pl-4">
+			<div class="sticky w-full pl-4">
 				<SidebarLanguage />
 				<SidebarLink
 					class="font-bold text-red-500 hover:text-red-700"

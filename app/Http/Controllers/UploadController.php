@@ -120,6 +120,8 @@ class UploadController extends Controller
 		} elseif ($fileType == 'course_file') {
 			return $this->courseModel->getCourse($resourceId);
 		}
+
+        return null;
 	}
 
 	private function getCourseIdForResource(string $fileType, int $resourceId): int

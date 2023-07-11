@@ -1,6 +1,6 @@
 <template>
 	<input
-		class="w-full rounded-md border-gray-300 transition ease-in-out focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+		class="w-full rounded-md shadow-sm border-gray-300 transition ease-in-out focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
 		:type="type"
 		:placeholder="placeholder"
 		:value="modelValue"

@@ -149,6 +149,7 @@ return [
 		'password' => [
 			'regex' =>
 				'Password must contain at least one big and small letter and special character and must have at least 8 characters.',
+			'different' => 'Password must be different than current password.',
 		],
 
 		'email' => [

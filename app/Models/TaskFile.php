@@ -17,7 +17,7 @@ class TaskFile extends Model
 	use HasFactory;
 
 	protected $table = 'task_referential_files';
-	protected $guarded = [];
+    protected $fillable = ['filename_original', 'course_ID'];
 	protected $hidden = ['pivot', 'filename'];
 
 	public function task(): BelongsTo

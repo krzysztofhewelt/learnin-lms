@@ -7,8 +7,7 @@ const login = {
 		loading: false,
 		token: localStorage.getItem('token') || '',
 		user: JSON.parse(localStorage.getItem('user')) || {},
-		validationErrors: [],
-		accountErrors: ''
+		validationErrors: []
 	},
 
 	actions: {
@@ -18,7 +17,8 @@ const login = {
 			await axios
 				.post('/login', {
 					email: email,
-					password: password
+					password: password,
+                    lang: this.state.locale.locale
 				})
 				.then((response) => {
 					const token = response.headers.authorization;
@@ -32,11 +32,12 @@ const login = {
 					});
 				})
 				.catch((error) => {
-					if (error.response.status === 401 || error.response.status === 423)
-						commit('accountErrors', error.response.data);
-
-					if (error.response.status === 422)
-						commit('authErrors', error.response.data.errors);
+					if (
+						error.response.status === 401 ||
+						error.response.status === 423 ||
+						error.response.status === 422
+					)
+						commit('loginErrors', error.response.data.errors);
 
 					throw error;
 				})
@@ -45,7 +46,7 @@ const login = {
 				});
 		},
 
-		async refresh({ commit }) {
+		async refreshToken({ commit }) {
 			return await axios
 				.get('/refresh')
 				.then((response) => {
@@ -89,26 +90,15 @@ const login = {
 			state.token = '';
 			state.user = {};
 			state.validationErrors = '';
-			state.accountErrors = '';
 			delete axios.defaults.headers.common['Authorization'];
 		},
 
-		authErrors(state, errors) {
+		loginErrors(state, errors) {
 			state.validationErrors = errors;
-			state.accountErrors = '';
-		},
-
-		accountErrors(state, errors) {
-			state.accountErrors = errors;
-			state.validationErrors = '';
 		}
 	},
 
 	getters: {
-		isAuthenticated(state) {
-			return state.token !== '';
-		},
-
 		isAdmin(state) {
 			return state.user && state.user.account_role === 'admin';
 		},

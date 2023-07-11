@@ -13,27 +13,27 @@
 
 				<div class="grid grid-cols-4 gap-x-4 gap-y-2">
 					<div class="col-span-4 lg:col-span-1">
-						<label for="account_role">{{ $t('user.account_role') }}</label>
-						<Multiselect
-							id="account_role"
-							v-model="user.account_role"
-							:options="account_roles"
-							:loading="loading"
-							:searchable="false"
-							:allow-empty="false"
-							select-label=""
-							:selected-label="$t('select.selected')"
-							deselect-label=""
-							:placeholder="$t('general.select_one')"
-							label="label"
-							track-by="name"
-						/>
-						<span
-							class="mt-1 block font-bold text-red-400"
-							v-for="error in validationErrors.account_role"
+						<MultiselectInputGroup
+							:label="$t('user.account_role')"
+							:required="true"
+							:validation-errors="validationErrors.account_role"
+                            id="account_role"
 						>
-							{{ error }}
-						</span>
+							<Multiselect
+								id="account_role"
+								v-model="user.account_role"
+								:options="account_roles"
+								:loading="loading"
+								:searchable="false"
+								:allow-empty="false"
+								select-label=""
+								:selected-label="$t('select.selected')"
+								deselect-label=""
+								:placeholder="$t('general.select_one')"
+								label="label"
+								track-by="name"
+							/>
+						</MultiselectInputGroup>
 					</div>
 					<div class="col-span-4 lg:col-span-1 lg:col-start-1">
 						<BaseInputGroup
@@ -90,27 +90,27 @@
 						/>
 					</div>
 					<div class="col-span-4 mb-2 lg:col-span-1 lg:col-start-1">
-						<label for="locale">{{ $t('user.locale') }}</label>
-						<Multiselect
-							id="locale"
-							v-model="user.locale"
-							:options="locales"
-							:loading="loading"
-							:searchable="false"
-							:allow-empty="false"
-							select-label=""
-							:selected-label="$t('select.selected')"
-							deselect-label=""
-							:placeholder="$t('general.select_one')"
-							label="label"
-							track-by="name"
-						/>
-						<span
-							class="mt-1 block font-bold text-red-400"
-							v-for="error in validationErrors.locale"
+						<MultiselectInputGroup
+							:label="$t('user.locale')"
+							:required="true"
+							:validation-errors="validationErrors.locale"
+                            id="locale"
 						>
-							{{ error }}
-						</span>
+							<Multiselect
+								id="locale"
+								v-model="user.locale"
+								:options="locales"
+								:loading="loading"
+								:searchable="false"
+								:allow-empty="false"
+								select-label=""
+								:selected-label="$t('select.selected')"
+								deselect-label=""
+								:placeholder="$t('general.select_one')"
+								label="label"
+								track-by="name"
+							/>
+						</MultiselectInputGroup>
 					</div>
 					<div class="col-span-4 lg:col-span-1 lg:col-start-1">
 						<BaseCheckbox
@@ -266,10 +266,12 @@ import BaseCheckbox from '@/components/BaseCheckbox.vue';
 import Multiselect from 'vue-multiselect';
 import router from '@/router';
 import { useToast } from 'vue-toastification';
+import MultiselectInputGroup from '@/components/MultiselectInputGroup.vue';
 
 export default {
 	name: 'UserForm',
 	components: {
+		MultiselectInputGroup,
 		BaseCheckbox,
 		BasePassword,
 		ButtonSubmit,

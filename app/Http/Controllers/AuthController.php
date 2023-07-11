@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -22,21 +23,29 @@ class AuthController extends Controller
 		$user = $this->userModel->getUserByEmail($credentials['email']);
 
 		if (!$user->isUserActive()) {
-			return response()->json(['error' => trans('auth.not_activated')], 423);
+			return response()->json(['errors' => ['account' => trans('auth.not_activated')]], 423);
 		}
 
 		if ($token = Auth::attempt($credentials)) {
 			$user->last_success_login = now();
 			$user->save();
 			return response()
-				->json(['status' => 'success', 'user' => $user])
+				->json([
+					'status' => 'success',
+					'user' => [
+						'id' => $user->id,
+						'account_role' => $user->account_role,
+						'email' => $user->email,
+						'locale' => $user->locale,
+					],
+				])
 				->header('Authorization', $token);
 		}
 
 		$user->last_wrong_login = now();
 		$user->save();
 
-		return response()->json(['error' => trans('auth.failed')], 401);
+		return response()->json(['errors' => ['account' => trans('auth.failed')]], 401);
 	}
 
 	public function logout(): JsonResponse
@@ -56,7 +65,7 @@ class AuthController extends Controller
 				->json(['status' => 'success'])
 				->header('Authorization', $token);
 		} catch (\Exception $e) {
-			return response()->json(['error' => 'Can not refresh token'], 401);
+			return response()->json(['errors' => ['account' => 'Can not refresh token']], 401);
 		}
 	}
 

@@ -35,7 +35,7 @@
 		<div
 			v-for="course in result"
 			:key="course.id"
-			class="flex flex-1 flex-col justify-between rounded-lg bg-white p-3 text-gray-500 transition duration-200 ease-in-out hover:drop-shadow-xl"
+			class="flex flex-1 flex-col justify-between rounded-lg bg-white p-3 text-gray-500 transition duration-200 ease-in-out drop-shadow-xl"
 		>
 			<div>
 				<router-link

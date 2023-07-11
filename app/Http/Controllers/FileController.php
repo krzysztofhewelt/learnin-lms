@@ -15,21 +15,19 @@ class FileController extends Controller
 	private StudentFile $studentFileModel;
 	private TaskFile $taskFileModel;
 	private CourseFile $courseFileModel;
-	private Task $taskModel;
 
 	public function __construct()
 	{
 		$this->studentFileModel = new StudentFile();
 		$this->taskFileModel = new TaskFile();
 		$this->courseFileModel = new CourseFile();
-		$this->taskModel = new Task();
 	}
 
 	public function deleteResources(FileDownloadRequest $request, int $resourceId): JsonResponse
 	{
 		$fileType = $request->file_type;
 		$resourceFile = $this->getInstanceOfFileObject($fileType, $resourceId);
-		$resourceCourse = $resourceFile->getCourse($resourceId);
+        $resourceCourse = $resourceFile->getCourse($resourceId);
 
 		$this->authorize('delete-files', [$fileType, $resourceCourse, $resourceFile]);
 
