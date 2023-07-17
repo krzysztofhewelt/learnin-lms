@@ -1,5 +1,10 @@
 <template>
-	<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+	<svg
+		class="animate-spin"
+		viewBox="0 0 16 16"
+		xmlns="http://www.w3.org/2000/svg"
+		fill="currentColor"
+	>
 		<path
 			fill-rule="evenodd"
 			clip-rule="evenodd"

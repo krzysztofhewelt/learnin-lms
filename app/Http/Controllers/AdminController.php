@@ -6,7 +6,6 @@ use App\Models\Course;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {

@@ -54,7 +54,8 @@
 				</template>
 
 				<template #option="{ option }">
-					<span>{{ option.surname }} {{ option.name }} - {{ option.account_role }}</span>
+					<span>{{ option.surname }} {{ option.name }}</span>
+                    <span :class="getLabelColorForUser(option.account_role)">{{ option.account_role }}</span>
 				</template>
 
 				<template #noResult>
@@ -91,6 +92,8 @@
 				</div>
 			</div>
 		</form>
+
+        {{ searchString }}
 	</Modal>
 </template>
 
@@ -109,7 +112,7 @@ export default {
 	name: 'CourseAssignmentModal',
 
 	components: {
-        MultiselectInputGroup,
+		MultiselectInputGroup,
 		ButtonSubmit,
 		Close,
 		Modal: VueModal,
@@ -120,7 +123,7 @@ export default {
 		return {
 			loadingUsers: false,
 			users: [],
-            page: 1,
+			page: 1,
 			lastPage: 1,
 			searchString: ''
 		};
@@ -144,6 +147,9 @@ export default {
 	},
 
 	computed: {
+        search() {
+            return search
+        },
 		...mapState('course', ['validationErrors', 'loading'])
 	},
 
@@ -169,6 +175,17 @@ export default {
 					return 'bg-red-300 hover:bg-red-400';
 			}
 		},
+
+        getLabelColorForUser(accountRole) {
+            switch (accountRole) {
+                case 'student':
+                    return 'p-1 bg-green-400 rounded-md ml-2';
+                case 'teacher':
+                    return 'p-1 bg-orange-400 rounded-md ml-2';
+                case 'admin':
+                    return 'p-1 bg-red-400 rounded-md ml-2';
+            }
+        },
 
 		searchUsersFromSelect(option, page) {
 			if (option !== '') {

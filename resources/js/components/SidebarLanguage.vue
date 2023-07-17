@@ -1,34 +1,31 @@
 <template>
 	<div class="cursor-pointer px-3 py-3">
-		<div
-			@click.stop="dropdownOpen = !dropdownOpen"
-			v-click-outside="closeDropdown"
-			class="font-bold text-gray-400 transition-all duration-300 hover:text-purple-600"
-		>
-			<img :src="getCurrentLanguageImage" class="inline h-4 w-7" :alt="locale" />
-			<span class="ml-1.5">{{ $t('languages.' + locale) }}</span>
-		</div>
+		<Dropdown>
+			<div class="font-bold text-gray-400 transition-all duration-300 hover:text-purple-600">
+				<template v-if="!loading">
+					<img :src="getCurrentLanguageImage" class="inline h-4 w-7" :alt="locale" />
+					<span class="ml-1.5">{{ $t('languages.' + locale) }}</span>
+				</template>
+				<template v-else> <Loading class="h-5 w-5" /> </template>
+			</div>
 
-		<div class="relative" v-if="dropdownOpen">
-			<div
-				class="absolute left-0 z-10 mb-7 w-fit min-w-max rounded-md bg-white px-4 py-2 shadow-lg"
-			>
+			<template #content="{ close }" v-if="!loading">
 				<button
 					class="block py-2 text-gray-400 transition-all duration-300 hover:text-purple-600"
-					@click="changeLanguage('en')"
+					@click="changeLanguage('en', close)"
 				>
 					<img src="../assets/en.png" class="inline h-4 w-6" alt="english" />
 					{{ $t('languages.en') }}
 				</button>
 				<button
 					class="block py-2 text-gray-400 transition-all duration-300 hover:text-purple-600"
-					@click="changeLanguage('pl')"
+					@click="changeLanguage('pl', close)"
 				>
 					<img src="../assets/pl.png" class="inline h-4 w-6" alt="polski" />
 					{{ $t('languages.pl') }}
 				</button>
-			</div>
-		</div>
+			</template>
+		</Dropdown>
 	</div>
 </template>
 
@@ -37,19 +34,15 @@ import { loadLanguageAsync } from 'laravel-vue-i18n';
 import { mapActions, mapState } from 'vuex';
 import SidebarLink from '@/components/SidebarLink.vue';
 import Popper from 'vue3-popper';
+import Dropdown from '@/components/Dropdown.vue';
+import Loading from '@/components/Icons/Loading.vue';
 
 export default {
 	name: 'SidebarLanguage',
-	components: { SidebarLink, Popper },
-
-	data() {
-		return {
-			dropdownOpen: false
-		};
-	},
+	components: { Loading, Dropdown, SidebarLink, Popper },
 
 	computed: {
-		...mapState('locale', ['locale']),
+		...mapState('locale', ['locale', 'loading']),
 
 		getCurrentLanguageImage() {
 			return new URL(`../assets/${this.locale}.png`, import.meta.url).href;
@@ -59,15 +52,12 @@ export default {
 	methods: {
 		...mapActions('locale', ['setLocale']),
 
-		changeLanguage(lang) {
-			this.dropdownOpen = false;
+		changeLanguage(lang, close) {
+			close();
+
 			loadLanguageAsync(lang);
 			this.setLocale(lang);
-		},
-
-        closeDropdown() {
-            this.dropdownOpen = false;
-        }
+		}
 	}
 };
 </script>

@@ -84,7 +84,8 @@
 				</div>
 				<div class="block">
 					<b>{{ $t('mark.points') }}:</b>
-                    {{ task.user_marks[0].points }}<span class="text-zinc-500"> / {{ task.max_points }}</span>
+					{{ task.user_marks[0].points
+					}}<span class="text-zinc-500"> / {{ task.max_points }}</span>
 				</div>
 			</div>
 		</div>

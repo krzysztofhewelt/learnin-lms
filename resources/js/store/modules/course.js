@@ -17,7 +17,7 @@ const course = {
 	actions: {
 		async getCourseDetails({ commit }, courseId) {
 			commit('loading', true);
-            commit('resetCourse');
+			commit('resetCourse');
 
 			await axios.get('/courses/details/' + courseId).then((response) => {
 				commit('setCourse', {
@@ -207,7 +207,7 @@ const course = {
 			state.courseCategories = [];
 			state.courseUsers = [];
 			state.courseFiles = [];
-            state.validationErrors = [];
+			state.validationErrors = [];
 		},
 
 		addCourseCategory(state, category) {
@@ -220,12 +220,11 @@ const course = {
 
 		addCourseFiles(state, files) {
 			files.forEach((file) => {
-                state.courseFiles.unshift({
-                    filename_original: file.name,
-                    course_ID: state.course.id,
-
-                });
-            })
+				state.courseFiles.unshift({
+					filename_original: file.name,
+					course_ID: state.course.id
+				});
+			});
 		}
 	},
 

@@ -66,10 +66,10 @@
 							:label="$t('course.course')"
 							:required="true"
 							:validation-errors="validationErrors.course_ID"
-                            id="course"
+							id="course"
 						>
 							<Multiselect
-                                id="course"
+								id="course"
 								v-model="task.course"
 								:options="courses"
 								:loading="loading"
@@ -97,10 +97,10 @@
 							:label="$t('course.course_category')"
 							:required="true"
 							:validation-errors="validationErrors.course_category"
-                            id="category"
+							id="category"
 						>
 							<Multiselect
-                                id="category"
+								id="category"
 								v-model="task.category"
 								:options="courseCategories"
 								:loading="loading"
@@ -193,8 +193,6 @@ export default {
 
 			this.createOrEditTask(this.task)
 				.then((response) => {
-					console.log(response);
-
 					toast.success(this.$t('general.saved_successfully'));
 					router.push({
 						name: 'TasksView',

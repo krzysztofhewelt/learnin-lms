@@ -1,5 +1,10 @@
 <template>
-	<input type="submit" :value="value || $t('general.save')" :disabled="loading" class="submit_btn" />
+	<input
+		type="submit"
+		:value="value || $t('general.save')"
+		:disabled="loading"
+		class="submit_btn"
+	/>
 </template>
 
 <script>
@@ -12,10 +17,10 @@ export default {
 			default: false
 		},
 
-        value: {
-            type: String,
-            default: ''
-        }
+		value: {
+			type: String,
+			default: ''
+		}
 	}
 };
 </script>

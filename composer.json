@@ -49,7 +49,7 @@
 		],
 		"post-create-project-cmd": [
 			"@php artisan key:generate --ansi",
-            "@php artisan jwt:secret"
+			"@php artisan jwt:secret"
 		]
 	},
 	"extra": {

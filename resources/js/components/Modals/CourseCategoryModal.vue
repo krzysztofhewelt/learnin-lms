@@ -20,10 +20,7 @@
 			</div>
 			<div class="modal-footer">
 				<div class="flex flex-row-reverse">
-                    <ButtonSubmit
-                        class="ml-3"
-                        :loading="loading"
-                    />
+					<ButtonSubmit class="ml-3" :loading="loading" />
 
 					<button class="normal_btn" type="button" @click.prevent="showModal = false">
 						{{ $t('general.cancel') }}
@@ -47,7 +44,7 @@ export default {
 	name: 'CourseCategoryModal',
 
 	components: {
-        ButtonSubmit,
+		ButtonSubmit,
 		LoadingScreen,
 		BaseInputGroup,
 		Modal: VueModal

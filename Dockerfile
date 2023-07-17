@@ -1,16 +1,17 @@
-FROM node:18.8.0-alpine3.16 as npm
+FROM node:20.4.0-alpine3.17 as npm
 CMD ["npm", "start"]
 
 RUN mkdir -p /app
-COPY package.json webpack.mix.js.back package-lock.json tailwind.config.js postcss.config.js /app/
+COPY package.json vite.config.js package-lock.json tailwind.config.js postcss.config.js /app/
 COPY resources/ /app/resources/
 COPY lang/ app/lang/
 WORKDIR /app
-RUN npm install && npm run prod
+
+RUN npm install && npm run build
 
 
 #Server Dependencies
-FROM composer:2.4.1 as composer
+FROM composer:2.5.8 as composer
 
 WORKDIR /app
 
@@ -26,7 +27,7 @@ RUN composer install \
 
 
 # PHP
-FROM php:8-apache as base
+FROM php:8.2-apache as base
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
@@ -59,8 +60,7 @@ RUN a2enmod rewrite
 COPY . /var/www/html
 COPY --from=composer /app/vendor/ /var/www/html/vendor/
 COPY --from=npm /app/node_modules /var/www/html/node_modules/
-COPY --from=npm /app/public/js /var/www/html/public/js
-COPY --from=npm /app/public/css /var/www/html/public/css
+COPY --from=npm /app/public/build /var/www/html/public/build
 
 RUN chown -R www-data:www-data \
     /var/www/html/storage \
@@ -69,6 +69,6 @@ RUN chown -R www-data:www-data \
 COPY .env /var/www/html/.env
 
 RUN php artisan key:generate
-RUN echo "yes" | php artisan jwt:secret
+RUN php artisan jwt:secret
 
 EXPOSE 80

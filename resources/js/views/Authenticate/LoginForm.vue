@@ -2,14 +2,14 @@
 	<div
 		class="flex min-h-screen flex-col items-center bg-gradient-to-r from-rose-100 to-teal-100 pt-6 sm:justify-center sm:pt-0"
 	>
-		<div class="w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg">
-            <SidebarLanguage class="inline-block" />
+		<div class="relative w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg">
+			<SidebarLanguage class="absolute right-0 top-0 bg-zinc-100 rounded-bl-lg shadow-md text-black" />
+
 			<AppLogo class="mx-auto w-9/12 pb-4"></AppLogo>
 
 			<span class="mb-3 block text-center text-xl font-bold text-red-400">
 				{{ validationErrors.account }}
 			</span>
-
 
 			<form @submit.prevent="logIn">
 				<!-- email Address -->

@@ -28,6 +28,7 @@ class AuthController extends Controller
 
 		if ($token = Auth::attempt($credentials)) {
 			$user->last_success_login = now();
+            $user->locale = App::getLocale();
 			$user->save();
 			return response()
 				->json([

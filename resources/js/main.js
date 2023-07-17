@@ -2,7 +2,7 @@ import './bootstrap';
 
 import { createApp } from 'vue';
 import App from '@/App.vue';
-import { i18nVue } from 'laravel-vue-i18n';
+import { i18nVue, loadLanguageAsync } from 'laravel-vue-i18n';
 import Toast from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
 import router from '@/router';
@@ -33,11 +33,11 @@ app.use(store)
 	})
 	.use(router)
 	.use(i18nVue, {
-		lang: process.env.DEFAULT_LOCALE,
+		lang: import.meta.env.LOCALE_DEFAULT,
 		resolve: (lang) => {
 			const langs = import.meta.globEager('../../lang/*.json');
 			return langs[`../../lang/${lang}.json`].default;
-		}
+		},
 	})
 	.use(VueObserveVisibility);
 

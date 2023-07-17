@@ -31,7 +31,7 @@ class CourseCategoryController extends Controller
 
 		return response()->json([
 			'success' => 'Course category added successfully',
-            'id' => $category->id
+			'id' => $category->id,
 		]);
 	}
 

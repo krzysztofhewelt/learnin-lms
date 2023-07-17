@@ -150,7 +150,7 @@ class TaskMark extends Model
 		return [
 			[
 				'taskAvg' => $taskAvg,
-				'studentMarks' => $studentsMarks
+				'studentMarks' => $studentsMarks,
 			],
 		];
 	}

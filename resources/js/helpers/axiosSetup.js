@@ -8,7 +8,7 @@ import { trans } from 'laravel-vue-i18n';
 const toast = useToast();
 
 export default function setup() {
-	axios.defaults.baseURL = 'http://localhost:8000/api';
+	axios.defaults.baseURL = import.meta.env.API_URL;
 	axios.defaults.headers.common['Authorization'] = 'Bearer ' + login.state.token;
 	axios.defaults.headers.post['Content-Type'] = 'application/json';
 
@@ -17,6 +17,8 @@ export default function setup() {
 			return response;
 		},
 		(error) => {
+            console.log(import.meta.env)
+
 			if (!error.response) {
 				return Promise.reject(error);
 			}

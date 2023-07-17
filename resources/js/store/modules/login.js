@@ -18,7 +18,7 @@ const login = {
 				.post('/login', {
 					email: email,
 					password: password,
-                    lang: this.state.locale.locale
+					locale: this.state.locale.locale
 				})
 				.then((response) => {
 					const token = response.headers.authorization;

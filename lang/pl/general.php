@@ -3,8 +3,8 @@
 return [
 	'loading' => 'Ładowanie...',
 	'forbidden' => 'Nie masz dostępu do tego zasobu.',
-    'not_exists' => 'Ten zasób nie istnieje.',
-    'bad_request' => 'Wystąpił problem podczas przetwarzania żądania',
+	'not_exists' => 'Ten zasób nie istnieje.',
+	'bad_request' => 'Wystąpił problem podczas przetwarzania żądania',
 
 	'actions' => 'Akcje',
 	'show' => 'Pokaż',

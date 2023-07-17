@@ -121,7 +121,7 @@ class UploadController extends Controller
 			return $this->courseModel->getCourse($resourceId);
 		}
 
-        return null;
+		return null;
 	}
 
 	private function getCourseIdForResource(string $fileType, int $resourceId): int

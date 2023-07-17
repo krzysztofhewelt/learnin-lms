@@ -66,7 +66,7 @@ export default {
 					this.errors = {};
 					this.toast.success(this.$t('user.password_changed'));
 					this.loading = false;
-					router.push({ name: 'Profile' });
+					router.push({ name: 'ProfileUser' });
 				})
 				.catch((error) => {
 					if (error.response.status === 422) this.errors = error.response.data.errors;

@@ -78,7 +78,11 @@
 			{{ $t('general.no_data') }}
 		</div>
 
-        <div ref="load_more" v-observe-visibility="{ callback: loadMoreMarks, throttle: 300 }" v-if="!loading && page < marks.last_page"></div>
+		<div
+			ref="load_more"
+			v-observe-visibility="{ callback: loadMoreMarks, throttle: 300 }"
+			v-if="!loading && page < marks.last_page"
+		></div>
 
 		<div
 			v-if="page === marks.last_page && marks.data.length > 0 && !loading"
@@ -121,9 +125,9 @@ export default {
 			}
 		},
 
-        loadMoreMarks(isVisible) {
+		loadMoreMarks(isVisible) {
 			if (isVisible) {
-                this.showMore()
+				this.showMore();
 			}
 		}
 	},

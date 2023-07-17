@@ -39,11 +39,7 @@ const user = {
 					},
 					identification_number: response.data.identification_number,
 					email: response.data.email,
-					active: response.data.active,
-					locale: {
-						name: response.data.locale,
-						label: response.data.locale
-					}
+					active: response.data.active
 				});
 
 				if (response.data.teacher !== null) commit('setTeacher', response.data.teacher);
@@ -66,8 +62,7 @@ const user = {
 				identification_number: user.identification_number,
 				email: user.email,
 				password: user.password,
-				active: user.active,
-				userLocale: user.locale && user.locale.name
+				active: user.active
 			};
 
 			if (user.account_role && user.account_role.name === 'student')
@@ -142,14 +137,16 @@ const user = {
 		async getUserMarks({ commit }, { page = 1 }) {
 			commit('loading', true);
 
-			await axios.get('/marks', {
-                params: {
-                    page: page
-                }
-            }).then((response) => {
-				// paginate marks or not
-				commit('setMarks', response.data);
-			});
+			await axios
+				.get('/marks', {
+					params: {
+						page: page
+					}
+				})
+				.then((response) => {
+					// paginate marks or not
+					commit('setMarks', response.data);
+				});
 
 			commit('loading', false);
 		},

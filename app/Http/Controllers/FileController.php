@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\FileDownloadRequest;
 use App\Models\CourseFile;
 use App\Models\StudentFile;
-use App\Models\Task;
 use App\Models\TaskFile;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
@@ -27,7 +26,7 @@ class FileController extends Controller
 	{
 		$fileType = $request->file_type;
 		$resourceFile = $this->getInstanceOfFileObject($fileType, $resourceId);
-        $resourceCourse = $resourceFile->getCourse($resourceId);
+		$resourceCourse = $resourceFile->getCourse($resourceId);
 
 		$this->authorize('delete-files', [$fileType, $resourceCourse, $resourceFile]);
 

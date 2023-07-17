@@ -43,26 +43,28 @@
 						</router-link>
 
 						<div class="justify-center">
-							<button class="normal_btn w-full" @click.stop="moreDropdown = !moreDropdown">
-								<More class="mx-auto h-5 w-5" />
-							</button>
-
-							<Dropdown v-if="moreDropdown" v-click-outside="closeDropdown">
-								<router-link
-									:to="{
-										name: 'TasksEdit',
-										params: { id: $route.params.id }
-									}"
-									class="block w-full p-2 font-bold text-blue-600 no-underline"
-								>
-									{{ $t('general.edit') }}
-								</router-link>
-								<button
-									class="w-full p-2 font-bold text-red-400"
-									@click="showDeleteResourceModal('task', $route.params.id)"
-								>
-									{{ $t('general.delete') }}
+							<Dropdown>
+								<button class="normal_btn w-full">
+									<More class="mx-auto h-5 w-5" />
 								</button>
+
+								<template #content>
+									<router-link
+										:to="{
+											name: 'TasksEdit',
+											params: { id: $route.params.id }
+										}"
+										class="block w-full p-2 font-bold text-blue-600 no-underline"
+									>
+										{{ $t('general.edit') }}
+									</router-link>
+									<button
+										class="w-full p-2 font-bold text-red-400"
+										@click="showDeleteResourceModal('task', $route.params.id)"
+									>
+										{{ $t('general.delete') }}
+									</button>
+								</template>
 							</Dropdown>
 						</div>
 					</div>
@@ -369,7 +371,7 @@ export default {
 	},
 
 	methods: {
-        download,
+		download,
 		...mapActions('task', ['showTask']),
 
 		showDeleteResourceModal(resourceType, resourceId) {
@@ -383,9 +385,9 @@ export default {
 			this.uploadResource.type = type;
 		},
 
-        closeDropdown() {
-            this.moreDropdown = false;
-        }
+		closeDropdown() {
+			this.moreDropdown = false;
+		}
 	},
 
 	created() {

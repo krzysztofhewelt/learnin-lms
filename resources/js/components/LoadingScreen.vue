@@ -2,7 +2,7 @@
 	<div class="absolute z-10 flex h-full w-full bg-white opacity-90">
 		<div class="mx-auto my-auto">
 			<div class="my-auto text-center text-xl font-bold">
-				<Loading class="mr-1 inline h-12 w-12 animate-spin" />
+				<Loading class="mr-1 inline h-12 w-12" />
 			</div>
 			<div class="mt-3 text-xl font-bold text-zinc-600">
 				{{ $t('general.loading') }}

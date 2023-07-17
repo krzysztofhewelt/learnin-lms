@@ -17,7 +17,7 @@
 							:label="$t('user.account_role')"
 							:required="true"
 							:validation-errors="validationErrors.account_role"
-                            id="account_role"
+							id="account_role"
 						>
 							<Multiselect
 								id="account_role"
@@ -88,29 +88,6 @@
 							v-model="user.password"
 							:validation-errors="validationErrors.password"
 						/>
-					</div>
-					<div class="col-span-4 mb-2 lg:col-span-1 lg:col-start-1">
-						<MultiselectInputGroup
-							:label="$t('user.locale')"
-							:required="true"
-							:validation-errors="validationErrors.locale"
-                            id="locale"
-						>
-							<Multiselect
-								id="locale"
-								v-model="user.locale"
-								:options="locales"
-								:loading="loading"
-								:searchable="false"
-								:allow-empty="false"
-								select-label=""
-								:selected-label="$t('select.selected')"
-								deselect-label=""
-								:placeholder="$t('general.select_one')"
-								label="label"
-								track-by="name"
-							/>
-						</MultiselectInputGroup>
 					</div>
 					<div class="col-span-4 lg:col-span-1 lg:col-start-1">
 						<BaseCheckbox
@@ -295,16 +272,6 @@ export default {
 					name: 'admin',
 					label: this.$t('user.admin')
 				}
-			],
-			locales: [
-				{
-					name: 'en',
-					label: this.$t('languages.en')
-				},
-				{
-					name: 'pl',
-					label: this.$t('languages.pl')
-				}
 			]
 		};
 	},
@@ -356,7 +323,6 @@ export default {
 		if (this.$route.name === 'UsersEdit') {
 			this.getUserDetails(this.$route.params.id).then(() => {
 				this.user.account_role.label = this.$t('user.' + this.user.account_role.name);
-				this.user.locale.label = this.$t('languages.' + this.user.locale.name);
 			});
 		} else {
 			this.resetUser();

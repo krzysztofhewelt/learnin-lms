@@ -283,7 +283,7 @@ export default {
 				.post('/upload/' + this.resource.id, formData, config)
 				.then(() => {
 					this.uploading = false;
-					this.updateFiles('course_file', this.files);
+					this.updateFiles(this.resource.type);
 
 					toast.success(this.$t('files.uploaded_successfully'));
 					this.files = [];
@@ -305,7 +305,7 @@ export default {
 		updateFiles(fileType) {
 			switch (fileType) {
 				case 'course_file':
-                    this.getCourseDetails(this.resource.id);
+					this.getCourseDetails(this.resource.id);
 					break;
 				case 'task_ref':
 				case 'student_upload':

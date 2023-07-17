@@ -14,7 +14,7 @@
 				:placeholder="placeholder"
 				:errors="validationErrors"
 				@input="$emit('update:modelValue', $event.target.value)"
-                :class="{ 'border-red-600': validationErrors }"
+				:class="{ 'border-red-600': validationErrors }"
 			/>
 			<BaseInput
 				class="pr-10"
@@ -26,7 +26,7 @@
 				:placeholder="placeholder"
 				:required="required"
 				@input="$emit('update:modelValue', $event.target.value)"
-                :class="{ 'border-red-600': validationErrors }"
+				:class="{ 'border-red-600': validationErrors }"
 			/>
 			<div class="absolute right-0 -mt-7 mr-2 cursor-pointer" @click="password = !password">
 				<HidePassword v-if="!password" class="h-5 w-5" />

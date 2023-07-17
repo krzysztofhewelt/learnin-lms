@@ -54,7 +54,7 @@ class UserController extends Controller
 		}
 		$user->account_role = $request->account_role;
 		$user->active = $request->active == null ? 0 : 1;
-		$user->locale = $request->userLocale;
+		$user->locale = env('DEFAULT_LOCALE');
 		$user->save();
 
 		if ($user->account_role == 'student') {

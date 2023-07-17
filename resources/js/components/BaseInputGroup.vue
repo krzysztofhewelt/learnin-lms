@@ -9,7 +9,7 @@
 			:value="modelValue"
 			:required="required"
 			@input="$emit('update:modelValue', $event.target.value)"
-            :class="{ 'border-red-600': validationErrors }"
+			:class="{ 'border-red-600': validationErrors }"
 		/>
 	</div>
 	<span class="mt-1 block text-sm font-bold text-red-400" v-for="error in validationErrors">

@@ -1,5 +1,5 @@
 <template>
-	<div :class="{ 'invalid': validationErrors }">
+	<div :class="{ invalid: validationErrors }">
 		<label class="text-sm font-medium text-gray-700" :for="id">{{ label }}</label>
 		<span v-if="required" class="ml-px font-bold text-red-600">*</span>
 		<slot />
@@ -28,10 +28,10 @@ export default {
 			default: false
 		},
 
-        id: {
-            type: String,
-            required: true
-        }
+		id: {
+			type: String,
+			required: true
+		}
 	}
 };
 </script>

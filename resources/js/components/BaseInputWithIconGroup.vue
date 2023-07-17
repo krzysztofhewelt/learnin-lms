@@ -8,15 +8,15 @@
 				</span>
 			</div>
 			<BaseInput
-                :id="id"
-                :type="type"
-                :placeholder="placeholder"
-                :value="modelValue"
-                :required="required"
-                @input="$emit('update:modelValue', $event.target.value)"
-                class="pl-10"
-                :class="{ 'border-red-600': validationErrors }"
-            />
+				:id="id"
+				:type="type"
+				:placeholder="placeholder"
+				:value="modelValue"
+				:required="required"
+				@input="$emit('update:modelValue', $event.target.value)"
+				class="pl-10"
+				:class="{ 'border-red-600': validationErrors }"
+			/>
 		</div>
 		<span class="block text-sm font-bold text-red-400" v-for="error in validationErrors">
 			{{ error }}

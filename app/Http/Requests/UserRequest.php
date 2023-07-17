@@ -41,7 +41,6 @@ class UserRequest extends FormRequest
 				'regex:/^.*(?=.{1,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
 			],
 			'account_role' => ['required', Rule::in(['admin', 'student', 'teacher'])],
-			'userLocale' => ['required', Rule::in(['pl', 'en'])],
 
 			// student rules
 			'student' => 'required_if:account_role,==,student|array',

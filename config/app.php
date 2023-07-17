@@ -68,7 +68,7 @@ return [
     |
     */
 
-	'timezone' => env('TIMEZONE', 'UTC'),
+	'timezone' => env('LOCALE_TIMEZONE', 'UTC'),
 
 	/*
     |--------------------------------------------------------------------------
@@ -81,7 +81,7 @@ return [
     |
     */
 
-	'locale' => env('DEFAULT_LOCALE', 'en'),
+	'locale' => env('LOCALE_DEFAULT', 'en'),
 
 	/*
     |--------------------------------------------------------------------------

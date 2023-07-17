@@ -142,26 +142,27 @@ use(i18nVue, {
 ```
 
 # Used technologies and tools
-- HTML5
-- PHP Laravel Framework v9.8.1
-- MariaDB
-- Apache
-- Tailwind CSS v3.1.8
-- Vue 3 and libraries:
-    - Vuex
-    - Axios
-    - Lodash
-    - laravel-vue-i18n
-    - vue-router
-    - DayJS
-    - vue-multiselect
-    - vue-toastification
-    - vue3-popper
-    - vuejs-paginate-next
-    - vue-modal
-- Docker and Docker Compose
-- bundler: laravel-mix (webpack)
-- IDE and tools: Jetbrains PHPStorm, Postman, Jetbrains DataGrip
+
+-   HTML5
+-   PHP Laravel Framework v9.8.1
+-   MariaDB
+-   Apache
+-   Tailwind CSS v3.1.8
+-   Vue 3 and libraries:
+    -   Vuex
+    -   Axios
+    -   Lodash
+    -   laravel-vue-i18n
+    -   vue-router
+    -   DayJS
+    -   vue-multiselect
+    -   vue-toastification
+    -   vue3-popper
+    -   vuejs-paginate-next
+    -   vue-modal
+-   Docker and Docker Compose
+-   bundler: laravel-mix (webpack)
+-   IDE and tools: Jetbrains PHPStorm, Postman, Jetbrains DataGrip
 
 # Screenshots
 

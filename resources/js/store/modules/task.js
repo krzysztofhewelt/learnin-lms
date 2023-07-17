@@ -164,7 +164,7 @@ const task = {
 			state.taskRefFiles = [];
 			state.studentFiles = [];
 			state.userMark = {};
-            state.validationErrors = [];
+			state.validationErrors = [];
 		},
 
 		setUserTasks(state, tasks) {
