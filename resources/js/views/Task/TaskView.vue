@@ -42,7 +42,7 @@
 							{{ $t('task.student_files') }}
 						</router-link>
 
-						<div class="justify-center">
+						<div class="text-center">
 							<Dropdown>
 								<button class="normal_btn w-full">
 									<More class="mx-auto h-5 w-5" />
@@ -85,28 +85,28 @@
 						</span>
 					</div>
 				</div>
-				<div class="border-b-[1px] py-3" v-if="userMark !== null && isStudent">
+				<div class="border-b py-3" v-if="userMark !== null && isStudent">
 					<h1 class="text-xl font-bold">
-						{{ $t('mark.task_marked_label') }}
+						{{ $t('mark.task_marked') }}
 					</h1>
 					<div
 						class="mt-2 grid grid-cols-1 space-y-3 text-center lg:grid-cols-3 lg:space-y-0 lg:divide-x"
 					>
 						<div class="px-2">
 							<div class="text-zinc-400">
-								{{ $t('mark.points_earned_label') }}
+								{{ $t('mark.points_earned') }}
 							</div>
 							{{ userMark.points }}
 						</div>
 						<div class="px-2">
 							<div class="text-zinc-400">
-								{{ $t('mark.mark_earned_label') }}
+								{{ $t('mark.mark_earned') }}
 							</div>
 							{{ userMark.mark }}
 						</div>
 						<div class="px-2">
 							<div class="text-zinc-400">
-								{{ $t('mark.date_of_mark_label') }}
+								{{ $t('mark.date_of_mark') }}
 							</div>
 							{{ getFormattedMarkDate(userMark.updated_at) }}
 						</div>
@@ -144,13 +144,13 @@
 					>
 						<div class="px-2">
 							<div class="text-zinc-400">
-								{{ $t('task.available_from_label') }}
+								{{ $t('task.available_from') }}
 							</div>
 							{{ getFormattedDate(task.available_from) }}
 						</div>
 						<div class="px-2">
 							<div class="text-zinc-400">
-								{{ $t('task.available_to_label') }}
+								{{ $t('task.available_to') }}
 							</div>
 							<Popper
 								v-if="!isEnded"

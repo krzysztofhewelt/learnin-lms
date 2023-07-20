@@ -20,6 +20,11 @@ class FileDownloadRequest extends FormRequest
 		return true;
 	}
 
+	public function prepareForValidation(): void
+	{
+		$this->merge(['fileType' => $this->route('fileType')]);
+	}
+
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -28,7 +33,7 @@ class FileDownloadRequest extends FormRequest
 	public function rules(): array
 	{
 		return [
-			'file_type' => ['required', Rule::in(['student_upload', 'task_ref', 'course_file'])],
+			'fileType' => ['required', Rule::in(['student_upload', 'task_ref', 'course_file'])],
 		];
 	}
 

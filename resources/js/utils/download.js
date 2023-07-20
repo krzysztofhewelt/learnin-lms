@@ -1,14 +1,8 @@
 export default (fileId, fileType) => {
 	axios
-		.post(
-			'/download/' + fileId,
-			{
-				file_type: fileType
-			},
-			{
-				responseType: 'blob'
-			}
-		)
+		.get('/download/' + fileId + '/' + fileType, {
+			responseType: 'blob'
+		})
 		.then((res) => {
 			let filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
 			let matches = filenameRegex.exec(res.headers['content-disposition']);

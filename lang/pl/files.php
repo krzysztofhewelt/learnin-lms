@@ -5,8 +5,8 @@ return [
 	'uploaded_failure' => 'Wystąpił błąd podczas wysyłania plików',
 	'uploading' => 'Wysyłanie...',
 	'ready_to_upload' => 'Gotowy do wysłania',
-	'uploading_msg' =>
-		'{0,99} Wysyłanie Twoich plików, :progress %...|{99,100} Kończymy wysyłanie...',
+	'uploading_msg' => '[0,99] Wysyłanie Twoich plików, :progress %...|[99,*] Prawie skończone...',
+    'cancel' => 'Przerwano wysyłanie plików!',
 
 	'files_to_download' => 'Pliki do pobrania',
 	'upload_files' => 'Wyślij pliki',

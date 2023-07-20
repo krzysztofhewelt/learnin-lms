@@ -6,17 +6,6 @@ const locale = {
 		loading: false
 	},
 
-	mutations: {
-		setUserLocale(state, locale) {
-			state.locale = locale;
-			localStorage.setItem('locale', locale);
-		},
-
-		setLoading(state, newLoadingStatus) {
-			state.loading = newLoadingStatus;
-		}
-	},
-
 	actions: {
 		setLocale({ commit }, locale) {
 			commit('setLoading', true);
@@ -27,8 +16,21 @@ const locale = {
 				})
 				.then(() => {
 					commit('setUserLocale', locale);
+				})
+				.finally(() => {
 					commit('setLoading', false);
 				});
+		}
+	},
+
+	mutations: {
+		setUserLocale(state, locale) {
+			state.locale = locale;
+			localStorage.setItem('locale', locale);
+		},
+
+		setLoading(state, newLoadingStatus) {
+			state.loading = newLoadingStatus;
 		}
 	}
 };

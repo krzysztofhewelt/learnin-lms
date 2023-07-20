@@ -5,6 +5,7 @@ return [
 	'forbidden' => 'Nie masz dostępu do tego zasobu.',
 	'not_exists' => 'Ten zasób nie istnieje.',
 	'bad_request' => 'Wystąpił problem podczas przetwarzania żądania',
+	'token_expired' => 'Musisz zalogować się ponownie',
 
 	'actions' => 'Akcje',
 	'show' => 'Pokaż',

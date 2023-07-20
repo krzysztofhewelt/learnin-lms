@@ -58,12 +58,12 @@ export default {
 				},
 				{
 					name: 'available_from',
-					label: this.$t('task.available_from_label'),
+					label: this.$t('task.available_from'),
 					component: shallowRef(Date)
 				},
 				{
 					name: 'available_to',
-					label: this.$t('task.available_to_label'),
+					label: this.$t('task.available_to'),
 					component: shallowRef(Date)
 				},
 				{

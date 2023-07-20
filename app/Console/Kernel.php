@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
-	protected $commands = ['App\Console\Commands\CleanTempUploadsFolder'];
+	protected $commands = ['App\Console\Commands\CleanZipUploads'];
 
 	/**
 	 * Define the application's command schedule.
@@ -16,10 +16,10 @@ class Kernel extends ConsoleKernel
 	 * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
 	 * @return void
 	 */
-	protected function schedule(Schedule $schedule)
+	protected function schedule(Schedule $schedule): void
 	{
-		$schedule->command('storage:cleanTempUploadsFolder')->hourly();
-		Log::info('tmp_files for old uploads cleared!');
+		$schedule->command('storage:cleanZipUploads')->everyTwoHours();
+		Log::info('Zip files for old uploads cleared!');
 	}
 
 	/**
@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
 	 *
 	 * @return void
 	 */
-	protected function commands()
+	protected function commands(): void
 	{
 		$this->load(__DIR__ . '/Commands');
 

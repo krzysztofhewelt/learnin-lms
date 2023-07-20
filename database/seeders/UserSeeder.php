@@ -17,15 +17,16 @@ class UserSeeder extends Seeder
 	public function run(): void
 	{
 		// default admin account
-		//		User::create([
-		//			'account_role' => 'admin',
-		//			'name' => 'Jan',
-		//			'surname' => 'Kowalski',
-		//			'identification_number' => '12345',
-		//			'email' => 'email@email.com',
-		//			'password' => bcrypt('Admin#12345'),
-		//			'active' => 1,
-		//		]);
+		User::create([
+			'account_role' => 'admin',
+			'name' => 'Jan',
+			'surname' => 'Kowalski',
+			'identification_number' => '12345',
+			'email' => 'email@email.com',
+			'password' => bcrypt('Admin#12345'),
+			'active' => 1,
+			'locale' => env('LOCALE_DEFAULT'),
+		]);
 
 		// teachers
 		User::factory(5)

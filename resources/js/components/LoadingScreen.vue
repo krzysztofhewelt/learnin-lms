@@ -1,5 +1,5 @@
 <template>
-	<div class="absolute z-10 flex h-full w-full bg-white opacity-90">
+	<div class="absolute z-10 flex h-full w-full rounded-md bg-white opacity-90">
 		<div class="mx-auto my-auto">
 			<div class="my-auto text-center text-xl font-bold">
 				<Loading class="mr-1 inline h-12 w-12" />

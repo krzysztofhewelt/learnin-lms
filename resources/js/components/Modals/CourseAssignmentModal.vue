@@ -24,7 +24,7 @@
 				id="participants"
 				label="name"
 				track-by="id"
-				:placeholder="$t('user.type_to_search')"
+				:placeholder="$t('select.assignment_type_to_search')"
 				open-direction="bottom"
 				:options="users"
 				:multiple="true"
@@ -55,11 +55,13 @@
 
 				<template #option="{ option }">
 					<span>{{ option.surname }} {{ option.name }}</span>
-                    <span :class="getLabelColorForUser(option.account_role)">{{ option.account_role }}</span>
+					<span :class="getLabelColorForUser(option.account_role)">{{
+						option.account_role
+					}}</span>
 				</template>
 
 				<template #noResult>
-					{{ $t('user.no_users_found') }}
+					{{ $t('select.assignment_no_users_found') }}
 				</template>
 
 				<template #noOptions>
@@ -79,7 +81,7 @@
 			</Multiselect>
 
 			<span class="mt-1 block font-bold text-red-400" v-if="validationErrors.assignedUsers">
-				{{ $t('validation.validation_empty_assignedUsers') }}
+				{{ $t('validation.empty_assignedUsers') }}
 			</span>
 
 			<div class="modal-footer mt-4">
@@ -92,8 +94,6 @@
 				</div>
 			</div>
 		</form>
-
-        {{ searchString }}
 	</Modal>
 </template>
 
@@ -147,9 +147,9 @@ export default {
 	},
 
 	computed: {
-        search() {
-            return search
-        },
+		search() {
+			return search;
+		},
 		...mapState('course', ['validationErrors', 'loading'])
 	},
 
@@ -176,16 +176,16 @@ export default {
 			}
 		},
 
-        getLabelColorForUser(accountRole) {
-            switch (accountRole) {
-                case 'student':
-                    return 'p-1 bg-green-400 rounded-md ml-2';
-                case 'teacher':
-                    return 'p-1 bg-orange-400 rounded-md ml-2';
-                case 'admin':
-                    return 'p-1 bg-red-400 rounded-md ml-2';
-            }
-        },
+		getLabelColorForUser(accountRole) {
+			switch (accountRole) {
+				case 'student':
+					return 'p-1 bg-green-400 rounded-md ml-2';
+				case 'teacher':
+					return 'p-1 bg-orange-400 rounded-md ml-2';
+				case 'admin':
+					return 'p-1 bg-red-400 rounded-md ml-2';
+			}
+		},
 
 		searchUsersFromSelect(option, page) {
 			if (option !== '') {

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
 
 class CourseController extends Controller
 {
@@ -23,7 +24,10 @@ class CourseController extends Controller
 	{
 		$course = $this->courseModel->getCourse($courseId);
 		if ($course == null) {
-			return response()->json(['error' => 'Course does not exists!'], 404);
+			return response()->json(
+				['error' => 'Course does not exists!'],
+				Response::HTTP_NOT_FOUND,
+			);
 		}
 
 		$this->authorize('manage-courses', $course);
@@ -61,17 +65,23 @@ class CourseController extends Controller
 		// attach current user to course
 		$course->users()->attach(Auth::id());
 
-		return response()->json([
-			'success' => 'Course created successfully',
-			'course_ID' => $course->id,
-		]);
+		return response()->json(
+			[
+				'success' => 'Course created successfully',
+				'course_ID' => $course->id,
+			],
+			Response::HTTP_CREATED,
+		);
 	}
 
 	public function show(int $courseId): JsonResponse
 	{
 		$course = $this->courseModel->getCourseDetails($courseId);
 		if ($course == null) {
-			return response()->json(['error' => 'Course does not exists!'], 404);
+			return response()->json(
+				['error' => 'Course does not exists!'],
+				Response::HTTP_NOT_FOUND,
+			);
 		}
 
 		$this->authorize('show-courses', $course);
@@ -83,7 +93,10 @@ class CourseController extends Controller
 	{
 		$course = $this->courseModel->getCourse($courseId);
 		if ($course == null) {
-			return response()->json(['error' => trans('general.save')], 404);
+			return response()->json(
+				['error' => trans('Course does not exists!')],
+				Response::HTTP_NOT_FOUND,
+			);
 		}
 
 		$this->authorize('manage-courses', $course);
@@ -100,7 +113,10 @@ class CourseController extends Controller
 	{
 		$course = $this->courseModel->getCourse($courseId);
 		if ($course == null) {
-			return response()->json(['error' => 'Course does not exists!'], 404);
+			return response()->json(
+				['error' => 'Course does not exists!'],
+				Response::HTTP_NOT_FOUND,
+			);
 		}
 
 		$this->authorize('manage-courses', $course);

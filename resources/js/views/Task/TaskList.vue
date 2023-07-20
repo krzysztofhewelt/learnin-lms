@@ -61,7 +61,7 @@
 			</div>
 			<div class="px-4">
 				<div class="block text-xl font-bold">
-					{{ $t('task.available_from_label') }}
+					{{ $t('task.available_from') }}
 				</div>
 				<div class="text-2xl">
 					{{ getFormattedDate(task.available_from) }}
@@ -69,7 +69,7 @@
 			</div>
 			<div class="px-4">
 				<div class="block text-xl font-bold">
-					{{ $t('task.available_to_label') }}
+					{{ $t('task.available_to') }}
 				</div>
 				<div class="text-2xl">
 					{{ getFormattedDate(task.available_to) || $t('general.not_available') }}
@@ -77,7 +77,7 @@
 			</div>
 			<div class="px-4" v-if="currentTab === 'marked'">
 				<div class="block text-xl font-bold">
-					{{ $t('mark.task_marked_label') }}
+					{{ $t('mark.task_marked') }}
 				</div>
 				<div class="block">
 					<b>{{ $t('mark.mark') }}:</b> {{ task.user_marks[0].mark }}

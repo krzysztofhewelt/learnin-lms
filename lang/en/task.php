@@ -5,8 +5,8 @@ return [
 	'task_details' => 'Task details',
 	'issue_grades' => 'Issue grades',
 	'task_description' => 'Task description',
-	'available_from_label' => 'Available from',
-	'available_to_label' => 'Available to',
+	'available_from' => 'Available from',
+	'available_to' => 'Available to',
 	'max_points_to_earn' => 'Max. points to earn',
 	'your_files' => 'Your files',
 

@@ -46,7 +46,7 @@
 							{{ $t('course.assign_to_course') }}
 						</button>
 
-						<div class="justify-center">
+						<div class="text-center">
 							<Dropdown>
 								<button class="normal_btn">
 									<More class="mx-auto h-5 w-5" />
@@ -81,19 +81,19 @@
 					>
 						<div class="px-2">
 							<div class="text-zinc-400">
-								{{ $t('course.categories_label') }}
+								{{ $t('course.categories') }}
 							</div>
 							{{ getCategoriesCount > 0 ? getCategoriesCount : 0 }}
 						</div>
 						<div class="px-2">
 							<div class="text-zinc-400">
-								{{ $t('course.available_from_label') }}
+								{{ $t('course.available_from') }}
 							</div>
 							{{ getFormattedDate(course.available_from) }}
 						</div>
 						<div class="px-2">
 							<div class="text-zinc-400">
-								{{ $t('course.available_to_label') }}
+								{{ $t('course.available_to') }}
 							</div>
 							<Popper
 								v-if="!isEnded"
@@ -116,7 +116,7 @@
 						</div>
 						<div class="cursor-pointer px-2" @click="showParticipantsModal = true">
 							<div class="text-zinc-400">
-								{{ $t('course.participants_label') }}
+								{{ $t('course.participants') }}
 							</div>
 							<div class="font-bold text-purple-800">
 								{{ getCourseUsersCount }}
@@ -146,11 +146,11 @@
 					<div class="lg:flex lg:justify-between">
 						<div>
 							<h1 class="mb-0 text-xl font-bold">
-								{{ $t('course.course_categories_title') }}
+								{{ $t('course.course_categories') }}
 							</h1>
 							<span class="text-slate-400 lg:text-sm" v-if="getCategoriesCount > 0">
 								{{
-									$tChoice('course.categories', getCategoriesCount, {
+									$tChoice('course.categories_quantity', getCategoriesCount, {
 										value: getCategoriesCount
 									})
 								}}

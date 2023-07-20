@@ -4,11 +4,11 @@
 		<form @submit.prevent="handleSubmit">
 			<div class="p-6">
 				<h1 class="my-auto mb-4 block text-xl font-bold">
-					{{ $t('user.change_password_label') }}
+					{{ $t('passwords.change_password') }}
 				</h1>
 
 				<BasePassword
-					:label="$t('user.old_password')"
+					:label="$t('passwords.old_password')"
 					required="required"
 					id="old_password"
 					v-model="oldPassword"
@@ -16,7 +16,7 @@
 				/>
 
 				<BasePassword
-					:label="$t('user.new_password')"
+					:label="$t('passwords.new_password')"
 					required="required"
 					id="new_password"
 					v-model="newPassword"
@@ -64,7 +64,7 @@ export default {
 				})
 				.then(() => {
 					this.errors = {};
-					this.toast.success(this.$t('user.password_changed'));
+					this.toast.success(this.$t('passwords.password_changed'));
 					this.loading = false;
 					router.push({ name: 'ProfileUser' });
 				})

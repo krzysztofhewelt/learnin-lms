@@ -17,8 +17,6 @@ export default function setup() {
 			return response;
 		},
 		(error) => {
-            console.log(import.meta.env)
-
 			if (!error.response) {
 				return Promise.reject(error);
 			}
@@ -41,7 +39,7 @@ export default function setup() {
 					})
 					.catch((error) => {
 						if (error.response.status === 401) {
-							toast.info('Musisz zalogować się ponownie');
+							toast.info(trans('general.token_expired'));
 							return router.push('/login');
 						}
 

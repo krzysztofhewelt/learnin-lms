@@ -64,7 +64,7 @@ class Task extends Model
 		return $this->whereIn('course_ID', $coursesIds)
 			->with('course', 'category')
 			->where('available_to', '>=', now())
-			->orderBy('available_to', 'asc')
+			->orderBy('available_to')
 			->limit(6)
 			->get();
 	}

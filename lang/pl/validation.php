@@ -5,8 +5,8 @@ return [
 	'mark_points' => 'Liczba punktów dla studenta :surname :name nie jest prawidłową liczbą.',
 	'mark_mark' =>
 		'Ocena studenta :surname :name musi być liczbą rzeczywistą i zawierać się w przedziale [2;5].',
-	'validation_empty_assignedUsers' =>
-		'Kurs musi mieć przypisanego co najmniej jednego użytkownika',
+	'empty_assignedUsers' => 'Kurs musi mieć przypisanego co najmniej jednego użytkownika',
+	'student' => 'Musisz dodać przynajmniej jeden kierunek studiów dla tego studenta',
 
 	/*
     |--------------------------------------------------------------------------
@@ -115,7 +115,7 @@ return [
 	'regex' => 'The :attribute format is invalid.',
 	'required' => 'Pole jest wymagane.',
 	'required_array_keys' => 'The :attribute field must contain entries for: :values.',
-	'required_if' => 'Pole :attribute jest wymagane kiedy :other jest równy :value.',
+	'required_if' => 'Pole :attribute jest wymagane.',
 	'required_unless' => 'The :attribute field is required unless :other is in :values.',
 	'required_with' => 'The :attribute field is required when :values is present.',
 	'required_with_all' => 'The :attribute field is required when :values are present.',
@@ -131,7 +131,7 @@ return [
 	'starts_with' => 'The :attribute must start with one of the following: :values.',
 	'string' => 'The :attribute must be a string.',
 	'timezone' => 'The :attribute must be a valid timezone.',
-	'unique' => 'The :attribute jest już zajęte.',
+	'unique' => 'Pole :attribute jest już zajęte.',
 	'uploaded' => 'The :attribute failed to upload.',
 	'url' => 'The :attribute must be a valid URL.',
 	'uuid' => 'The :attribute must be a valid UUID.',
@@ -181,5 +181,16 @@ return [
     |
     */
 
-	'attributes' => [],
+	'attributes' => [
+		'teacher.business_email' => 'kontaktowy email',
+		'teacher.scien_degree' => 'tytuł naukowy',
+		'identification_number' => 'numer identyfikacyjny',
+
+		'student.*.field_of_study' => 'kierunek studiów',
+		'student.*.semester' => 'semestr',
+		'student.*.year_of_study' => 'rok studiów',
+		'student.*.mode_of_study' => 'tryb studiów',
+
+		'max_points' => 'maksymalna liczba punktów dla zadania',
+	],
 ];

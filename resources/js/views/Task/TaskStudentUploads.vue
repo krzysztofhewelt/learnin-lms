@@ -14,9 +14,9 @@
 			</h1>
 			<p class="mb-4">
 				<b>{{ $t('task.task_name') }}:</b> {{ task.name }}<br />
-				<b>{{ $t('task.available_from_label') }}:</b>
+				<b>{{ $t('task.available_from') }}:</b>
 				{{ getFormattedDate(task.available_from) }}<br />
-				<b>{{ $t('task.available_to_label') }}:</b>
+				<b>{{ $t('task.available_to') }}:</b>
 				{{ getFormattedDate(task.available_to) || $t('general.not_available') }}<br />
 			</p>
 

@@ -101,7 +101,7 @@
 						class="col-span-4 mt-1 text-2xl font-bold text-red-400"
 						v-if="validationErrors.student"
 					>
-						{{ $t('user.validation_student') }}
+						{{ $t('validation.student') }}
 					</div>
 
 					<template v-if="user.account_role && user.account_role.name === 'student'">
@@ -203,6 +203,7 @@
 								:label="$t('user.contact_number')"
 								type="text"
 								v-model="teacher.contact_number"
+                                :validation-errors="validationErrors['teacher.contact_number']"
 							/>
 						</div>
 						<div class="col-span-4 lg:col-span-1 lg:col-start-1">

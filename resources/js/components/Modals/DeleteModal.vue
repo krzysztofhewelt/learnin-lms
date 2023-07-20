@@ -117,6 +117,10 @@ export default {
 			if (this.deletedResource.type === 'course' && !this.adminDelete)
 				router.push({ name: 'CoursesUser' });
 
+			if (this.deletedResource.type === 'task') {
+				router.push({ name: 'Dashboard' });
+			}
+
 			this.$emit('closing');
 		}
 	}

@@ -257,7 +257,6 @@ export default {
 			let formData = new FormData();
 			const toast = useToast();
 
-			formData.append('file_type', this.resource.type);
 			this.files.forEach((file, index) => {
 				formData.append('files[' + index + ']', file);
 			});
@@ -280,7 +279,7 @@ export default {
 
 			this.uploading = true;
 			await axios
-				.post('/upload/' + this.resource.id, formData, config)
+				.post('/upload/' + this.resource.id + '/' + this.resource.type, formData, config)
 				.then(() => {
 					this.uploading = false;
 					this.updateFiles(this.resource.type);
@@ -295,7 +294,7 @@ export default {
 					this.uploadPercentage = 0;
 
 					if (axios.isCancel(error)) {
-						toast.warning('Wysyłanie zostało przerwane!');
+						toast.warning(this.$t('files.cancel'));
 					} else {
 						toast.error(this.$t('files.uploaded_failure'));
 					}

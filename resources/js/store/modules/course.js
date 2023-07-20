@@ -19,30 +19,36 @@ const course = {
 			commit('loading', true);
 			commit('resetCourse');
 
-			await axios.get('/courses/details/' + courseId).then((response) => {
-				commit('setCourse', {
-					id: response.data.id,
-					name: response.data.name,
-					description: response.data.description,
-					available_from: response.data.available_from,
-					available_to: response.data.available_to
+			await axios
+				.get('/courses/details/' + courseId)
+				.then((response) => {
+					commit('setCourse', {
+						id: response.data.id,
+						name: response.data.name,
+						description: response.data.description,
+						available_from: response.data.available_from,
+						available_to: response.data.available_to
+					});
+					commit('setCourseUsers', response.data.users);
+					commit('setCourseCategories', response.data.categories);
+					commit('setCourseFiles', response.data.course_files);
+				})
+				.finally(() => {
+					commit('loading', false);
 				});
-				commit('setCourseUsers', response.data.users);
-				commit('setCourseCategories', response.data.categories);
-				commit('setCourseFiles', response.data.course_files);
-			});
-
-			commit('loading', false);
 		},
 
 		async getCourseCategories({ commit }, courseId) {
 			commit('loading', true);
 
-			await axios.get('/categories/course/' + courseId).then((response) => {
-				commit('setCourseCategories', response.data.categories);
-			});
-
-			commit('loading', false);
+			await axios
+				.get('/categories/course/' + courseId)
+				.then((response) => {
+					commit('setCourseCategories', response.data.categories);
+				})
+				.finally(() => {
+					commit('loading', false);
+				});
 		},
 
 		async createOrEditCourse({ commit }, course) {
@@ -58,16 +64,16 @@ const course = {
 			})
 				.then((response) => {
 					commit('clearValidationErrors');
-					commit('loading', false);
-
 					return response;
 				})
 				.catch((error) => {
 					if (error.response.status === 422)
 						commit('setValidationErrors', error.response.data.errors);
 
-					commit('loading', false);
 					throw error;
+				})
+				.finally(() => {
+					commit('loading', false);
 				});
 		},
 
@@ -77,10 +83,9 @@ const course = {
 			await axios
 				.delete('/courses/delete/' + courseId)
 				.then(() => {
-					commit('loading', false);
 					commit('resetCourse');
 				})
-				.catch(() => {
+				.finally(() => {
 					commit('loading', false);
 				});
 		},
@@ -89,19 +94,16 @@ const course = {
 			commit('loading', true);
 
 			await axios
-				.delete('/delete-resource/' + courseFileId, {
-					params: {
-						file_type: 'course_file'
-					}
-				})
+				.delete('/delete-resource/' + courseFileId + '/course_file')
 				.then(() => {
 					commit(
 						'setCourseFiles',
 						state.courseFiles.filter((file) => file.id !== courseFileId)
 					);
+				})
+				.finally(() => {
+					commit('loading', false);
 				});
-
-			commit('loading', false);
 		},
 
 		async deleteCourseCategory({ commit, state }, categoryId) {
@@ -115,11 +117,9 @@ const course = {
 						state.courseCategories.filter((category) => category.id !== categoryId)
 					);
 				})
-				.catch((error) => {
-					return Promise.reject(error);
+				.finally(() => {
+					commit('loading', false);
 				});
-
-			commit('loading', false);
 		},
 
 		async createOrEditCategory({ commit }, { courseId, category }) {
@@ -141,15 +141,15 @@ const course = {
 
 					category.id = response.data.id;
 					commit('clearValidationErrors');
-					commit('loading', false);
 				})
 				.catch((error) => {
 					if (error.response.status === 422)
 						commit('setValidationErrors', error.response.data.errors);
 
-					commit('loading', false);
-
 					throw error;
+				})
+				.finally(() => {
+					commit('loading', false);
 				});
 		},
 
@@ -163,12 +163,15 @@ const course = {
 				.then(() => {
 					commit('setCourseUsers', participants);
 					commit('clearValidationErrors');
-					commit('loading', false);
 				})
 				.catch((error) => {
-					commit('setValidationErrors', error.response.data.errors);
-					commit('loading', false);
+					if (error.response.status === 422)
+						commit('setValidationErrors', error.response.data.errors);
+
 					throw error;
+				})
+				.finally(() => {
+					commit('loading', false);
 				});
 		}
 	},
@@ -216,15 +219,6 @@ const course = {
 
 		updateCourseCategory(state, category) {
 			state.courseCategories.find((key) => key['id'] === category.id).name = category.name;
-		},
-
-		addCourseFiles(state, files) {
-			files.forEach((file) => {
-				state.courseFiles.unshift({
-					filename_original: file.name,
-					course_ID: state.course.id
-				});
-			});
 		}
 	},
 

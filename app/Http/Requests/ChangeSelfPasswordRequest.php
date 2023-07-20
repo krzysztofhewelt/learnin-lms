@@ -34,7 +34,7 @@ class ChangeSelfPasswordRequest extends FormRequest
 				'required',
 				function ($attribute, $value, $fail) {
 					if (!Hash::check($value, User::find(Auth::id())->password)) {
-						$fail(trans('auth.incorrect_password'));
+						$fail(trans('validation.current_password'));
 					}
 				},
 			],

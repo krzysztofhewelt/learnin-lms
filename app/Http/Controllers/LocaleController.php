@@ -13,7 +13,7 @@ class LocaleController extends Controller
 		$locale = $request->userLocale;
 
 		if ($locale !== 'pl' && $locale !== 'en') {
-			$locale = env('DEFAULT_FALLBACK_LOCALE');
+			$locale = env('LOCALE_DEFAULT');
 		}
 
 		App::setLocale($locale);

@@ -7,10 +7,10 @@ return [
 	'mark' => 'Ocena',
 	'comment' => 'Komentarz do oceny',
 
-	'task_marked_label' => 'Ocenione zadanie',
-	'points_earned_label' => 'Zdobyte punkty',
-	'mark_earned_label' => 'Zdobyta ocena',
-	'date_of_mark_label' => 'Data wystawienia',
+	'task_marked' => 'Ocenione zadanie',
+	'points_earned' => 'Zdobyte punkty',
+	'mark_earned' => 'Zdobyta ocena',
+	'date_of_mark' => 'Data wystawienia',
 
 	'avg_mark' => 'Średnia ocen',
 	'avg_points' => 'Średnia punktów',

@@ -2,7 +2,7 @@
 	<Modal
 		:model-value="showModal"
 		@update:modelValue="showModal = false"
-		:title="$t('user.teacher_informations_edit')"
+		:title="$t('user.teacher_information_edit')"
 		wrapper-class="modal-wrapper"
 	>
 		<form @submit.prevent="handleSubmit">

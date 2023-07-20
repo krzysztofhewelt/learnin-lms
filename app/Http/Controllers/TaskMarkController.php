@@ -7,6 +7,7 @@ use App\Models\TaskMark;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class TaskMarkController extends Controller
 {
@@ -28,7 +29,7 @@ class TaskMarkController extends Controller
 	{
 		$task = $this->taskModel->getTask($taskId);
 		if ($task == null) {
-			return response()->json(['error' => 'Task does not exists!'], 404);
+			return response()->json(['error' => 'Task does not exists!'], Response::HTTP_NOT_FOUND);
 		}
 
 		$this->authorize('manage-task', $task->course);
@@ -47,7 +48,7 @@ class TaskMarkController extends Controller
 		// check if tasks exists
 		$task = $this->taskModel->getTask($taskId);
 		if ($task == null) {
-			return response()->json(['error' => 'Task does not exists!'], 404);
+			return response()->json(['error' => 'Task does not exists!'], Response::HTTP_NOT_FOUND);
 		}
 
 		$this->authorize('manage-task', $task->course);
@@ -71,7 +72,7 @@ class TaskMarkController extends Controller
 								'name' => $mark['name'],
 							]),
 						],
-						422,
+						Response::HTTP_UNPROCESSABLE_ENTITY,
 					);
 				}
 
@@ -84,7 +85,7 @@ class TaskMarkController extends Controller
 								'name' => $mark['name'],
 							]),
 						],
-						422,
+						Response::HTTP_UNPROCESSABLE_ENTITY,
 					);
 				}
 

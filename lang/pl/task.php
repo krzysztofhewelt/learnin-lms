@@ -5,8 +5,8 @@ return [
 	'task_details' => 'Szczegóły zadania',
 	'issue_grades' => 'Wystaw oceny',
 	'task_description' => 'Opis zdania',
-	'available_from_label' => 'Dostępny od',
-	'available_to_label' => 'Dostępny do',
+	'available_from' => 'Dostępny od',
+	'available_to' => 'Dostępny do',
 	'max_points_to_earn' => 'Maks. punktów do zdobycia',
 	'your_files' => 'Twoje pliki',
 

@@ -1,20 +1,14 @@
 <?php
 
 return [
-	/*
-    |--------------------------------------------------------------------------
-    | Password Reset Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines are the default lines which match reasons
-    | that are given by the password broker for a password update attempt
-    | has failed, such as for an invalid token or invalid new password.
-    |
-    */
-
-	'reset' => 'Twoje hasło zostało zrestowane!',
+	'password_changed' => 'Hasło zostało zmienione pomyślnie',
 	'sent' => 'Wysłaliśmy do Ciebie wiadomość email z linkiem do zresetowania hasła!',
 	'throttled' => 'Proszę spróbować ponownie później.',
 	'token' => 'Podany token nie istnieje.',
 	'user' => 'Nie znaleziono użytkownika o takim adresie email.',
+
+	'change_password_button' => 'Zmień hasło',
+	'change_password' => 'Zmiana hasła',
+	'old_password' => 'Stare hasło',
+	'new_password' => 'Nowe hasło',
 ];

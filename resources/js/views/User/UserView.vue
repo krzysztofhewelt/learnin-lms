@@ -38,7 +38,7 @@
 						v-if="this.$route.name === 'ProfileUser' || isOwnAccount"
 						class="normal_btn"
 					>
-						{{ $t('user.change_password_button') }}
+						{{ $t('passwords.change_password_button') }}
 					</router-link>
 				</div>
 			</div>

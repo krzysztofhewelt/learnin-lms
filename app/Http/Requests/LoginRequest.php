@@ -33,7 +33,7 @@ class LoginRequest extends FormRequest
 				'required',
 				'regex:/^.*(?=.{1,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).{8,255}$/',
 			],
-            'locale' => ['required', Rule::in(['pl', 'en'])],
+			'locale' => ['required', Rule::in(['pl', 'en'])],
 		];
 	}
 

@@ -31,7 +31,7 @@
 			</div>
 			<div class="break-words px-4">
 				<div class="text-xl font-bold">
-					{{ $t('mark.date_of_mark_label') }}
+					{{ $t('mark.date_of_mark') }}
 				</div>
 				<div class="text-2xl">
 					{{ getFormattedMarkDate(mark.updated_at) }}
@@ -72,7 +72,7 @@
 		</div>
 
 		<div
-			v-if="marks.data && marks.data.length === 0 && !loading"
+			v-if="marksPaginated.data && marksPaginated.data.length === 0 && !loading"
 			class="mt-6 text-2xl font-bold"
 		>
 			{{ $t('general.no_data') }}
@@ -81,11 +81,11 @@
 		<div
 			ref="load_more"
 			v-observe-visibility="{ callback: loadMoreMarks, throttle: 300 }"
-			v-if="!loading && page < marks.last_page"
+			v-if="!loading && page < marksPaginated.last_page"
 		></div>
 
 		<div
-			v-if="page === marks.last_page && marks.data.length > 0 && !loading"
+			v-if="page === marksPaginated.last_page && marksPaginated.data.length > 0 && !loading"
 			class="mt-6 text-2xl font-bold"
 		>
 			{{ $t('mark.all_marks') }}
@@ -108,7 +108,7 @@ export default {
 	},
 
 	computed: {
-		...mapState('user', ['loading', 'marks']),
+		...mapState('user', ['loading', 'marksPaginated']),
 		...mapGetters('user', ['getFormattedMarkDate'])
 	},
 
@@ -116,11 +116,11 @@ export default {
 		...mapActions('user', ['getUserMarks']),
 
 		showMore() {
-			if (this.page + 1 <= this.marks.last_page) {
+			if (this.page + 1 <= this.marksPaginated.last_page) {
 				this.page++;
 
 				this.getUserMarks({ page: this.page }).then(() => {
-					this.infiniteMarks.data.push(...this.marks.data);
+					this.infiniteMarks.data.push(...this.marksPaginated.data);
 				});
 			}
 		},
@@ -134,7 +134,7 @@ export default {
 
 	created() {
 		this.getUserMarks({ page: this.page }).then(() => {
-			this.infiniteMarks = this.marks;
+			this.infiniteMarks = this.marksPaginated;
 		});
 	}
 };

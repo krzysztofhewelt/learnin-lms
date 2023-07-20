@@ -65,14 +65,14 @@
 					</template>
 				</div>
 				<div v-if="course.available_to !== null && currentTab !== 'upcoming'">
-					<b>{{ $t('course.available_to_label') }}:</b>
+					<b>{{ $t('course.available_to') }}:</b>
 					{{ course.available_to }}
 				</div>
 				<div v-if="course.available_to === null && currentTab !== 'upcoming'">
 					{{ $t('course.no_available_to') }}
 				</div>
 				<div v-if="currentTab === 'upcoming'" class="font-bold underline">
-					<b>{{ $t('course.available_from_label') }}:</b>
+					<b>{{ $t('course.available_from') }}:</b>
 					{{ course.available_from }}
 				</div>
 			</div>

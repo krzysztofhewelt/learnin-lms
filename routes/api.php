@@ -50,8 +50,8 @@ Route::middleware(['auth:api', 'localization'])->group(function () {
 
 	// user section
 	Route::prefix('users')->group(function () {
-		Route::post('update-teacher/{id}', [UserController::class, 'updateTeacher']);
-		Route::post('create-or-edit/{id}', [UserController::class, 'createOrUpdate']); // creating new user or updating existing user
+		Route::patch('update-teacher/{id}', [UserController::class, 'updateTeacher']);
+		Route::put('create-or-edit/{id}', [UserController::class, 'createOrUpdate']);
 		Route::get('show/{id}', [UserController::class, 'getUserProfile']);
 		Route::delete('delete/{id}', [UserController::class, 'delete']);
 		Route::get('courses/{id}', [CourseController::class, 'showUserCourses']);
@@ -121,13 +121,13 @@ Route::middleware(['auth:api', 'localization'])->group(function () {
 	});
 
 	// upload section
-	Route::post('upload/{id}', [UploadController::class, 'uploadResources']);
+	Route::post('upload/{id}/{fileType}', [UploadController::class, 'uploadResources']);
 
 	// download section
-	Route::post('download/{id}', [DownloadController::class, 'downloadResources']);
+	Route::get('download/{id}/{fileType}', [DownloadController::class, 'downloadResources']);
 
 	// delete resources section
-	Route::delete('delete-resource/{id}', [FileController::class, 'deleteResources']);
+	Route::delete('delete-resource/{id}/{fileType}', [FileController::class, 'deleteResources']);
 
 	// logout user
 	Route::post('logout', [AuthController::class, 'logout']);

@@ -22,9 +22,12 @@ const mark = {
 				.catch((error) => {
 					if (error.response.status === 422)
 						commit('setValidationErrors', error.response.data.errors);
-				});
 
-			commit('loading', false);
+					throw error;
+				})
+				.finally(() => {
+					commit('loading', false);
+				});
 		},
 
 		// edit user marks
@@ -35,14 +38,15 @@ const mark = {
 				.post('/marks/task/' + taskId, { marks: studentsMarks })
 				.then(() => {
 					commit('clearValidationErrors');
-					commit('loading', false);
 				})
 				.catch((error) => {
 					if (error.response.status === 422)
 						commit('setValidationErrors', error.response.data.error);
 
-					commit('loading', false);
 					throw error;
+				})
+				.finally(() => {
+					commit('loading', false);
 				});
 		}
 	},

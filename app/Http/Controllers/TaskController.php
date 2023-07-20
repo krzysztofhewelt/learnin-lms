@@ -10,6 +10,7 @@ use App\Models\Task;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class TaskController extends Controller
 {
@@ -42,10 +43,6 @@ class TaskController extends Controller
 	public function getTasksForCategory($categoryId): JsonResponse
 	{
 		$tasks = $this->taskModel->getTasksForCategory($categoryId);
-		if ($tasks == null) {
-			return response()->json('');
-		}
-
 		return response()->json($tasks);
 	}
 
@@ -53,24 +50,30 @@ class TaskController extends Controller
 	{
 		$course = $this->courseModel->getCourse($request->course_ID);
 		if ($course == null) {
-			return response()->json(['error' => 'Course does not exists!'], 404);
+			return response()->json(
+				['error' => 'Course does not exists!'],
+				Response::HTTP_NOT_FOUND,
+			);
 		}
 
 		$this->authorize('manage-task', $course);
 
 		$task = $this->taskModel->create($request->validated());
 
-		return response()->json([
-			'success' => 'Task added successfully',
-			'task_ID' => $task->id,
-		]);
+		return response()->json(
+			[
+				'success' => 'Task created successfully',
+				'task_ID' => $task->id,
+			],
+			Response::HTTP_CREATED,
+		);
 	}
 
 	public function show(int $taskId): JsonResponse
 	{
 		$task = $this->taskModel->getTaskWithCategoryAndFiles($taskId);
 		if ($task == null) {
-			return response()->json(['error' => 'Task does not exists!'], 404);
+			return response()->json(['error' => 'Task does not exists!'], Response::HTTP_NOT_FOUND);
 		}
 
 		$this->authorize('show-task', $task->course);
@@ -92,7 +95,7 @@ class TaskController extends Controller
 	{
 		$task = $this->taskModel->getTask($taskId);
 		if ($task == null) {
-			return response()->json(['error' => 'Task does not exists!'], 404);
+			return response()->json(['error' => 'Task does not exists!'], Response::HTTP_NOT_FOUND);
 		}
 
 		$this->authorize('manage-task', $task->course);
@@ -109,7 +112,7 @@ class TaskController extends Controller
 	{
 		$task = $this->taskModel->getTask($taskId);
 		if ($task == null) {
-			return response()->json(['error' => 'Task does not exists!'], 404);
+			return response()->json(['error' => 'Task does not exists!'], Response::HTTP_NOT_FOUND);
 		}
 
 		$this->authorize('manage-task', $task->course);
@@ -123,7 +126,7 @@ class TaskController extends Controller
 	{
 		$task = $this->taskModel->getTask($taskId);
 		if ($task == null) {
-			return response()->json(['error' => 'Task does not exists!'], 404);
+			return response()->json(['error' => 'Task does not exists!'], Response::HTTP_NOT_FOUND);
 		}
 
 		$this->authorize('manage-task', $task->course);

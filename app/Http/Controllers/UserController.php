@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
@@ -38,7 +39,10 @@ class UserController extends Controller
 		if ($userId > 0) {
 			$user = $this->userModel->getUser($userId);
 			if ($user == null) {
-				return response()->json(['error' => 'User does not exists'], 404);
+				return response()->json(
+					['error' => 'User does not exists'],
+					Response::HTTP_NOT_FOUND,
+				);
 			}
 		} else {
 			$user = new User();
@@ -54,7 +58,7 @@ class UserController extends Controller
 		}
 		$user->account_role = $request->account_role;
 		$user->active = $request->active == null ? 0 : 1;
-		$user->locale = env('DEFAULT_LOCALE');
+		$user->locale = env('LOCALE_DEFAULT');
 		$user->save();
 
 		if ($user->account_role == 'student') {
@@ -90,10 +94,13 @@ class UserController extends Controller
 			$teacher->save();
 		}
 
-		return response()->json([
-			'success' => 'User created successfully',
-			'user_ID' => $user->id,
-		]);
+		return response()->json(
+			[
+				'success' => 'User created successfully',
+				'user_ID' => $user->id,
+			],
+			Response::HTTP_CREATED,
+		);
 	}
 
 	public function getUserProfile(int $userId = 0): JsonResponse
@@ -104,7 +111,7 @@ class UserController extends Controller
 
 		$user = $this->userModel->getUserRichInfo($userId);
 		if ($user == null) {
-			return response()->json(['error' => 'User does not exists!'], 404);
+			return response()->json(['error' => 'User does not exists!'], Response::HTTP_NOT_FOUND);
 		}
 
 		return response()->json($user);
@@ -114,7 +121,10 @@ class UserController extends Controller
 	{
 		$teacher = $this->teacherModel->getTeacherByUserId(Auth::id());
 		if ($teacher == null) {
-			return response()->json(['error' => 'This user probably isn\'t the teacher'], 404);
+			return response()->json(
+				['error' => 'This user probably isn\'t the teacher'],
+				Response::HTTP_UNAUTHORIZED,
+			);
 		}
 
 		$teacher->update($request->validated());
@@ -129,7 +139,7 @@ class UserController extends Controller
 		$this->authorize('manage-users');
 		$user = $this->userModel->getUser($userId);
 		if ($user == null) {
-			return response()->json(['error' => 'User does not exists!'], 404);
+			return response()->json(['error' => 'User does not exists!'], Response::HTTP_NOT_FOUND);
 		}
 
 		$user->delete();

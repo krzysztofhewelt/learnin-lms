@@ -1,9 +1,5 @@
-import { useToast } from 'vue-toastification';
-import router from '@/router';
 import dayjs from 'dayjs';
 import axios from 'axios';
-
-const toast = useToast();
 
 const task = {
 	namespaced: true,
@@ -22,23 +18,26 @@ const task = {
 		async showTask({ commit }, taskId) {
 			commit('loading', true);
 
-			await axios.get('/tasks/show/' + taskId).then((response) => {
-				commit('setTask', {
-					id: response.data.task.id,
-					name: response.data.task.name,
-					description: response.data.task.description,
-					available_from: response.data.task.available_from,
-					available_to: response.data.task.available_to,
-					max_points: response.data.task.max_points,
-					course: response.data.task.course,
-					category: response.data.task.category
+			await axios
+				.get('/tasks/show/' + taskId)
+				.then((response) => {
+					commit('setTask', {
+						id: response.data.task.id,
+						name: response.data.task.name,
+						description: response.data.task.description,
+						available_from: response.data.task.available_from,
+						available_to: response.data.task.available_to,
+						max_points: response.data.task.max_points,
+						course: response.data.task.course,
+						category: response.data.task.category
+					});
+					commit('setTaskRefFiles', response.data.task.task_files);
+					commit('setStudentFiles', response.data.studentFiles);
+					commit('setUserMark', response.data.userMark);
+				})
+				.finally(() => {
+					commit('loading', false);
 				});
-				commit('setTaskRefFiles', response.data.task.task_files);
-				commit('setStudentFiles', response.data.studentFiles);
-				commit('setUserMark', response.data.userMark);
-			});
-
-			commit('loading', false);
 		},
 
 		async createOrEditTask({ commit }, task) {
@@ -58,7 +57,6 @@ const task = {
 				.then((response) => {
 					commit('setTask', task);
 					commit('clearValidationErrors');
-					commit('loading', false);
 
 					return response;
 				})
@@ -66,8 +64,10 @@ const task = {
 					if (error.response.status === 422)
 						commit('setValidationErrors', error.response.data.errors);
 
-					commit('loading', false);
 					throw error;
+				})
+				.finally(() => {
+					commit('loading', false);
 				});
 		},
 
@@ -75,62 +75,60 @@ const task = {
 		async deleteTask({ commit }, taskId) {
 			commit('loading', true);
 
-			await axios.delete('/tasks/delete/' + taskId).then(() => {
-				commit('loading', false);
-				toast.success('Task deleted successfully');
-				router.push({ name: 'TasksUser' });
-			});
-
-			commit('loading', false);
+			await axios
+				.delete('/tasks/delete/' + taskId)
+				.then(() => {
+					commit('resetTask');
+				})
+				.finally(() => {
+					commit('loading', false);
+				});
 		},
 
 		async deleteStudentFile({ commit, state }, fileId) {
 			commit('loading', true);
 
 			await axios
-				.delete('/delete-resource/' + fileId, {
-					params: {
-						file_type: 'student_upload'
-					}
-				})
+				.delete('/delete-resource/' + fileId + '/student_upload')
 				.then(() => {
 					commit(
 						'setStudentFiles',
 						state.studentFiles.filter((file) => file.id !== fileId)
 					);
+				})
+				.finally(() => {
+					commit('loading', false);
 				});
-
-			commit('loading', false);
 		},
 
 		async deleteTaskRefFile({ commit, state }, fileId) {
 			commit('loading', true);
 
 			await axios
-				.delete('/delete-resource/' + fileId, {
-					params: {
-						file_type: 'task_ref'
-					}
-				})
+				.delete('/delete-resource/' + fileId + '/task_ref')
 				.then(() => {
 					commit(
 						'setTaskRefFiles',
 						state.taskRefFiles.filter((file) => file.id !== fileId)
 					);
+				})
+				.finally(() => {
+					commit('loading', false);
 				});
-
-			commit('loading', false);
 		},
 
 		async getStudentFilesInTask({ commit }, taskId) {
 			commit('loading', true);
 
-			await axios.get('/tasks/students_uploads/' + taskId).then((response) => {
-				commit('setTask', response.data.task);
-				commit('setAllStudentFilesInTask', response.data.student_files);
-			});
-
-			commit('loading', false);
+			await axios
+				.get('/tasks/students_uploads/' + taskId)
+				.then((response) => {
+					commit('setTask', response.data.task);
+					commit('setAllStudentFilesInTask', response.data.student_files);
+				})
+				.finally(() => {
+					commit('loading', false);
+				});
 		}
 	},
 
@@ -165,10 +163,6 @@ const task = {
 			state.studentFiles = [];
 			state.userMark = {};
 			state.validationErrors = [];
-		},
-
-		setUserTasks(state, tasks) {
-			state.userTasks = tasks;
 		},
 
 		setValidationErrors(state, errors) {

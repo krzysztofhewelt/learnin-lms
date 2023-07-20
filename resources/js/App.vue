@@ -10,9 +10,8 @@
 </template>
 <script>
 import TheSidebar from '@/components/TheSidebar.vue';
-import BaseHeader from '@/components/BaseHeader.vue';
 
 export default {
-	components: { BaseHeader, TheSidebar }
+	components: { TheSidebar }
 };
 </script>

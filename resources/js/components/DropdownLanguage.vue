@@ -1,5 +1,5 @@
 <template>
-	<div class="cursor-pointer px-3 py-3">
+	<div class="px-3 py-3">
 		<Dropdown>
 			<div class="font-bold text-gray-400 transition-all duration-300 hover:text-purple-600">
 				<template v-if="!loading">
@@ -38,7 +38,7 @@ import Dropdown from '@/components/Dropdown.vue';
 import Loading from '@/components/Icons/Loading.vue';
 
 export default {
-	name: 'SidebarLanguage',
+	name: 'DropdownLanguage',
 	components: { Loading, Dropdown, SidebarLink, Popper },
 
 	computed: {

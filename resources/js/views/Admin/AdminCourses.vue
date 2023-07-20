@@ -1,4 +1,3 @@
-'
 <template>
 	<DeleteModal
 		:show-modal="showDeleteModal"
@@ -73,11 +72,11 @@ export default {
 				},
 				{
 					name: 'available_from',
-					label: this.$t('course.available_from_label')
+					label: this.$t('course.available_from')
 				},
 				{
 					name: 'available_to',
-					label: this.$t('course.available_to_label')
+					label: this.$t('course.available_to')
 				},
 				{
 					name: 'crud',

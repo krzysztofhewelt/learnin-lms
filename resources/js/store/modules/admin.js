@@ -1,7 +1,7 @@
 const admin = {
 	namespaced: true,
 
-	// all arrays have pagination
+	// all arrays contains pagination links
 	state: {
 		loading: false,
 		users: [],
@@ -22,9 +22,10 @@ const admin = {
 				})
 				.then((response) => {
 					commit('setUsers', response.data);
+				})
+				.finally(() => {
+					commit('loading', false);
 				});
-
-			commit('loading', false);
 		},
 
 		async getCourses({ commit }, { search: searchString, page = 1 }) {
@@ -39,9 +40,10 @@ const admin = {
 				})
 				.then((response) => {
 					commit('setCourses', response.data);
+				})
+				.finally(() => {
+					commit('loading', false);
 				});
-
-			commit('loading', false);
 		},
 
 		async getTasks({ commit }, { search: searchString, page = 1 }) {
@@ -56,9 +58,10 @@ const admin = {
 				})
 				.then((response) => {
 					commit('setTasks', response.data);
+				})
+				.finally(() => {
+					commit('loading', false);
 				});
-
-			commit('loading', false);
 		}
 	},
 

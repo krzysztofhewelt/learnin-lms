@@ -23,6 +23,7 @@ class UserFactory extends Factory
 			'email' => $this->faker->unique()->safeEmail,
 			'password' => bcrypt('User#12345'),
 			'active' => 1,
+			'locale' => env('LOCALE_DEFAULT'),
 		];
 	}
 }

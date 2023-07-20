@@ -28,7 +28,6 @@ class AdminController extends Controller
 
 	public function showAllUsers(): JsonResponse
 	{
-		// $this->authorize('view-admin-pages');
 		return response()->json($this->userModel->searchUsers(request()->search));
 	}
 

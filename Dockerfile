@@ -2,7 +2,7 @@ FROM node:20.4.0-alpine3.17 as npm
 CMD ["npm", "start"]
 
 RUN mkdir -p /app
-COPY package.json vite.config.js package-lock.json tailwind.config.js postcss.config.js /app/
+COPY package*.json vite.config.js tailwind.config.js postcss.config.js .env /app/
 COPY resources/ /app/resources/
 COPY lang/ app/lang/
 WORKDIR /app
@@ -65,8 +65,6 @@ COPY --from=npm /app/public/build /var/www/html/public/build
 RUN chown -R www-data:www-data \
     /var/www/html/storage \
     /var/www/html/bootstrap/cache
-
-COPY .env /var/www/html/.env
 
 RUN php artisan key:generate
 RUN php artisan jwt:secret

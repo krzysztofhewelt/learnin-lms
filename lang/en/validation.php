@@ -4,7 +4,8 @@ return [
 	// VALIDATION ERRORS RELATED WITH TASK MARKS
 	'mark_points' => 'Points for student :surname :name is not valid number.',
 	'mark_mark' => 'Grade for student :surname :name must by number in range [2;5].',
-	'validation_empty_assignedUsers' => 'The course must have at least one user assigned to it.',
+	'empty_assignedUsers' => 'The course must have at least one user assigned to it.',
+	'student' => 'YYou must add at least one field of study',
 
 	/*
     |--------------------------------------------------------------------------
@@ -18,28 +19,28 @@ return [
     */
 
 	'accepted' => ':attribute must be accepted.',
-	'accepted_if' => ':attribute musi być zaakceptowany kiedy :other jest równy :value.',
-	'active_url' => ':attribute nie jest prawidłowym adresem URL.',
+	'accepted_if' => ':attribute must be accepted if :other equals :value.',
+	'active_url' => ':attribute is not valid URL.',
 	'after' => ':attribute must be later than :date.',
-	'after_or_equal' => ':attribute musi być później lub równy :date.',
-	'alpha' => ':attribute może zawierać wyłącznie litery.',
-	'alpha_dash' => 'Pole może zawierać wyłącznie litery, cyfry, myślniki oraz znaki podkreślenia',
-	'alpha_num' => 'Pole może zawierać wyłącznie litery i cyfry.',
+	'after_or_equal' => ':attribute must be later or equal :date.',
+	'alpha' => ':attribute must contains only letters.',
+	'alpha_dash' => 'Field must contain only letters, digits, dashes and underscores',
+	'alpha_num' => 'Field must contain only letters and digits.',
 	'array' => 'Field must be array.',
-	'before' => ':attribute musi być wcześniej niż :date.',
-	'before_or_equal' => ':attribute musi być wcześniej lub równy :date.',
+	'before' => ':attribute must be earlier than :date.',
+	'before_or_equal' => ':attribute must be earlier or equal :date.',
 	'between' => [
-		'array' => ':attribute musi zawierać się w przedziale [:min; :max].',
+		'array' => ':attribute must be in range [:min; :max].',
 		'file' =>
-			'Rozmiar plików :attribute musi zawierać się w przedziale [:min; :max] kilobajtów.',
-		'numeric' => 'Wartość :attribute musi zawierać się w zakresie [:min; :max].',
-		'string' => 'Długość :attribute musi zawierać się w przedziale [:min; :max] znaków.',
+			'File size :attribute must be in range [:min; :max] kilobytes.',
+		'numeric' => 'Value :attribute must be in range [:min; :max].',
+		'string' => 'String length :attribute must be in range [:min; :max] chars.',
 	],
-	'boolean' => 'Pole musi być prawdą lub fałszem.',
-	'confirmed' => 'Pole nie jest identyczne.',
+	'boolean' => 'Field must be true or false.',
+	'confirmed' => 'Field is not the same.',
 	'current_password' => 'Password is invalid.',
 	'date' => 'Field is not valid date.',
-	'date_equals' => ':attribute nie jest równa dacie :date.',
+	'date_equals' => ':attribute is not equal :date.',
 	'date_format' => 'The :attribute does not match the format :format.',
 	'declined' => 'The :attribute must be declined.',
 	'declined_if' => 'The :attribute must be declined when :other is :value.',
@@ -98,7 +99,7 @@ return [
 	'min' => [
 		'array' => 'The :attribute must have at least :min items.',
 		'file' => 'The :attribute must be at least :min kilobytes.',
-		'numeric' => ':attribute musi mieć co najmniej :min.',
+		'numeric' => ':attribute must be higher than :min.',
 		'string' => 'Field must be at least :min characters long.',
 	],
 	'multiple_of' => 'The :attribute must be a multiple of :value.',
@@ -113,7 +114,7 @@ return [
 	'regex' => 'The :attribute format is invalid.',
 	'required' => 'Field is required.',
 	'required_array_keys' => 'The :attribute field must contain entries for: :values.',
-	'required_if' => 'Field :attribute is required when :other is equal to :value.',
+	'required_if' => 'Field :attribute is required.',
 	'required_unless' => 'The :attribute field is required unless :other is in :values.',
 	'required_with' => 'The :attribute field is required when :values is present.',
 	'required_with_all' => 'The :attribute field is required when :values are present.',
@@ -149,6 +150,16 @@ return [
 		'password' => [
 			'regex' =>
 				'Password must contain at least one big and small letter and special character and must have at least 8 characters.',
+		],
+
+		'current_password' => [
+			'regex' =>
+				'Password must contain at least one big and small letter and special character and must have at least 8 characters.',
+		],
+
+		'new_password' => [
+			'regex' =>
+				'Password must contain at least one big and small letter and special character and must have at least 8 characters.',
 			'different' => 'Password must be different than current password.',
 		],
 
@@ -169,5 +180,16 @@ return [
     |
     */
 
-	'attributes' => [],
+	'attributes' => [
+		'teacher.business_email' => 'contact email',
+		'teacher.scien_degree' => 'scientific degree',
+		'identification_number' => 'identification number',
+
+		'student.*.field_of_study' => 'field of study',
+		'student.*.semester' => 'semester',
+		'student.*.year_of_study' => 'year of study',
+		'student.*.mode_of_study' => 'mode of study',
+
+		'max_points' => 'max points for task',
+	],
 ];

@@ -36,9 +36,7 @@ class UserRequest extends FormRequest
 			'email' => 'required|email|unique:users,email,' . $this->route('id'),
 			'password' => [
 				'sometimes',
-				'min:8',
-				'max:255',
-				'regex:/^.*(?=.{1,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
+				'regex:/^.*(?=.{1,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).{8,255}$/',
 			],
 			'account_role' => ['required', Rule::in(['admin', 'student', 'teacher'])],
 
