@@ -1,7 +1,7 @@
 const admin = {
 	namespaced: true,
 
-	// all arrays have pagination
+	// all arrays contains pagination links
 	state: {
 		loading: false,
 		users: [],
@@ -10,76 +10,58 @@ const admin = {
 	},
 
 	actions: {
-		async getAllUsers({ commit }, page = 1) {
-			commit('loading', true);
-
-			await axios.get('/admin/users?page=' + page).then((response) => {
-				commit('setUsers', response.data);
-			});
-
-			commit('loading', false);
-		},
-
-		async getUser({ commit }, { search: searchString, page = 1 }) {
+		async getUsers({ commit }, { search: searchString, page = 1 }) {
 			commit('loading', true);
 
 			await axios
-				.post('/users/search?page=' + page, {
-					searchString: searchString
+				.get('/admin/users', {
+					params: {
+						page: page,
+						search: searchString
+					}
 				})
 				.then((response) => {
 					commit('setUsers', response.data);
+				})
+				.finally(() => {
+					commit('loading', false);
 				});
-
-			commit('loading', false);
 		},
 
-		async getAllCourses({ commit }, page = 1) {
-			commit('loading', true);
-
-			await axios.get('/admin/courses?page=' + page).then((response) => {
-				commit('setCourses', response.data);
-			});
-
-			commit('loading', false);
-		},
-
-		async getCourse({ commit }, { search: searchString, page = 1 }) {
+		async getCourses({ commit }, { search: searchString, page = 1 }) {
 			commit('loading', true);
 
 			await axios
-				.post('/courses/search?page=' + page, {
-					searchString: searchString
+				.get('/admin/courses', {
+					params: {
+						page: page,
+						search: searchString
+					}
 				})
 				.then((response) => {
 					commit('setCourses', response.data);
+				})
+				.finally(() => {
+					commit('loading', false);
 				});
-
-			commit('loading', false);
 		},
 
-		async getAllTasks({ commit }, page = 1) {
-			commit('loading', true);
-
-			await axios.get('/admin/tasks?page=' + page).then((response) => {
-				commit('setTasks', response.data);
-			});
-
-			commit('loading', false);
-		},
-
-		async getTask({ commit }, { search: searchString, page = 1 }) {
+		async getTasks({ commit }, { search: searchString, page = 1 }) {
 			commit('loading', true);
 
 			await axios
-				.post('/tasks/search?page=' + page, {
-					searchString: searchString
+				.get('/admin/tasks', {
+					params: {
+						page: page,
+						search: searchString
+					}
 				})
 				.then((response) => {
 					commit('setTasks', response.data);
+				})
+				.finally(() => {
+					commit('loading', false);
 				});
-
-			commit('loading', false);
 		}
 	},
 

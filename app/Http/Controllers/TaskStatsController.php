@@ -6,6 +6,7 @@ use App\Models\CourseCategory;
 use App\Models\Task;
 use App\Models\TaskMark;
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class TaskStatsController extends Controller
 {
@@ -30,14 +31,20 @@ class TaskStatsController extends Controller
 	): JsonResponse {
 		$courseCategory = $this->courseCategoryModel->getCourseCategory($courseCategoryId);
 		if ($courseCategory == null) {
-			return response()->json(['error' => 'Course category does not exists'], 404);
+			return response()->json(
+				['error' => 'Course category does not exists'],
+				Response::HTTP_NOT_FOUND,
+			);
 		}
 
 		// check if given course belongs to course category
 		if ($courseCategory->course_ID != $courseId) {
-			return response()->json([
-				'error' => 'This course category does not belongs to this course',
-			]);
+			return response()->json(
+				[
+					'error' => 'This course category does not belongs to this course',
+				],
+				Response::HTTP_UNPROCESSABLE_ENTITY,
+			);
 		}
 
 		$this->authorize('view-marks-statistics', $courseCategory->course);
@@ -51,7 +58,7 @@ class TaskStatsController extends Controller
 	{
 		$task = $this->taskModel->getTask($taskId);
 		if ($task == null) {
-			return response()->json(['error' => 'Task does not exists!'], 404);
+			return response()->json(['error' => 'Task does not exists!'], Response::HTTP_NOT_FOUND);
 		}
 
 		$this->authorize('view-marks-statistics', $task->course);

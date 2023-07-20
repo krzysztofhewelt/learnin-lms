@@ -13,27 +13,27 @@
 
 				<div class="grid grid-cols-4 gap-x-4 gap-y-2">
 					<div class="col-span-4 lg:col-span-1">
-						<label for="account_role">{{ $t('user.account_role') }}</label>
-						<Multiselect
+						<MultiselectInputGroup
+							:label="$t('user.account_role')"
+							:required="true"
+							:validation-errors="validationErrors.account_role"
 							id="account_role"
-							v-model="user.account_role"
-							:options="account_roles"
-							:loading="loading"
-							:searchable="false"
-							:allow-empty="false"
-							select-label=""
-							:selected-label="$t('select.selected')"
-							deselect-label=""
-							:placeholder="$t('general.select_one')"
-							label="label"
-							track-by="name"
-						/>
-						<span
-							class="mt-1 block font-bold text-red-400"
-							v-for="error in validationErrors.account_role"
 						>
-							{{ error }}
-						</span>
+							<Multiselect
+								id="account_role"
+								v-model="user.account_role"
+								:options="account_roles"
+								:loading="loading"
+								:searchable="false"
+								:allow-empty="false"
+								select-label=""
+								:selected-label="$t('select.selected')"
+								deselect-label=""
+								:placeholder="$t('general.select_one')"
+								label="label"
+								track-by="name"
+							/>
+						</MultiselectInputGroup>
 					</div>
 					<div class="col-span-4 lg:col-span-1 lg:col-start-1">
 						<BaseInputGroup
@@ -89,29 +89,6 @@
 							:validation-errors="validationErrors.password"
 						/>
 					</div>
-					<div class="col-span-4 mb-2 lg:col-span-1 lg:col-start-1">
-						<label for="locale">{{ $t('user.locale') }}</label>
-						<Multiselect
-							id="locale"
-							v-model="user.locale"
-							:options="locales"
-							:loading="loading"
-							:searchable="false"
-							:allow-empty="false"
-							select-label=""
-							:selected-label="$t('select.selected')"
-							deselect-label=""
-							:placeholder="$t('general.select_one')"
-							label="label"
-							track-by="name"
-						/>
-						<span
-							class="mt-1 block font-bold text-red-400"
-							v-for="error in validationErrors.locale"
-						>
-							{{ error }}
-						</span>
-					</div>
 					<div class="col-span-4 lg:col-span-1 lg:col-start-1">
 						<BaseCheckbox
 							id="active"
@@ -124,7 +101,7 @@
 						class="col-span-4 mt-1 text-2xl font-bold text-red-400"
 						v-if="validationErrors.student"
 					>
-						{{ $t('user.validation_student') }}
+						{{ $t('validation.student') }}
 					</div>
 
 					<template v-if="user.account_role && user.account_role.name === 'student'">
@@ -226,6 +203,7 @@
 								:label="$t('user.contact_number')"
 								type="text"
 								v-model="teacher.contact_number"
+                                :validation-errors="validationErrors['teacher.contact_number']"
 							/>
 						</div>
 						<div class="col-span-4 lg:col-span-1 lg:col-start-1">
@@ -266,10 +244,12 @@ import BaseCheckbox from '@/components/BaseCheckbox.vue';
 import Multiselect from 'vue-multiselect';
 import router from '@/router';
 import { useToast } from 'vue-toastification';
+import MultiselectInputGroup from '@/components/MultiselectInputGroup.vue';
 
 export default {
 	name: 'UserForm',
 	components: {
+		MultiselectInputGroup,
 		BaseCheckbox,
 		BasePassword,
 		ButtonSubmit,
@@ -292,16 +272,6 @@ export default {
 				{
 					name: 'admin',
 					label: this.$t('user.admin')
-				}
-			],
-			locales: [
-				{
-					name: 'en',
-					label: this.$t('languages.en')
-				},
-				{
-					name: 'pl',
-					label: this.$t('languages.pl')
 				}
 			]
 		};
@@ -354,7 +324,6 @@ export default {
 		if (this.$route.name === 'UsersEdit') {
 			this.getUserDetails(this.$route.params.id).then(() => {
 				this.user.account_role.label = this.$t('user.' + this.user.account_role.name);
-				this.user.locale.label = this.$t('languages.' + this.user.locale.name);
 			});
 		} else {
 			this.resetUser();

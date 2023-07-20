@@ -26,6 +26,7 @@ import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import pl from 'dayjs/locale/pl';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import LoginFormDev from '@/views/Authenticate/LoginFormDev.vue';
 
 const routes = [
 	{
@@ -85,7 +86,12 @@ const routes = [
 		name: 'Courses',
 		component: PassRoute,
 		children: [
-			{ path: '', name: 'CoursesUser', component: CourseList },
+			{
+				path: '',
+				name: 'CoursesUser',
+				component: CourseList,
+				meta: { role: ['student', 'teacher'] }
+			},
 			{
 				path: 'create',
 				name: 'CoursesCreate',
@@ -146,7 +152,12 @@ const routes = [
 		name: 'Tasks',
 		component: PassRoute,
 		children: [
-			{ path: '', name: 'TasksUser', component: TaskList },
+			{
+				path: '',
+				name: 'TasksUser',
+				component: TaskList,
+				meta: { role: ['student', 'teacher'] }
+			},
 			{ path: 'category/:id', name: 'TasksInCategory', component: TaskList },
 			{
 				path: 'create',
@@ -191,13 +202,15 @@ router.beforeEach((to, from, next) => {
 
 		const loggedIn = login.state.token;
 
+		if (!login.state.user) return next('/login');
+
+		if (authRequired && !loggedIn) return next('/login');
+
 		// check account role
 		const account_role = login.state.user && login.state.user.account_role;
 		if (to.meta.role && !to.meta.role.includes(account_role)) {
 			return next('/');
 		}
-
-		if (authRequired && !loggedIn) return next('/login');
 
 		next();
 	});

@@ -14,6 +14,6 @@ class ChangeSelfPasswordController extends Controller
 		$user->password = bcrypt($request->new_password);
 		$user->update();
 
-		return response()->json(['success' => 'Password successfully updated']);
+		return response()->json(['success' => 'Password changed']);
 	}
 }

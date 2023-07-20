@@ -5,8 +5,8 @@ return [
 	'mark_points' => 'Liczba punktów dla studenta :surname :name nie jest prawidłową liczbą.',
 	'mark_mark' =>
 		'Ocena studenta :surname :name musi być liczbą rzeczywistą i zawierać się w przedziale [2;5].',
-	'validation_empty_assignedUsers' =>
-		'Kurs musi mieć przypisanego co najmniej jednego użytkownika',
+	'empty_assignedUsers' => 'Kurs musi mieć przypisanego co najmniej jednego użytkownika',
+	'student' => 'Musisz dodać przynajmniej jeden kierunek studiów dla tego studenta',
 
 	/*
     |--------------------------------------------------------------------------
@@ -22,7 +22,7 @@ return [
 	'accepted' => ':attribute musi być zaakceptowany.',
 	'accepted_if' => ':attribute musi być zaakceptowany kiedy :other jest równy :value.',
 	'active_url' => ':attribute nie jest prawidłowym adresem URL.',
-	'after' => 'Data musi być później niż data rozpoczęcia.',
+	'after' => 'Data musi być późniejsza niż data rozpoczęcia.',
 	'after_or_equal' => ':attribute musi być później lub równy :date.',
 	'alpha' => ':attribute może zawierać wyłącznie litery.',
 	'alpha_dash' => 'Pole może zawierać wyłącznie litery, cyfry, myślniki oraz znaki podkreślenia',
@@ -50,7 +50,7 @@ return [
 	'digits_between' => 'The :attribute must be between :min and :max digits.',
 	'dimensions' => 'The :attribute has invalid image dimensions.',
 	'distinct' => 'The :attribute field has a duplicate value.',
-	'email' => 'Pole nie jest prawidłowym adresem email.',
+	'email' => 'Podano nieprawidłowy adres email.',
 	'ends_with' => 'The :attribute must end with one of the following: :values.',
 	'enum' => 'The selected :attribute is invalid.',
 	'exists' => 'Zaznaczona wartość nie istnieje.',
@@ -93,7 +93,7 @@ return [
 		'array' => 'The :attribute must not have more than :max items.',
 		'file' => 'Rozmiar pliku :attribute nie może być wiekszy niż :max kilobajtów.',
 		'numeric' => 'The :attribute must not be greater than :max.',
-		'string' => 'This field must not be greater than :max characters.',
+		'string' => 'Pole nie może zawierać więcej niż :max znaków.',
 	],
 	'mimes' => 'The :attribute must be a file of type: :values.',
 	'mimetypes' => 'The :attribute must be a file of type: :values.',
@@ -115,7 +115,7 @@ return [
 	'regex' => 'The :attribute format is invalid.',
 	'required' => 'Pole jest wymagane.',
 	'required_array_keys' => 'The :attribute field must contain entries for: :values.',
-	'required_if' => 'Pole :attribute jest wymagane kiedy :other jest równy :value.',
+	'required_if' => 'Pole :attribute jest wymagane.',
 	'required_unless' => 'The :attribute field is required unless :other is in :values.',
 	'required_with' => 'The :attribute field is required when :values is present.',
 	'required_with_all' => 'The :attribute field is required when :values are present.',
@@ -131,7 +131,7 @@ return [
 	'starts_with' => 'The :attribute must start with one of the following: :values.',
 	'string' => 'The :attribute must be a string.',
 	'timezone' => 'The :attribute must be a valid timezone.',
-	'unique' => 'The :attribute jest już zajęte.',
+	'unique' => 'Pole :attribute jest już zajęte.',
 	'uploaded' => 'The :attribute failed to upload.',
 	'url' => 'The :attribute must be a valid URL.',
 	'uuid' => 'The :attribute must be a valid UUID.',
@@ -153,6 +153,17 @@ return [
 				'Hasło musi zawierać co najmniej jedną wielką i małą literę oraz znak specjalny oraz musi mieć co najmniej 8 znaków.',
 		],
 
+		'current_password' => [
+			'regex' =>
+				'Hasło musi zawierać co najmniej jedną wielką i małą literę oraz znak specjalny oraz musi mieć co najmniej 8 znaków.',
+		],
+
+		'new_password' => [
+			'regex' =>
+				'Hasło musi zawierać co najmniej jedną wielką i małą literę oraz znak specjalny oraz musi mieć co najmniej 8 znaków.',
+			'different' => 'Hasło musi różnić się od obecnego hasła.',
+		],
+
 		'email' => [
 			'exists' => 'Użytkownik o podanym adresie email nie istnieje.',
 			'unique' => 'Użytkownik o podanym adresie email już istnieje.',
@@ -170,5 +181,16 @@ return [
     |
     */
 
-	'attributes' => [],
+	'attributes' => [
+		'teacher.business_email' => 'kontaktowy email',
+		'teacher.scien_degree' => 'tytuł naukowy',
+		'identification_number' => 'numer identyfikacyjny',
+
+		'student.*.field_of_study' => 'kierunek studiów',
+		'student.*.semester' => 'semestr',
+		'student.*.year_of_study' => 'rok studiów',
+		'student.*.mode_of_study' => 'tryb studiów',
+
+		'max_points' => 'maksymalna liczba punktów dla zadania',
+	],
 ];

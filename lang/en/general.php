@@ -3,6 +3,9 @@
 return [
 	'loading' => 'Loading...',
 	'forbidden' => 'You don\'t have access to this.',
+	'not_exists' => 'This resource does not exists.',
+	'bad_request' => 'An error occurred while processing the request',
+	'token_expired' => 'You need to log in again',
 
 	'actions' => 'Actions',
 	'show' => 'Show',
@@ -37,6 +40,6 @@ return [
 
 	'created_successfully' => 'The resource was created successfully.',
 	'removed_successfully' => 'The resource was deleted successfully.',
-	'saved_successfully' => 'Changes have been changed.',
+	'saved_successfully' => 'Changes have been saved.',
 	'validation_errors' => 'The form contains errors, correct the errors and try again.',
 ];

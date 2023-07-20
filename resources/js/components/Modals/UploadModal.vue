@@ -4,14 +4,28 @@
 		@update:modelValue="showModal = false"
 		:title="$t('files.upload_files')"
 		modal-class="scrollable-modal"
+		@closing="abortUploading"
 	>
 		<form @submit.prevent="uploadFiles" enctype="multipart/form-data">
 			<div class="scrollable-content">
 				<div
-					class="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 p-8 text-lg font-bold"
+					class="relative mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 font-bold"
 					v-if="uploading"
 				>
-					{{ $t('files.uploading_msg') }}
+					<div
+						class="absolute left-0 h-full rounded-md bg-green-600 p-8 opacity-30"
+						:style="`width: ${uploadPercentage}% !important;`"
+						v-if="uploading"
+					>
+						&nbsp;
+					</div>
+					<div class="z-10 p-8">
+						{{
+							$tChoice('files.uploading_msg', uploadPercentage, {
+								progress: uploadPercentage
+							})
+						}}
+					</div>
 				</div>
 				<div
 					class="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 p-8"
@@ -102,10 +116,11 @@
 				<div class="flex flex-row-reverse">
 					<ButtonSubmit
 						class="ml-3"
-						:loading="this.files.length === 0 || uploading"
 						:value="$t('files.upload_files')"
+						:loading="this.files.length === 0 || uploading"
 					/>
-					<button class="manage_btn" type="button" @click.prevent="showModal = false">
+
+					<button class="normal_btn" type="button" @click.prevent="showModal = false">
 						{{ $t('general.cancel') }}
 					</button>
 				</div>
@@ -160,7 +175,9 @@ export default {
 			pageX: 0,
 			pageY: 0,
 			uploadDragoverTracking: false,
-			uploadDragoverEvent: false
+			uploadDragoverEvent: false,
+			uploadPercentage: 0,
+			controller: null
 		};
 	},
 
@@ -240,31 +257,47 @@ export default {
 			let formData = new FormData();
 			const toast = useToast();
 
-			formData.append('file_type', this.resource.type);
 			this.files.forEach((file, index) => {
 				formData.append('files[' + index + ']', file);
 			});
 
+			this.controller = new AbortController();
+
 			const config = {
 				headers: {
 					'Content-Type': 'multipart/form-data'
-				}
+				},
+
+				onUploadProgress: function (progressEvent) {
+					this.uploadPercentage = parseInt(
+						Math.round((progressEvent.loaded / progressEvent.total) * 100)
+					);
+				}.bind(this),
+
+				signal: this.controller.signal
 			};
 
 			this.uploading = true;
 			await axios
-				.post('/upload/' + this.resource.id, formData, config)
+				.post('/upload/' + this.resource.id + '/' + this.resource.type, formData, config)
 				.then(() => {
 					this.uploading = false;
 					this.updateFiles(this.resource.type);
 
 					toast.success(this.$t('files.uploaded_successfully'));
 					this.files = [];
+					this.uploadPercentage = 0;
 					this.$emit('closing');
 				})
-				.catch(() => {
+				.catch((error) => {
 					this.uploading = false;
-					toast.error(this.$t('files.uploaded_failure'));
+					this.uploadPercentage = 0;
+
+					if (axios.isCancel(error)) {
+						toast.warning(this.$t('files.cancel'));
+					} else {
+						toast.error(this.$t('files.uploaded_failure'));
+					}
 				});
 		},
 
@@ -278,6 +311,10 @@ export default {
 					this.showTask(this.resource.id);
 					break;
 			}
+		},
+
+		abortUploading() {
+			if (this.controller) this.controller.abort();
 		}
 	}
 };

@@ -34,7 +34,7 @@
 						<BaseInputGroup
 							id="available_from"
 							type="datetime-local"
-							:label="$t('course.available_from_label')"
+							:label="$t('course.available_from')"
 							:required="true"
 							v-model="availableFrom"
 							:validation-errors="validationErrors.available_from"
@@ -44,7 +44,7 @@
 						<BaseInputGroup
 							id="available_to"
 							type="datetime-local"
-							:label="$t('course.available_to_label')"
+							:label="$t('course.available_to')"
 							v-model="availableTo"
 							:validation-errors="validationErrors.available_to"
 						/>

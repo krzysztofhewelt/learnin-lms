@@ -5,19 +5,19 @@ services:
             context: .
             dockerfile: Dockerfile
         container_name: app
-        restart: always
+        restart: unless-stopped
         depends_on:
-            - mariadb
+            - database
         ports:
-            - 80:80
+            - '80:80'
         networks:
             - learnin_network
         entrypoint: sh -c "sleep 3 && php /var/www/html/artisan migrate && apache2-foreground"
 
-    mariadb:
+    database:
         image: mariadb
-        container_name: mariadb
-        restart: always
+        container_name: database
+        restart: unless-stopped
         ports:
             - ${DB_PORT}:3306
         env_file:

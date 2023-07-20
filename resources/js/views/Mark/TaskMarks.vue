@@ -7,15 +7,16 @@
 			&lt; &lt; {{ $t('mark.back_to_task') }}
 		</router-link>
 
-		<h1 class="font-bold">{{ $t('mark.issue_grades_title') }}</h1>
+		<h1 class="font-bold text-2xl">{{ $t('mark.issue_grades_title') }}</h1>
 		<div class="font-bold">
 			{{ $t('task.task_name') }}: {{ task.name }}<br />
 			<template v-if="task.available_to">
-				{{ $t('task.available_to_label') }}: {{ task.available_to }}<br />
+				{{ $t('task.available_to') }}: {{ task.available_to }}
 			</template>
 			<template v-else>
 				{{ $t('task.no_available_to') }}
 			</template>
+            <br />
 			{{ $t('course.course') }}: {{ task.course && task.course.name }}<br />
 			<u>{{ $t('task.max_points_to_earn') }}: {{ task.max_points }}</u>
 		</div>

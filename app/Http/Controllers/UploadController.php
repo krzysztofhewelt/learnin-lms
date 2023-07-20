@@ -7,6 +7,7 @@ use App\Models\CourseFile;
 use App\Models\StudentFile;
 use App\Models\Task;
 use App\Models\TaskFile;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\JsonResponse;
@@ -28,11 +29,9 @@ class UploadController extends Controller
 		$this->courseModel = new Course();
 	}
 
-	public function uploadResources(
-		\Illuminate\Http\Request $request,
-		int $resourceId,
-	): JsonResponse {
-		$fileType = $request->file_type;
+	public function uploadResources(Request $request, int $resourceId): JsonResponse
+	{
+		$fileType = $request->fileType;
 		$files = $request->file('files');
 
 		$this->authorize('upload-files', [
@@ -40,64 +39,56 @@ class UploadController extends Controller
 			$this->getCourseForResource($fileType, $resourceId),
 		]);
 
-		if ($request->isMethod('POST')) {
-			foreach ($files as $file) {
-				// we are checking if file exists
-				$fileToUpload = $this->getFileByName(
-					$file->getClientOriginalName(),
-					$fileType,
-					$resourceId,
-				);
-				if ($fileToUpload != null) {
-					$oldFileDir = $this->getFileDir(
-						$fileType,
-						$resourceId,
-						$fileToUpload->filename,
-					);
-					if (Storage::exists($oldFileDir)) {
-						Storage::delete($oldFileDir);
-					}
-				} else {
-					$fileToUpload = $this->getInstanceOfNewFileObject($fileType);
+		foreach ($files as $file) {
+			// we are checking if file exists
+			$fileToUpload = $this->getFileByName(
+				$file->getClientOriginalName(),
+				$fileType,
+				$resourceId,
+			);
+			if ($fileToUpload != null) {
+				$oldFileDir = $this->getFileDir($fileType, $resourceId, $fileToUpload->filename);
+				if (Storage::exists($oldFileDir)) {
+					Storage::delete($oldFileDir);
 				}
-
-				if ($fileType == 'student_upload') {
-					$fileToUpload->user_ID = Auth::id();
-					$fileToUpload->task_ID = $resourceId;
-				} elseif ($fileType == 'task_ref') {
-					$fileToUpload->task_ID = $resourceId;
-				} elseif ($fileType == 'course_file') {
-					$fileToUpload->course_ID = $resourceId;
-				}
-
-				// fix for .exe files and nginx.:
-				$filenameHashed =
-					pathinfo($file->hashName(), PATHINFO_FILENAME) .
-					'.' .
-					$file->getClientOriginalExtension();
-				$fileToUpload->filename = $filenameHashed;
-				$fileToUpload->filename_original = $file->getClientOriginalName();
-
-				$fileDir = $this->getFileDir(
-					$fileType,
-					$this->getCourseIdForResource($fileType, $resourceId),
-				);
-				Storage::putFileAs($fileDir, $file, $filenameHashed);
-
-				$filesize = $this->filesize_conversion($file->getSize());
-				$convertedFilesizeSplitted = explode(' ', $filesize);
-
-				$fileToUpload->file_size = $convertedFilesizeSplitted[0];
-				$fileToUpload->file_size_unit = $convertedFilesizeSplitted[1];
-				$fileToUpload->save();
+			} else {
+				$fileToUpload = $this->getInstanceOfNewFileObject($fileType);
 			}
 
-			return response()->json([
-				'success' => 'Files uploaded successfully',
-			]);
+			if ($fileType == 'student_upload') {
+				$fileToUpload->user_ID = Auth::id();
+				$fileToUpload->task_ID = $resourceId;
+			} elseif ($fileType == 'task_ref') {
+				$fileToUpload->task_ID = $resourceId;
+			} elseif ($fileType == 'course_file') {
+				$fileToUpload->course_ID = $resourceId;
+			}
+
+			// fix for .exe files and nginx.:
+			$filenameHashed =
+				pathinfo($file->hashName(), PATHINFO_FILENAME) .
+				'.' .
+				$file->getClientOriginalExtension();
+			$fileToUpload->filename = $filenameHashed;
+			$fileToUpload->filename_original = $file->getClientOriginalName();
+
+			$fileDir = $this->getFileDir(
+				$fileType,
+				$this->getCourseIdForResource($fileType, $resourceId),
+			);
+			Storage::putFileAs($fileDir, $file, $filenameHashed);
+
+			$filesize = $this->filesize_conversion($file->getSize());
+			$convertedFilesizeSplitted = explode(' ', $filesize);
+
+			$fileToUpload->file_size = $convertedFilesizeSplitted[0];
+			$fileToUpload->file_size_unit = $convertedFilesizeSplitted[1];
+			$fileToUpload->save();
 		}
 
-		return response()->json(['error' => 'Bad operation'], 400);
+		return response()->json([
+			'success' => 'Files uploaded successfully',
+		]);
 	}
 
 	private function getInstanceOfNewFileObject(
@@ -120,6 +111,8 @@ class UploadController extends Controller
 		} elseif ($fileType == 'course_file') {
 			return $this->courseModel->getCourse($resourceId);
 		}
+
+		return null;
 	}
 
 	private function getCourseIdForResource(string $fileType, int $resourceId): int
@@ -140,19 +133,6 @@ class UploadController extends Controller
 			'student_upload' => '/courses/' . $courseId . '/tasks/students/' . $filename,
 			'task_ref' => '/courses/' . $courseId . '/tasks/ref/' . $filename,
 			'course_file' => '/courses/' . $courseId . '/files/' . $filename,
-		};
-	}
-
-	// get instance of file type
-	// StudentFile, TaskFile, CourseFile
-	private function getFileById(
-		string $fileType,
-		int $resourceId,
-	): StudentFile|TaskFile|CourseFile|null {
-		return match ($fileType) {
-			'student_upload' => $this->studentFileModel->getFile($resourceId),
-			'task_ref' => $this->taskFileModel->getFile($resourceId),
-			'course_file' => $this->courseFileModel->getFile($resourceId),
 		};
 	}
 

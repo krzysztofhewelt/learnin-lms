@@ -36,12 +36,9 @@ class UserRequest extends FormRequest
 			'email' => 'required|email|unique:users,email,' . $this->route('id'),
 			'password' => [
 				'sometimes',
-				'min:8',
-				'max:255',
-				'regex:/^.*(?=.{1,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
+				'regex:/^.*(?=.{1,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).{8,255}$/',
 			],
 			'account_role' => ['required', Rule::in(['admin', 'student', 'teacher'])],
-			'userLocale' => ['required', Rule::in(['pl', 'en'])],
 
 			// student rules
 			'student' => 'required_if:account_role,==,student|array',
@@ -51,8 +48,8 @@ class UserRequest extends FormRequest
 			'student.*.mode_of_study' => 'required_if:account_role,==,student|max:20',
 
 			// teacher rules
-			'teacher.scien_degree' => 'required_if:account_role,==,teacher|max:50',
-			'teacher.business_email' => 'required_if:account_role,==,teacher|email|max:255',
+			'teacher.scien_degree' => 'required_if:account_role,==,teacher|min:2|max:50',
+			'teacher.business_email' => 'required_if:account_role,==,teacher|email|min:3|max:255',
 			'teacher.contact_number' => 'sometimes|max:15',
 			'teacher.room' => 'sometimes|max:20',
 			'teacher.consultation_hours' => 'sometimes|max:255',

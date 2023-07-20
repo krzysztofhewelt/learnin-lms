@@ -2,16 +2,21 @@
 	<div
 		class="flex min-h-screen flex-col items-center bg-gradient-to-r from-rose-100 to-teal-100 pt-6 sm:justify-center sm:pt-0"
 	>
-		<div class="w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg">
+		<div
+			class="relative w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg"
+		>
+			<DropdownLanguage
+				class="absolute right-0 top-0 rounded-bl-lg bg-zinc-100 text-black shadow-md"
+			/>
+
 			<AppLogo class="mx-auto w-9/12 pb-4"></AppLogo>
-			<span
-				class="mb-3 block text-center text-xl font-bold text-red-400"
-				v-for="error in accountErrors"
-			>
-				{{ error }}
+
+			<span class="mb-3 block text-center text-xl font-bold text-red-400">
+				{{ validationErrors.account }}
 			</span>
+
 			<form @submit.prevent="logIn">
-				<!-- Email Address -->
+				<!-- email Address -->
 				<InputWithIconGroup
 					id="email"
 					:label="$t('auth.email')"
@@ -39,73 +44,13 @@
 				<div class="mt-4 flex items-center justify-end">
 					<button
 						type="submit"
-						class="w-screen items-center rounded-3xl border border-transparent bg-gray-800 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 px-4 py-2 text-center text-xs font-semibold uppercase tracking-widest text-white ring-gray-300 transition duration-150 ease-in-out hover:bg-gray-700 focus:border-gray-900 focus:outline-none focus:ring active:bg-gray-900 disabled:opacity-25"
+						class="w-screen items-center rounded-3xl border border-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 px-4 py-2 text-center text-xs font-semibold uppercase tracking-widest text-white ring-indigo-500 transition duration-150 ease-in-out focus:border-purple-900 focus:outline-none focus:ring disabled:opacity-25"
 						:disabled="loading"
 					>
 						{{ $t('auth.sign_in') }}
 					</button>
 				</div>
 			</form>
-
-			<div class="mt-3">
-				<h3 class="mb-0 font-bold">Przykładowe dane logowania</h3>
-				Wybierz konto, na jakie chcesz się zalogować:
-				<ul class="ml-5 list-disc">
-					<li
-						class="cursor-pointer"
-						@click="setCredentials('email@email.com', 'Admin#12345')"
-					>
-						<b>administrator</b>
-					</li>
-					<li
-						class="cursor-pointer"
-						@click="setCredentials('teacher1@email.com', 'User#12345')"
-					>
-						<b>prowadzący 1.</b>
-					</li>
-					<li
-						class="cursor-pointer"
-						@click="setCredentials('teacher2@email.com', 'User#12345')"
-					>
-						<b>prowadzący 2.</b>
-					</li>
-					<li
-						class="cursor-pointer"
-						@click="setCredentials('student1@email.com', 'User#12345')"
-					>
-						<b>student 1.</b>
-					</li>
-					<li
-						class="cursor-pointer"
-						@click="setCredentials('student2@email.com', 'User#12345')"
-					>
-						<b>student 2.</b>
-					</li>
-					<li
-						class="cursor-pointer"
-						@click="setCredentials('student3@email.com', 'User#12345')"
-					>
-						<b>student 3.</b>
-					</li>
-					<li
-						class="cursor-pointer"
-						@click="setCredentials('student4@email.com', 'User#12345')"
-					>
-						<b>student 4.</b>
-					</li>
-					<li
-						class="cursor-pointer"
-						@click="setCredentials('student5@email.com', 'User#12345')"
-					>
-						<b>student 5.</b>
-					</li>
-				</ul>
-
-				<p class="mt-4 font-bold">
-					Ponadto można wykorzystać z innych użytkowników wygenerowanych przez system.<br />
-					Hasło: User#12345
-				</p>
-			</div>
 		</div>
 	</div>
 </template>
@@ -114,14 +59,20 @@
 import InputWithIconGroup from '@/components/BaseInputWithIconGroup.vue';
 import AppLogo from '@/components/AppLogo.vue';
 import Password from '@/components/Icons/Password.vue';
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import SimpleUser from '@/components/Icons/SimpleUser.vue';
-import { useToast } from 'vue-toastification';
 import router from '@/router';
+import DropdownLanguage from '@/components/DropdownLanguage.vue';
 
 export default {
 	name: 'LoginForm',
-	components: { SimpleUser, Password, AppLogo, InputWithIconGroup },
+	components: {
+		DropdownLanguage,
+		SimpleUser,
+		Password,
+		AppLogo,
+		InputWithIconGroup
+	},
 
 	data() {
 		return {
@@ -131,7 +82,7 @@ export default {
 	},
 
 	computed: {
-		...mapState('login', ['loading', 'validationErrors', 'accountErrors'])
+		...mapState('login', ['loading', 'validationErrors'])
 	},
 
 	created() {
@@ -142,17 +93,9 @@ export default {
 		...mapActions('login', ['logout', 'login']),
 
 		logIn() {
-			const toast = useToast();
-
 			this.login({ email: this.email, password: this.password }).then(() => {
-				toast.success(this.$t('auth.logged_successfully'));
 				router.push('/');
 			});
-		},
-
-		setCredentials(email, password) {
-			this.email = email;
-			this.password = password;
 		}
 	}
 };

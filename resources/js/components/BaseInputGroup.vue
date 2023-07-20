@@ -1,7 +1,7 @@
 <template>
 	<label :for="id" class="text-sm font-medium text-gray-700">{{ label }}</label>
 	<span v-if="required" class="ml-px font-bold text-red-600">*</span>
-	<div class="relative rounded-md shadow-sm">
+	<div class="relative">
 		<BaseInput
 			:id="id"
 			:type="type"
@@ -9,9 +9,10 @@
 			:value="modelValue"
 			:required="required"
 			@input="$emit('update:modelValue', $event.target.value)"
+			:class="{ 'border-red-600': validationErrors }"
 		/>
 	</div>
-	<span class="mt-1 block font-bold text-red-400" v-for="error in validationErrors">
+	<span class="mt-1 block text-sm font-bold text-red-400" v-for="error in validationErrors">
 		{{ error }}
 	</span>
 </template>

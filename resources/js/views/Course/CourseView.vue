@@ -41,33 +41,35 @@
 						{{ $t('course.course_details') }}
 					</h1>
 					<div class="flex flex-col gap-2 md:flex-row" v-if="isTeacher || isAdmin">
-						<button class="manage_btn justify-center" @click="showAssignmentModal">
+						<button class="normal_btn justify-center" @click="showAssignmentModal">
 							<Edit class="mr-1 h-4 w-4" />
 							{{ $t('course.assign_to_course') }}
 						</button>
 
-						<div class="justify-center">
-							<button class="manage_btn w-full" @click="moreDropdown = !moreDropdown">
-								<More class="mx-auto h-5 w-5" />
-							</button>
-
-							<Dropdown v-if="moreDropdown">
-								<router-link
-									:to="{
-										name: 'CoursesEdit',
-										params: { id: $route.params.id }
-									}"
-									class="block w-full p-2 font-bold text-blue-600 no-underline"
-								>
-									{{ $t('general.edit') }}
-								</router-link>
-
-								<button
-									class="w-full p-2 font-bold text-red-400"
-									@click="showDeleteResourceModal('course', $route.params.id)"
-								>
-									{{ $t('general.delete') }}
+						<div class="text-center">
+							<Dropdown>
+								<button class="normal_btn">
+									<More class="mx-auto h-5 w-5" />
 								</button>
+
+								<template #content>
+									<router-link
+										:to="{
+											name: 'CoursesEdit',
+											params: { id: $route.params.id }
+										}"
+										class="block w-full p-2 font-bold text-blue-600 no-underline"
+									>
+										{{ $t('general.edit') }}
+									</router-link>
+
+									<button
+										class="w-full p-2 font-bold text-red-400"
+										@click="showDeleteResourceModal('course', $route.params.id)"
+									>
+										{{ $t('general.delete') }}
+									</button>
+								</template>
 							</Dropdown>
 						</div>
 					</div>
@@ -79,19 +81,19 @@
 					>
 						<div class="px-2">
 							<div class="text-zinc-400">
-								{{ $t('course.categories_label') }}
+								{{ $t('course.categories') }}
 							</div>
 							{{ getCategoriesCount > 0 ? getCategoriesCount : 0 }}
 						</div>
 						<div class="px-2">
 							<div class="text-zinc-400">
-								{{ $t('course.available_from_label') }}
+								{{ $t('course.available_from') }}
 							</div>
 							{{ getFormattedDate(course.available_from) }}
 						</div>
 						<div class="px-2">
 							<div class="text-zinc-400">
-								{{ $t('course.available_to_label') }}
+								{{ $t('course.available_to') }}
 							</div>
 							<Popper
 								v-if="!isEnded"
@@ -107,14 +109,14 @@
 								}}
 							</Popper>
 							<Popper v-else :content="getFormattedDate(course.available_to)" hover>
-								<span class="font-bold text-red-500">{{
+								<span class="font-bold text-green-600">{{
 									$t('course.ended_course')
 								}}</span>
 							</Popper>
 						</div>
 						<div class="cursor-pointer px-2" @click="showParticipantsModal = true">
 							<div class="text-zinc-400">
-								{{ $t('course.participants_label') }}
+								{{ $t('course.participants') }}
 							</div>
 							<div class="font-bold text-purple-800">
 								{{ getCourseUsersCount }}
@@ -144,11 +146,11 @@
 					<div class="lg:flex lg:justify-between">
 						<div>
 							<h1 class="mb-0 text-xl font-bold">
-								{{ $t('course.course_categories_title') }}
+								{{ $t('course.course_categories') }}
 							</h1>
 							<span class="text-slate-400 lg:text-sm" v-if="getCategoriesCount > 0">
 								{{
-									$tChoice('course.categories', getCategoriesCount, {
+									$tChoice('course.categories_quantity', getCategoriesCount, {
 										value: getCategoriesCount
 									})
 								}}
@@ -156,7 +158,7 @@
 						</div>
 						<div>
 							<button
-								class="manage_btn"
+								class="normal_btn"
 								v-if="isTeacher"
 								@click="
 									showCategoryModal(course.id, { id: -1, name: '' }, 'create')
@@ -203,7 +205,7 @@
 							</button>
 							<button
 								class="font-semibold text-red-400 hover:text-red-600"
-								@click="showDeleteResourceModal('category', category.id)"
+								@click="showDeleteResourceModal('category', category.id, false)"
 							>
 								{{ $t('general.delete') }}
 							</button>
@@ -218,7 +220,7 @@
 							{{ $t('files.files_to_download') }}
 						</h1>
 						<button
-							class="manage_btn"
+							class="normal_btn"
 							v-if="isTeacher"
 							@click="showUploadsModal('course_file')"
 						>
@@ -232,7 +234,7 @@
 					<div class="py-3" v-for="file in filesLimitedArray" :key="file.id">
 						<button
 							class="break-all text-left font-bold text-purple-800 no-underline hover:text-purple-500"
-							@click="download(file.id)"
+							@click="download(file.id, 'course_file')"
 						>
 							{{ file.filename_original }} ({{ file.file_size }}
 							{{ file.file_size_unit }})
@@ -282,7 +284,7 @@ import CourseCategoryModal from '@/components/Modals/CourseCategoryModal.vue';
 import UploadModal from '@/components/Modals/UploadModal.vue';
 import ParticipantsModal from '@/components/Modals/ParticipantsModal.vue';
 import CourseAssignmentModal from '@/components/Modals/CourseAssignmentModal.vue';
-import { useToast } from 'vue-toastification';
+import download from '@/utils/download';
 
 export default {
 	name: 'CourseView',
@@ -313,8 +315,6 @@ export default {
 			showUploadModal: false,
 			showParticipantsModal: false,
 			showCourseAssignmentModal: false,
-
-			toast: useToast(),
 
 			deletedResource: {
 				type: 'none',
@@ -370,36 +370,8 @@ export default {
 	},
 
 	methods: {
+		download,
 		...mapActions('course', ['getCourseDetails']),
-
-		download(fileId) {
-			axios
-				.post(
-					'/download/' + fileId,
-					{
-						file_type: 'course_file'
-					},
-					{
-						responseType: 'blob'
-					}
-				)
-				.then((res) => {
-					let filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-					let matches = filenameRegex.exec(res.headers['content-disposition']);
-					let filename;
-
-					if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
-
-					let fileURL = window.URL.createObjectURL(new Blob([res.data]));
-					let fileLink = document.createElement('a');
-
-					fileLink.href = fileURL;
-					fileLink.setAttribute('download', filename);
-					document.body.appendChild(fileLink);
-
-					fileLink.click();
-				});
-		},
 
 		showDeleteResourceModal(resourceType, resourceId) {
 			this.showDeleteModal = true;
@@ -421,6 +393,10 @@ export default {
 
 		showAssignmentModal() {
 			this.showCourseAssignmentModal = true;
+		},
+
+		closeDropdown() {
+			this.moreDropdown = false;
 		}
 	},
 

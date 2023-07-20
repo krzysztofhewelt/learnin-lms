@@ -9,7 +9,6 @@ use App\Policies\FilePolicy;
 use App\Policies\TaskPolicy;
 use App\Policies\TaskStatsPolicy;
 use App\Policies\UserPolicy;
-use Faker\Core\File;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 

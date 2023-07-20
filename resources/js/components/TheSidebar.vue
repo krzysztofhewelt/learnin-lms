@@ -120,8 +120,8 @@
 				</div>
 			</nav>
 
-			<div class="relative sticky w-full pl-4">
-				<SidebarLanguage />
+			<div class="sticky w-full pl-4">
+				<DropdownLanguage />
 				<SidebarLink
 					class="font-bold text-red-500 hover:text-red-700"
 					route-name="Login"
@@ -148,13 +148,13 @@ import User from '@/components/Icons/User.vue';
 import Logout from '@/components/Icons/Logout.vue';
 import Hamburger from '@/components/Icons/Hamburger.vue';
 import Close from '@/components/Icons/Close.vue';
-import SidebarLanguage from '@/components/SidebarLanguage.vue';
 import { mapGetters } from 'vuex';
+import DropdownLanguage from '@/components/DropdownLanguage.vue';
 
 export default {
 	name: 'TheSidebar',
 	components: {
-		SidebarLanguage,
+		DropdownLanguage,
 		Close,
 		Hamburger,
 		Logout,

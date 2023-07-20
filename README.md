@@ -4,16 +4,16 @@
 
 <p align="center">
     <a href="#features">Features</a>&nbsp;&nbsp; | &nbsp;
+    <a href="#screenshots">Screenshots</a>&nbsp; | &nbsp;    
     <a href="#getting-started">Getting started</a>&nbsp; | &nbsp;
     <a href="#configuration">Configuration</a>&nbsp; | &nbsp;
-    <a href="#used-technologies-and-tools">Technologies and tools</a>&nbsp; | &nbsp; 
-    <a href="#screenshots">Screenshots</a>&nbsp; | &nbsp;
+    <a href="#used-technologies-and-tools">Technologies and tools</a>&nbsp; | &nbsp;
     <a href="#license">License</a>
 </p>
 
 # About
 
-LearnIn is the next generation learning management system. Provides constant monitoring of students in the progress of teaching. Create courses and tasks, issue grades for students, check uploaded files by students, add course and task referential files, prepare statistics, and more.
+LearnIn is the next generation learning management system. Provides constant monitoring of students in the progress of teaching. Create courses and tasks, issue grades for students, check uploaded files by students, add course and task referential files, generate statistics, and more.
 
 <div align="center">
     <img src="screenshots/dashboard.jpg" alt="dashboard">
@@ -35,6 +35,28 @@ LearnIn is the next generation learning management system. Provides constant mon
 -   user-friendly, responsive layout
 -   multilingual support (available now: English and Polish)
 
+# Screenshots
+
+<details>
+    <summary>Click to show</summary>
+    <img src="screenshots/courseView.jpg" alt="course view">
+    <img src="screenshots/taskView.jpg" alt="task view">
+    <img src="screenshots/courses.jpg" alt="courses">
+    <img src="screenshots/tasks.jpg" alt="tasks">
+    <img src="screenshots/marks.jpg" alt="marks">
+    <img src="screenshots/studentUploads.jpg" alt="students uploads">
+    <img src="screenshots/studentMarks.jpg" alt="students marks">
+    <img src="screenshots/userView.jpg" alt="user view">
+    <img src="screenshots/statistics.jpg" alt="statistics">
+    <img src="screenshots/exampleForm.jpg" alt="example form">
+    <img src="screenshots/exampleForm2.jpg" alt="example form second">
+    <img src="screenshots/courseParticipants.jpg" alt="course participants modal">
+    <img src="screenshots/courseParticipants2.jpg" alt="course participants modal second">
+    <img src="screenshots/upload.jpg" alt="file upload">
+    <img src="screenshots/teacherInformationEdit.jpg" alt="teacher information edit modal">
+    <img src="screenshots/adminExample.jpg" alt="admin example">
+</details>
+
 # Getting started
 
 ### Production environment
@@ -48,7 +70,7 @@ cp .env.example .env
 2. In project directory run docker compose command:
 
 ```
-docker-compose -f .\docker-compose.yml up -d
+docker-compose -f .\docker-compose.yml up -d --build
 ```
 
 3. Seed database with admin account:
@@ -69,44 +91,6 @@ docker-compose -f .\docker-compose.yml down
 -   email: `email@email.com`
 -   password: `Admin#12345`
 
-### Development environment
-
-1. Copy .env.example file to .env.
-
-```
-cp .env.example .env
-```
-
-2. In project directory run docker compose command:
-
-```
-docker-compose -f .\docker-compose.dev.yml up -d
-```
-
-3. Generate app key and jwt secret
-
-```
-docker exec -it app sh -c "php /var/www/html/artisan migrate && php /var/www/html/artisan key:generate && echo 'yes' | php /var/www/html/artisan jwt:secret"
-```
-
-4. Seed database with default admin account.
-
-```
-docker exec -it app sh -c "php /var/www/html/artisan db:seed"
-```
-
-5. To stop project just type command:
-
-```
-docker-compose -f .\docker-compose.dev.yml down
-```
-
-6. App is on address `http://localhost:80/`
-7. **The default admin account credentials:**
-
--   email: `email@email.com`
--   password: `Admin#12345`
-
 # Configuration
 
 You can configure the project by your own needs.
@@ -123,61 +107,52 @@ DB_USERNAME=root
 DB_PASSWORD=examplepassword
 ```
 
+2. It's highly recommend to run the scheduler (that cleans old generated .zip files by teachers every 12 hours):
+
+**In Docker:**
+```
+docker exec -it app sh -c "php /var/www/html/artisan schedule:work"
+```
+
+**Locally:**
+```
+php artisan schedule:work
+```
+
 2. Optional: Change default locale and timezone.
 
 ```dotenv
-TIMEZONE=Europe/Warsaw
-DEFAULT_LOCALE=en
-DEFAULT_FALLBACK_LOCALE=en
-FAKER_LOCALE=en
+LOCALE_TIMEZONE=UTC
+LOCALE_DEFAULT=en
+LOCALE_FAKER=en
 ```
-
-and change it also /resources/js/main.js file
-
-```javascript
-use(i18nVue, {
-	lang: 'en',
-	resolve: (lang) => require(`../../lang/${lang}.json`)
-});
+3. Optional: Change API SERVER URL:
+```dotenv
+API_URL=http://localhost:8000/api
 ```
 
 # Used technologies and tools
-- HTML5
-- PHP Laravel Framework v9.8.1
-- MariaDB
-- Apache
-- Tailwind CSS v3.1.8
-- Vue 3 and libraries:
-    - Vuex
-    - Axios
-    - Lodash
-    - laravel-vue-i18n
-    - vue-router
-    - DayJS
-    - vue-multiselect
-    - vue-toastification
-    - vue3-popper
-    - vuejs-paginate-next
-    - vue-modal
-- Docker and Docker Compose
-- bundler: laravel-mix (webpack)
-- IDE and tools: Jetbrains PHPStorm, Postman, Jetbrains DataGrip
 
-# Screenshots
-
-<details>
-    <summary>Click to show</summary>
-    <img src="screenshots/courses.jpg" alt="courses">
-    <img src="screenshots/tasks.jpg" alt="tasks">
-    <img src="screenshots/marks.jpg" alt="marks">
-    <img src="screenshots/courseView.jpg" alt="course view">
-    <img src="screenshots/tasksView.jpg" alt="task view">
-    <img src="screenshots/studentUploads.jpg" alt="students uploads">
-    <img src="screenshots/studentMarks.jpg" alt="students marks">
-    <img src="screenshots/statistics.jpg" alt="statistics">
-    <img src="screenshots/adminExample.jpg" alt="admin example">
-    <img src="screenshots/userView.jpg" alt="user view">
-</details>
+-   HTML5
+-   PHP Laravel Framework v10.15.0
+-   MariaDB
+-   Apache
+-   Tailwind CSS v3.3.3
+-   Vue 3 and libraries:
+    -   Vuex
+    -   Axios
+    -   Lodash
+    -   laravel-vue-i18n
+    -   vue-router
+    -   DayJS
+    -   vue-multiselect
+    -   vue-toastification
+    -   vue3-popper
+    -   vuejs-paginate-next
+    -   vue-modal
+-   Docker and Docker Compose
+-   bundler: Vite
+-   IDE and tools: Jetbrains PHPStorm, Postman, Jetbrains DataGrip
 
 # License
 

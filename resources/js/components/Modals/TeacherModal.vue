@@ -2,11 +2,11 @@
 	<Modal
 		:model-value="showModal"
 		@update:modelValue="showModal = false"
-		:title="$t('user.teacher_informations_edit')"
+		:title="$t('user.teacher_information_edit')"
 		wrapper-class="modal-wrapper"
 	>
-		<div class="m-2">
-			<form @submit.prevent="handleSubmit">
+		<form @submit.prevent="handleSubmit">
+			<div class="m-2">
 				<div class="mb-2 w-full">
 					<BaseInputGroup
 						id="scien_degree"
@@ -57,19 +57,17 @@
 						:validation-errors="validationErrors.consultation_hours"
 					/>
 				</div>
-			</form>
-		</div>
-
-		<div class="modal-footer">
-			<div class="flex flex-row-reverse">
-				<button class="submit_btn ml-3" type="button" @click="handleSubmit">
-					{{ $t('general.save') }}
-				</button>
-				<button class="manage_btn" type="button" @click.prevent="showModal = false">
-					{{ $t('general.cancel') }}
-				</button>
 			</div>
-		</div>
+
+			<div class="modal-footer">
+				<div class="flex flex-row-reverse">
+					<ButtonSubmit class="ml-3 mr-[10px]" :loading="loading" />
+					<button class="normal_btn" type="button" @click.prevent="showModal = false">
+						{{ $t('general.cancel') }}
+					</button>
+				</div>
+			</div>
+		</form>
 	</Modal>
 </template>
 
@@ -79,10 +77,12 @@ import '@kouts/vue-modal/dist/vue-modal.css';
 import BaseInputGroup from '@/components/BaseInputGroup.vue';
 import { mapActions, mapState } from 'vuex';
 import { useToast } from 'vue-toastification';
+import ButtonSubmit from '@/components/ButtonSubmit.vue';
 
 export default {
 	name: 'TeacherModal',
 	components: {
+		ButtonSubmit,
 		Modal: VueModal,
 		BaseInputGroup
 	},
@@ -109,12 +109,12 @@ export default {
 	},
 
 	methods: {
-		...mapActions('user', ['updateTeacherInformations']),
+		...mapActions('user', ['updateTeacherInformation']),
 
 		handleSubmit() {
 			const toast = useToast();
 
-			this.updateTeacherInformations({
+			this.updateTeacherInformation({
 				userId: this.userId,
 				teacher: this.teacher
 			})

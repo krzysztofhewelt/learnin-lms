@@ -9,5 +9,5 @@ return [
 	'select_course' => 'Wybierz kurs',
 	'select_category' => 'Wybierz kategorię',
 	'select_task' => 'Wybierz zadanie',
-	'no_tasks' => 'Nie można wygenerować raportu - brak zadań w danej kategorii',
+	'no_tasks' => 'Nie można wygenerować raportu - brak zadań w danej kategorii.',
 ];

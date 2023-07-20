@@ -27,7 +27,7 @@ class User extends Authenticatable implements JWTSubject
 
 	protected $guarded = ['account_role'];
 
-	protected $hidden = ['password', 'remember_token', 'pivot'];
+	protected $hidden = ['password', 'pivot'];
 
 	protected $casts = [
 		'email_verified_at' => 'datetime',
@@ -137,15 +137,17 @@ class User extends Authenticatable implements JWTSubject
 		return $this->with('teacher', 'student')->find($userId);
 	}
 
-	public function searchUser(string $searchString): LengthAwarePaginator
+	public function searchUsers(string $searchString = null): LengthAwarePaginator
 	{
-		return $this->where(function ($q) use ($searchString) {
-			$q->orWhere('id', $searchString)
-				->orWhere('name', 'like', '%' . $searchString . '%')
-				->orWhere('surname', 'like', '%' . $searchString . '%')
-				->orWhere('identification_number', 'like', '%' . $searchString . '%')
-				->orWhere('email', 'like', '%' . $searchString . '%')
-				->orWhere('account_role', 'like', '%' . $searchString . '%');
-		})->paginate(25);
+		return $searchString == null
+			? $this->getAllUsers()
+			: $this->where(function ($q) use ($searchString) {
+				$q->orWhere('id', $searchString)
+					->orWhere('name', 'like', '%' . $searchString . '%')
+					->orWhere('surname', 'like', '%' . $searchString . '%')
+					->orWhere('identification_number', 'like', '%' . $searchString . '%')
+					->orWhere('email', 'like', '%' . $searchString . '%')
+					->orWhere('account_role', 'like', '%' . $searchString . '%');
+			})->paginate(15);
 	}
 }

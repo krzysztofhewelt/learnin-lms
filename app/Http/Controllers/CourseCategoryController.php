@@ -6,6 +6,7 @@ use App\Http\Requests\CourseCategoryRequest;
 use App\Models\Course;
 use App\Models\CourseCategory;
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class CourseCategoryController extends Controller
 {
@@ -22,23 +23,33 @@ class CourseCategoryController extends Controller
 	{
 		$course = $this->courseModel->getCourse($courseId);
 		if ($course == null) {
-			return response()->json(['error' => 'Course does not exists!'], 404);
+			return response()->json(
+				['error' => 'Course does not exists!'],
+				Response::HTTP_NOT_FOUND,
+			);
 		}
 
 		$this->authorize('manage-course-categories', $course);
 
-		$this->courseCategoryModel->create($request->validated());
+		$category = $this->courseCategoryModel->create($request->validated());
 
-		return response()->json([
-			'success' => 'Course category added successfully',
-		]);
+		return response()->json(
+			[
+				'success' => 'Course category added successfully',
+				'id' => $category->id,
+			],
+			Response::HTTP_CREATED,
+		);
 	}
 
 	public function show(int $categoryId): JsonResponse
 	{
 		$category = $this->courseCategoryModel->getCourseCategory($categoryId);
 		if ($category == null) {
-			return response()->json(['error' => 'Category does not exists'], 404);
+			return response()->json(
+				['error' => 'Category does not exists'],
+				Response::HTTP_NOT_FOUND,
+			);
 		}
 
 		$this->authorize('show-course-categories', $category->course);
@@ -50,7 +61,10 @@ class CourseCategoryController extends Controller
 	{
 		$courseCategories = $this->courseModel->getCourseCategories($courseId);
 		if ($courseCategories == null) {
-			return response()->json(['error' => 'Course does not exists!'], 404);
+			return response()->json(
+				['error' => 'Course does not exists!'],
+				Response::HTTP_NOT_FOUND,
+			);
 		}
 
 		$this->authorize('show-course-categories', $courseCategories);
@@ -62,7 +76,10 @@ class CourseCategoryController extends Controller
 	{
 		$courseCategory = $this->courseCategoryModel->getCourseCategory($courseCategoryId);
 		if ($courseCategory == null) {
-			return response()->json(['error' => 'Course category does not exists!'], 404);
+			return response()->json(
+				['error' => 'Course category does not exists!'],
+				Response::HTTP_NOT_FOUND,
+			);
 		}
 
 		$this->authorize('manage-course-categories', $courseCategory->course);
@@ -76,7 +93,10 @@ class CourseCategoryController extends Controller
 	{
 		$courseCategory = $this->courseCategoryModel->getCourseCategory($courseCategoryId);
 		if ($courseCategory == null) {
-			return response()->json(['error' => 'Course category does not exists!'], 404);
+			return response()->json(
+				['error' => 'Course category does not exists!'],
+				Response::HTTP_NOT_FOUND,
+			);
 		}
 
 		$this->authorize('manage-course-categories', $courseCategory->course);

@@ -1,15 +1,20 @@
 <template>
-	<div class="relative">
-		<div
-			class="absolute right-0 z-50 mt-2 w-fit min-w-max cursor-auto rounded-md bg-white px-4 py-2 shadow-lg"
-		>
-			<slot />
-		</div>
-	</div>
+	<Popper v-bind="$attrs" class="cursor-pointer" content="&nbsp;" z-index="1">
+		<slot />
+		<template #content="props">
+			<slot name="content" v-bind="props" />
+		</template>
+	</Popper>
 </template>
 
 <script>
+import Popper from 'vue3-popper';
+
 export default {
-	name: 'Dropdown'
+	name: 'Dropdown',
+
+	components: {
+		Popper
+	}
 };
 </script>

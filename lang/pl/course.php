@@ -6,10 +6,10 @@ return [
 	'course_details' => 'Szczegóły kursu',
 	'assign_to_course' => 'Przypisz do kursu',
 
-	'categories_label' => 'Kategorii',
-	'available_from_label' => 'Dostępny od',
-	'available_to_label' => 'Dostępny do',
-	'participants_label' => 'Uczestników',
+	'categories' => 'Kategorii',
+	'available_from' => 'Dostępny od',
+	'available_to' => 'Dostępny do',
+	'participants' => 'Uczestników',
 
 	'teachers' => 'Prowadzący',
 	'course_name' => 'Nazwa kursu',
@@ -17,8 +17,8 @@ return [
 
 	'category' => 'Kategoria',
 	'course_category' => 'Kategoria kursu',
-	'course_categories_title' => 'Kategorie kursu',
-	'categories' =>
+	'course_categories' => 'Kategorie kursu',
+	'categories_quantity' =>
 		'{0} brak kategorii|{1} :value kategoria|[2,4] :value kategorie|[5,*] :value kategorii',
 
 	'creating_course' => 'Tworzenie nowego kursu',

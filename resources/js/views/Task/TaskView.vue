@@ -25,7 +25,7 @@
 								name: 'MarksTask',
 								params: { id: $route.params.id }
 							}"
-							class="manage_btn justify-center"
+							class="normal_btn justify-center"
 						>
 							<Edit class="mr-1 h-4 w-4" />
 							{{ $t('task.issue_grades') }}
@@ -36,38 +36,40 @@
 								name: 'TaskStudentUploads',
 								params: { id: $route.params.id }
 							}"
-							class="manage_btn justify-center"
+							class="normal_btn justify-center"
 						>
 							<Edit class="mr-1 h-4 w-4" />
 							{{ $t('task.student_files') }}
 						</router-link>
 
-						<div class="justify-center">
-							<button class="manage_btn w-full" @click="moreDropdown = !moreDropdown">
-								<More class="mx-auto h-5 w-5" />
-							</button>
-
-							<Dropdown v-if="moreDropdown">
-								<router-link
-									:to="{
-										name: 'TasksEdit',
-										params: { id: $route.params.id }
-									}"
-									class="block w-full p-2 font-bold text-blue-600 no-underline"
-								>
-									{{ $t('general.edit') }}
-								</router-link>
-								<button
-									class="w-full p-2 font-bold text-red-400"
-									@click="showDeleteResourceModal('task', $route.params.id)"
-								>
-									{{ $t('general.delete') }}
+						<div class="text-center">
+							<Dropdown>
+								<button class="normal_btn w-full">
+									<More class="mx-auto h-5 w-5" />
 								</button>
+
+								<template #content>
+									<router-link
+										:to="{
+											name: 'TasksEdit',
+											params: { id: $route.params.id }
+										}"
+										class="block w-full p-2 font-bold text-blue-600 no-underline"
+									>
+										{{ $t('general.edit') }}
+									</router-link>
+									<button
+										class="w-full p-2 font-bold text-red-400"
+										@click="showDeleteResourceModal('task', $route.params.id)"
+									>
+										{{ $t('general.delete') }}
+									</button>
+								</template>
 							</Dropdown>
 						</div>
 					</div>
 				</div>
-				<div class="border-b-[1px] pb-6">
+				<div class="pb-6">
 					<h1 class="my-5 inline text-3xl font-bold">
 						{{ task.name }}
 					</h1>
@@ -83,28 +85,28 @@
 						</span>
 					</div>
 				</div>
-				<div class="border-b-[1px] py-3" v-if="userMark !== null && isStudent">
+				<div class="border-b py-3" v-if="userMark !== null && isStudent">
 					<h1 class="text-xl font-bold">
-						{{ $t('mark.task_marked_label') }}
+						{{ $t('mark.task_marked') }}
 					</h1>
 					<div
 						class="mt-2 grid grid-cols-1 space-y-3 text-center lg:grid-cols-3 lg:space-y-0 lg:divide-x"
 					>
 						<div class="px-2">
 							<div class="text-zinc-400">
-								{{ $t('mark.points_earned_label') }}
+								{{ $t('mark.points_earned') }}
 							</div>
 							{{ userMark.points }}
 						</div>
 						<div class="px-2">
 							<div class="text-zinc-400">
-								{{ $t('mark.mark_earned_label') }}
+								{{ $t('mark.mark_earned') }}
 							</div>
 							{{ userMark.mark }}
 						</div>
 						<div class="px-2">
 							<div class="text-zinc-400">
-								{{ $t('mark.date_of_mark_label') }}
+								{{ $t('mark.date_of_mark') }}
 							</div>
 							{{ getFormattedMarkDate(userMark.updated_at) }}
 						</div>
@@ -142,13 +144,13 @@
 					>
 						<div class="px-2">
 							<div class="text-zinc-400">
-								{{ $t('task.available_from_label') }}
+								{{ $t('task.available_from') }}
 							</div>
 							{{ getFormattedDate(task.available_from) }}
 						</div>
 						<div class="px-2">
 							<div class="text-zinc-400">
-								{{ $t('task.available_to_label') }}
+								{{ $t('task.available_to') }}
 							</div>
 							<Popper
 								v-if="!isEnded"
@@ -164,7 +166,7 @@
 								}}
 							</Popper>
 							<Popper v-else :content="getFormattedDate(task.available_to)" hover>
-								<div class="font-bold text-red-500">
+								<div class="font-bold text-green-600">
 									{{ $t('course.ended_course') }}
 								</div>
 							</Popper>
@@ -182,7 +184,7 @@
 						{{ $t('task.your_files') }}
 					</h1>
 					<button
-						class="manage_btn mb-2"
+						class="normal_btn mb-2"
 						v-if="studentCanUploadFiles"
 						@click="showUploadsModal('student_upload')"
 					>
@@ -224,7 +226,7 @@
 							<button
 								v-if="studentCanUploadFiles"
 								class="font-semibold text-red-400 hover:text-red-600"
-								@click="showDeleteResourceModal('studentFile', $route.params.id)"
+								@click="showDeleteResourceModal('studentFile', studentFile.id)"
 							>
 								{{ $t('general.delete') }}
 							</button>
@@ -242,7 +244,7 @@
 							{{ $t('files.files_to_download') }}
 						</h1>
 						<button
-							class="manage_btn"
+							class="normal_btn"
 							v-if="isTeacher"
 							@click="showUploadsModal('task_ref')"
 						>
@@ -300,6 +302,7 @@ import { mapActions, mapGetters, mapState } from 'vuex';
 import DeleteModal from '@/components/Modals/DeleteModal.vue';
 import LoadingScreen from '@/components/LoadingScreen.vue';
 import UploadModal from '@/components/Modals/UploadModal.vue';
+import download from '@/utils/download';
 
 export default {
 	name: 'TaskView',
@@ -368,36 +371,8 @@ export default {
 	},
 
 	methods: {
+		download,
 		...mapActions('task', ['showTask']),
-
-		download(fileId, fileType) {
-			axios
-				.post(
-					'/download/' + fileId,
-					{
-						file_type: fileType
-					},
-					{
-						responseType: 'blob'
-					}
-				)
-				.then((res) => {
-					let filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-					let matches = filenameRegex.exec(res.headers['content-disposition']);
-					let filename;
-
-					if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
-
-					let fileURL = window.URL.createObjectURL(new Blob([res.data]));
-					let fileLink = document.createElement('a');
-
-					fileLink.href = fileURL;
-					fileLink.setAttribute('download', filename);
-					document.body.appendChild(fileLink);
-
-					fileLink.click();
-				});
-		},
 
 		showDeleteResourceModal(resourceType, resourceId) {
 			this.showDeleteModal = true;
@@ -408,6 +383,10 @@ export default {
 		showUploadsModal(type) {
 			this.showUploadModal = true;
 			this.uploadResource.type = type;
+		},
+
+		closeDropdown() {
+			this.moreDropdown = false;
 		}
 	},
 

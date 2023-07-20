@@ -7,7 +7,9 @@ use App\Models\CourseFile;
 use App\Models\StudentFile;
 use App\Models\Task;
 use App\Models\TaskFile;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
 use ZipArchive;
 
 class DownloadController extends Controller
@@ -27,7 +29,7 @@ class DownloadController extends Controller
 
 	public function downloadResources(FileDownloadRequest $request, int $resourceId)
 	{
-		$fileType = $request->file_type;
+		$fileType = $request->fileType;
 		$resourceFile = $this->getInstanceOfFileObject($fileType, $resourceId);
 
 		$resourceCourse = $resourceFile->getCourse($resourceId);
@@ -44,10 +46,13 @@ class DownloadController extends Controller
 			if (Storage::exists($resourceFileDir)) {
 				return Storage::download($resourceFileDir, $resourceFile->filename_original);
 			} else {
-				return response()->json(['error' => 'File does not exists!'], 404);
+				return response()->json(
+					['error' => 'File does not exists!'],
+					Response::HTTP_NOT_FOUND,
+				);
 			}
 		} else {
-			return response()->json(['error' => 'File does not exists!'], 404);
+			return response()->json(['error' => 'File does not exists!'], Response::HTTP_NOT_FOUND);
 		}
 	}
 
@@ -59,8 +64,10 @@ class DownloadController extends Controller
 
 		$this->authorize('download-files', ['taskStudentZip', $task->course, null]);
 
+		Storage::makeDirectory('zips'); // without this, ZipArchive can't create directory and can't create .zip
+
 		$zipName = 'task - ' . $taskId . ' student files.zip';
-		$zipDir = public_path() . '/' . $zipName;
+		$zipDir = Storage::path('zips/' . $zipName);
 
 		$zip = new ZipArchive();
 
@@ -99,7 +106,10 @@ class DownloadController extends Controller
 
 			return response()->download($zipDir, $zipName, $headers);
 		} else {
-			return response()->json(['error' => 'Can\'t generate zip right now!'], 500);
+			return response()->json(
+				['error' => 'Can\'t generate zip right now!'],
+				Response::HTTP_INTERNAL_SERVER_ERROR,
+			);
 		}
 	}
 

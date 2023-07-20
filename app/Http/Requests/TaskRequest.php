@@ -32,7 +32,7 @@ class TaskRequest extends FormRequest
 			'description' => 'required|min:5|max:65535',
 			'available_from' => 'required|date',
 			'available_to' => 'nullable|date|after:available_from',
-			'max_points' => 'required|numeric',
+			'max_points' => 'required|numeric|min:0',
 			'course_ID' => 'required',
 			'course_category' => [
 				'required',

@@ -20,10 +20,9 @@
 			</div>
 			<div class="modal-footer">
 				<div class="flex flex-row-reverse">
-					<button class="submit_btn ml-3" type="button" @click="handleSubmit">
-						{{ $t('general.save') }}
-					</button>
-					<button class="manage_btn" type="button" @click.prevent="showModal = false">
+					<ButtonSubmit class="ml-3" :loading="loading" />
+
+					<button class="normal_btn" type="button" @click.prevent="showModal = false">
 						{{ $t('general.cancel') }}
 					</button>
 				</div>
@@ -38,11 +37,15 @@ import '@kouts/vue-modal/dist/vue-modal.css';
 import BaseInputGroup from '@/components/BaseInputGroup.vue';
 import { mapActions, mapState } from 'vuex';
 import { useToast } from 'vue-toastification';
+import LoadingScreen from '@/components/LoadingScreen.vue';
+import ButtonSubmit from '@/components/ButtonSubmit.vue';
 
 export default {
 	name: 'CourseCategoryModal',
 
 	components: {
+		ButtonSubmit,
+		LoadingScreen,
 		BaseInputGroup,
 		Modal: VueModal
 	},
@@ -72,7 +75,7 @@ export default {
 	},
 
 	computed: {
-		...mapState('course', ['validationErrors']),
+		...mapState('course', ['validationErrors', 'loading']),
 
 		setModalTitle() {
 			return this.action === 'create'

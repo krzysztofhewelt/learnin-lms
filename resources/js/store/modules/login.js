@@ -7,8 +7,7 @@ const login = {
 		loading: false,
 		token: localStorage.getItem('token') || '',
 		user: JSON.parse(localStorage.getItem('user')) || {},
-		validationErrors: [],
-		accountErrors: ''
+		validationErrors: []
 	},
 
 	actions: {
@@ -18,25 +17,23 @@ const login = {
 			await axios
 				.post('/login', {
 					email: email,
-					password: password
+					password: password,
+					locale: this.state.locale.locale
 				})
 				.then((response) => {
 					const token = response.headers.authorization;
+					const user = response.data.user;
 
-					commit('authSuccess', token);
-					commit('setUser', response.data.user);
-					localStorage.setItem('token', token);
-					localStorage.setItem('user', JSON.stringify(response.data.user));
-					commit('locale/setUserLocale', response.data.user.locale, {
-						root: true
-					});
+					commit('authSuccess', { token, user });
+					commit('locale/setUserLocale', response.data.user.locale, { root: true });
 				})
 				.catch((error) => {
-					if (error.response.status === 401 || error.response.status === 423)
-						commit('accountErrors', error.response.data);
-
-					if (error.response.status === 422)
-						commit('authErrors', error.response.data.errors);
+					if (
+						error.response.status === 401 ||
+						error.response.status === 423 ||
+						error.response.status === 429
+					)
+						commit('loginErrors', error.response.data.errors);
 
 					throw error;
 				})
@@ -45,12 +42,12 @@ const login = {
 				});
 		},
 
-		async refresh({ commit }) {
+		async refreshToken({ commit }) {
 			return await axios
 				.get('/refresh')
 				.then((response) => {
 					const token = response.headers.authorization;
-					localStorage.setItem('token', token);
+
 					commit('refreshToken', token);
 				})
 				.catch((error) => {
@@ -59,8 +56,6 @@ const login = {
 		},
 
 		logout({ commit }) {
-			localStorage.removeItem('token');
-			localStorage.removeItem('user');
 			commit('authReset');
 		}
 	},
@@ -70,18 +65,17 @@ const login = {
 			state.loading = newLoadingStatus;
 		},
 
-		setUser(state, user) {
-			state.user = user;
-		},
-
 		refreshToken(state, token) {
 			state.token = token;
+			localStorage.setItem('token', token);
 			axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 		},
 
-		authSuccess(state, token, user) {
+		authSuccess(state, { token, user }) {
 			state.token = token;
 			state.user = user;
+			localStorage.setItem('token', token);
+			localStorage.setItem('user', JSON.stringify(user));
 			axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 		},
 
@@ -89,26 +83,17 @@ const login = {
 			state.token = '';
 			state.user = {};
 			state.validationErrors = '';
-			state.accountErrors = '';
+			localStorage.removeItem('token');
+			localStorage.removeItem('user');
 			delete axios.defaults.headers.common['Authorization'];
 		},
 
-		authErrors(state, errors) {
+		loginErrors(state, errors) {
 			state.validationErrors = errors;
-			state.accountErrors = '';
-		},
-
-		accountErrors(state, errors) {
-			state.accountErrors = errors;
-			state.validationErrors = '';
 		}
 	},
 
 	getters: {
-		isAuthenticated(state) {
-			return state.token !== '';
-		},
-
 		isAdmin(state) {
 			return state.user && state.user.account_role === 'admin';
 		},

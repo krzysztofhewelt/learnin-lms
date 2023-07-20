@@ -5,29 +5,27 @@ namespace App\Http\Controllers;
 use App\Http\Requests\FileDownloadRequest;
 use App\Models\CourseFile;
 use App\Models\StudentFile;
-use App\Models\Task;
 use App\Models\TaskFile;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
 
 class FileController extends Controller
 {
 	private StudentFile $studentFileModel;
 	private TaskFile $taskFileModel;
 	private CourseFile $courseFileModel;
-	private Task $taskModel;
 
 	public function __construct()
 	{
 		$this->studentFileModel = new StudentFile();
 		$this->taskFileModel = new TaskFile();
 		$this->courseFileModel = new CourseFile();
-		$this->taskModel = new Task();
 	}
 
 	public function deleteResources(FileDownloadRequest $request, int $resourceId): JsonResponse
 	{
-		$fileType = $request->file_type;
+		$fileType = $request->fileType;
 		$resourceFile = $this->getInstanceOfFileObject($fileType, $resourceId);
 		$resourceCourse = $resourceFile->getCourse($resourceId);
 
@@ -48,7 +46,7 @@ class FileController extends Controller
 
 			return response()->json(['success' => 'File deleted successfully']);
 		} else {
-			return response()->json(['error' => 'File does not exists!'], 404);
+			return response()->json(['error' => 'File does not exists!'], Response::HTTP_NOT_FOUND);
 		}
 	}
 

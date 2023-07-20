@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-.manage_btn {
-	@apply inline-flex cursor-pointer items-center rounded-md border border-gray-200 bg-white px-4 py-2 text-center text-sm font-bold text-slate-400 no-underline drop-shadow-sm transition ease-in-out hover:bg-gray-100 hover:text-indigo-500 focus:outline-none focus:ring-4 focus:ring-gray-100;
+.normal_btn {
+	@apply inline-flex cursor-pointer items-center rounded-md border-2 border-purple-200 bg-white px-4 py-2 text-center text-sm font-bold text-purple-400 no-underline drop-shadow-sm transition ease-in-out hover:bg-purple-50 hover:text-purple-600 focus:outline-none focus:ring-4 focus:ring-purple-100;
 }
 
 .delete_btn {
@@ -11,13 +11,25 @@
 }
 
 .submit_btn {
-	@apply inline-flex cursor-pointer items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-center text-sm font-bold text-white no-underline shadow-sm transition ease-in-out hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300;
+	@apply inline-flex cursor-pointer items-center justify-center rounded bg-pink-500 px-4 py-2 text-xs font-bold uppercase text-white no-underline shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-pink-600 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:active:bg-gray-500;
 }
 
-.submit_btn_disabled {
-	@apply inline-flex cursor-not-allowed items-center rounded-md border border-transparent bg-gray-400 px-4 py-2 text-center text-sm font-bold text-white no-underline shadow-sm transition ease-in-out hover:bg-gray-500 focus:outline-none focus:ring-4 focus:ring-indigo-300;
+.pagination__prev_link {
+	@apply relative inline-flex cursor-pointer items-center rounded-l-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20;
 }
 
-.normal_btn {
-	@apply inline-flex cursor-pointer items-center rounded-md border border-transparent bg-blue-500 px-4 py-2 text-center text-sm font-bold text-white no-underline shadow-md shadow-sm transition ease-in-out hover:bg-blue-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300;
+.pagination__next_link {
+	@apply relative inline-flex cursor-pointer items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20;
+}
+
+.pagination__page_link {
+	@apply relative inline-flex cursor-pointer items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20;
+}
+
+.pagination__page_link--active {
+	@apply relative inline-flex cursor-pointer items-center border border-indigo-500 bg-indigo-100 text-sm font-medium text-indigo-600 focus:z-20;
+}
+
+.pagination__page_link--disabled {
+	@apply cursor-not-allowed;
 }

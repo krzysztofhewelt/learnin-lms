@@ -25,6 +25,7 @@ class UserSeeder extends Seeder
 			'email' => 'email@email.com',
 			'password' => bcrypt('Admin#12345'),
 			'active' => 1,
+			'locale' => env('LOCALE_DEFAULT'),
 		]);
 
 		// teachers

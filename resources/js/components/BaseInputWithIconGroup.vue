@@ -7,25 +7,29 @@
 					<slot />
 				</span>
 			</div>
-			<input
-				class="block w-full rounded-md border-gray-300 pl-11 transition ease-in-out focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+			<BaseInput
 				:id="id"
 				:type="type"
 				:placeholder="placeholder"
 				:value="modelValue"
 				:required="required"
 				@input="$emit('update:modelValue', $event.target.value)"
+				class="pl-10"
+				:class="{ 'border-red-600': validationErrors }"
 			/>
 		</div>
-		<span class="block font-bold text-red-400" v-for="error in validationErrors">
+		<span class="block text-sm font-bold text-red-400" v-for="error in validationErrors">
 			{{ error }}
 		</span>
 	</div>
 </template>
 
 <script>
+import BaseInput from '@/components/BaseInput.vue';
+
 export default {
-	name: 'InputWithIconGroup',
+	name: 'BaseInputWithIconGroup',
+	components: { BaseInput },
 
 	props: {
 		id: {

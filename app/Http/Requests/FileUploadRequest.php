@@ -20,6 +20,11 @@ class FileUploadRequest extends FormRequest
 		return true;
 	}
 
+	public function prepareForValidation(): void
+	{
+		$this->merge(['fileType' => $this->route('fileType')]);
+	}
+
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -30,7 +35,7 @@ class FileUploadRequest extends FormRequest
 		// max: 256 MB
 		return [
 			'files.*' => 'required|max:256000',
-			'file_type' => ['required', Rule::in(['student_upload', 'task_ref', 'course_file'])],
+			'fileType' => ['required', Rule::in(['student_upload', 'task_ref', 'course_file'])],
 		];
 	}
 

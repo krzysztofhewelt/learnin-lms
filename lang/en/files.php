@@ -5,7 +5,8 @@ return [
 	'uploaded_failure' => 'There was an error sending files',
 	'uploading' => 'Uploading...',
 	'ready_to_upload' => 'Ready to upload',
-	'uploading_msg' => 'Uploading your files, please wait...',
+	'uploading_msg' => '[0,99] Sending your files, :progress %...|[99,*] Almost done...',
+	'cancel' => 'Sending files canceled!',
 
 	'files_to_download' => 'Files to download',
 	'upload_files' => 'Upload files',

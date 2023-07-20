@@ -53,17 +53,17 @@
 							<b>{{ $t('course.teachers') }}: </b>
 							<template v-for="(teacher, index) in course.users" :key="teacher.id">
 								<span v-if="index !== course.users.length - 1"
-									>{{ teacher.name }} {{ teacher.surname }},</span
-								>
+									>{{ teacher.name }} {{ teacher.surname }},
+								</span>
 								<span v-else>{{ teacher.name }} {{ teacher.surname }}</span>
 							</template>
 						</div>
 						<div>
-							<b>{{ $t('course.available_from_label') }}:</b>
+							<b>{{ $t('course.available_from') }}:</b>
 							{{ getFormattedDate(course.available_from) }}
 						</div>
 						<div v-if="course.available_to !== null">
-							<b>{{ $t('course.available_to_label') }}:</b>
+							<b>{{ $t('course.available_to') }}:</b>
 							{{ getFormattedDate(course.available_to) }}
 						</div>
 						<div v-else>
@@ -112,7 +112,7 @@
 						</div>
 						<div class="px-4">
 							<span class="block text-xl font-bold">{{
-								$t('task.available_from_label')
+								$t('task.available_from')
 							}}</span>
 							<span class="text-2xl">{{
 								getFormattedDate(task.available_from)
@@ -120,7 +120,7 @@
 						</div>
 						<div class="px-4">
 							<span class="block text-xl font-bold">{{
-								$t('task.available_to_label')
+								$t('task.available_to')
 							}}</span>
 							<span class="text-2xl">{{
 								getFormattedDate(task.available_to) || $t('general.not_available')
@@ -250,9 +250,8 @@
 
 <script>
 import HamburgerIcon from '@/components/Icons/Hamburger.vue';
-import { mapGetters, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import User from '@/components/Icons/User.vue';
-import dayjs from 'dayjs';
 import LoadingScreen from '@/components/LoadingScreen.vue';
 import TeacherModal from '@/components/Modals/TeacherModal.vue';
 
@@ -262,24 +261,18 @@ export default {
 
 	data() {
 		return {
-			loading: false,
-			user: {},
-			courses: [],
-			tasks: [],
-			marks: [],
-
 			showTeacherModal: false
 		};
 	},
 
 	computed: {
-		...mapGetters('login', ['isStudent', 'isAdmin', 'isTeacher'])
+		...mapGetters('login', ['isStudent', 'isAdmin', 'isTeacher']),
+		...mapGetters('user', ['getFormattedDate']),
+		...mapState('user', ['loading', 'user', 'courses', 'tasks', 'marks', 'teacher', 'student'])
 	},
 
 	methods: {
-		getFormattedDate(date) {
-			return date !== null ? dayjs(date).format('L LT') : '';
-		},
+		...mapActions('user', ['getDashboard']),
 
 		showEditableTeacherModal() {
 			this.showTeacherModal = true;
@@ -287,15 +280,7 @@ export default {
 	},
 
 	created() {
-		this.loading = true;
-
-		axios.get('/dashboard').then((response) => {
-			this.user = response.data.user;
-			this.courses = response.data.courses;
-			this.tasks = response.data.tasks;
-			this.marks = response.data.marks;
-			this.loading = false;
-		});
+		this.getDashboard();
 	}
 };
 </script>

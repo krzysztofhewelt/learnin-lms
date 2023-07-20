@@ -16,7 +16,7 @@
 				{{ user.surname }} {{ user.name }}
 				<span
 					v-if="user.account_role === 'teacher'"
-					class="mr-2 rounded bg-red-100 px-2.5 py-0.5 text-sm font-medium text-red-900 dark:bg-red-200"
+					class="mr-2 rounded bg-orange-300 px-2.5 py-0.5 text-sm font-medium text-orange-950 dark:bg-red-200"
 				>
 					{{ $t('user.teacher') }}
 				</span>

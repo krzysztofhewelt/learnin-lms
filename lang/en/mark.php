@@ -7,10 +7,10 @@ return [
 	'mark' => 'Mark',
 	'comment' => 'Comments',
 
-	'task_marked_label' => 'Assessed task',
-	'points_earned_label' => 'Points earned',
-	'mark_earned_label' => 'Grade gained',
-	'date_of_mark_label' => 'Date of issue',
+	'task_marked' => 'Assessed task',
+	'points_earned' => 'Points earned',
+	'mark_earned' => 'Grade gained',
+	'date_of_mark' => 'Date of issue',
 
 	'avg_mark' => 'Average mark',
 	'avg_points' => 'Average points',

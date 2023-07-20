@@ -27,7 +27,7 @@ class TeacherRequest extends FormRequest
 	public function rules(): array
 	{
 		return [
-			'scien_degree' => 'max:50',
+			'scien_degree' => 'min:2|max:50',
 			'business_email' => 'email|max:255',
 			'contact_number' => 'sometimes|max:15',
 			'room' => 'sometimes|max:20',

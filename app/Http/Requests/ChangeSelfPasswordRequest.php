@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
-use App\Rules\MatchOldPassword;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -35,14 +34,13 @@ class ChangeSelfPasswordRequest extends FormRequest
 				'required',
 				function ($attribute, $value, $fail) {
 					if (!Hash::check($value, User::find(Auth::id())->password)) {
-						$fail(trans('auth.incorrect_password'));
+						$fail(trans('validation.current_password'));
 					}
 				},
 			],
 			'new_password' => [
 				'required',
-				'min:8',
-				'regex:/^.*(?=.{1,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
+				'regex:/^.*(?=.{1,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).{8,255}$/',
 				'different:current_password',
 			],
 		];

@@ -40,35 +40,19 @@ return [
 	'password' => 'Hasło',
 	'empty_password_placeholder' => 'Pozostawienie pola pustego nie zmieni hasła',
 
-	'courses' => 'Kursy',
-	'marks' => 'Ocen z zadań',
-	'avg_tasks' => 'Średnia ocen z zadań',
 	'edit_this_user' => 'Edytuj tego użytkownika',
-	'change_password_button' => 'Zmień hasło',
 
 	'student_facilities' => 'Studiuje kierunki',
 	'student_facilities_logged' => 'Studiujesz kierunki',
 	'teacher_info' => 'Dane nauczyciela',
 	'send_email' => 'Wyślij wiadomość email',
 
-	'change_password_label' => 'Zmiana hasła',
-	'old_password' => 'Stare hasło',
-	'new_password' => 'Nowe hasło',
-
-	'locale' => 'Język interfejsu',
-	'teacher_informations' => 'Informacje o nauczycielu',
+	'teacher_information' => 'Informacje o nauczycielu',
 	'student_fields_of_study' => 'Kierunki studiów studenta',
 
-	'teacher_informations_edit' => 'Edycja informacji o nauczycielu',
+	'teacher_information_edit' => 'Edycja informacji o nauczycielu',
 	'teacher_edit' => 'Edytuj info. o nauczycielu',
 	'update_this_data' => 'Aktualizuj te dane',
 
-	'validation_student' => 'Musisz dodać przynajmniej jeden kierunek studiów dla tego studenta',
-
 	'profile' => 'Profil',
-
-	'password_changed' => 'Hasło zostało zmienione pomyślnie',
-
-	'type_to_search' => 'Wpisz dane, aby wyszukać użytkowników.',
-	'no_users_found' => 'Nie znaleziono, bądź użytkownik jest już dodany.',
 ];

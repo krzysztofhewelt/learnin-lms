@@ -1,4 +1,10 @@
 <template>
+	<DeleteModal
+		:show-modal="showDeleteModal"
+		@closing="refreshAndCloseDeleteModal"
+		:deleted-resource="deletedResource"
+	/>
+
 	<DataTable
 		:columns="columns"
 		:loading="loading"
@@ -17,11 +23,11 @@
 		class="flex justify-end lg:mt-4"
 		:page-count="users.last_page || 0"
 		:click-handler="fetchData"
-		active-class="relative inline-flex cursor-pointer items-center border border-indigo-500 bg-indigo-100 text-sm font-medium text-indigo-600 focus:z-20"
-		prev-link-class="relative inline-flex cursor-pointer items-center rounded-l-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20"
-		next-link-class="relative inline-flex cursor-pointer items-center rounded-r-md border px-2 py-2 border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20"
-		page-link-class="relative items-center cursor-pointer border border-gray-300 px-4 bg-white py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20 inline-flex"
-		disabled-class="cursor-not-allowed"
+		active-class="pagination__page_link--active"
+		prev-link-class="pagination__prev_link"
+		next-link-class="pagination__next_link"
+		page-link-class="pagination__page_link"
+		disabled-class="pagination__page_link--disabled"
 		:no-li-surround="true"
 		:page-range="5"
 		:force-page="page"
@@ -39,16 +45,22 @@ import { mapActions, mapState } from 'vuex';
 import Paginate from 'vuejs-paginate-next';
 import router from '@/router';
 import _ from 'lodash';
+import DeleteModal from '@/components/Modals/DeleteModal.vue';
 
 export default {
 	name: 'Users',
 
-	components: { DataTable, Paginate },
+	components: { DeleteModal, DataTable, Paginate },
 
 	data() {
 		return {
 			page: 1,
 			searchString: '',
+			showDeleteModal: false,
+			deletedResource: {
+				type: 'none',
+				id: -1
+			},
 
 			columns: [
 				{
@@ -104,7 +116,7 @@ export default {
 	},
 
 	methods: {
-		...mapActions('admin', ['getAllUsers', 'getUser']),
+		...mapActions('admin', ['getUsers']),
 
 		addUser() {
 			router.push({ name: 'UsersCreate' });
@@ -119,7 +131,9 @@ export default {
 		},
 
 		deleteUser(userId) {
-			alert(userId);
+			this.showDeleteModal = true;
+			this.deletedResource.type = 'user';
+			this.deletedResource.id = userId;
 		},
 
 		refresh() {
@@ -129,16 +143,18 @@ export default {
 		search: _.debounce(function (search) {
 			this.searchString = search;
 
-			if (search !== '') this.getUser({ search: search, page: (this.page = 1) });
-			else this.getAllUsers((this.page = 1));
+			this.getUsers({ search: search, page: (this.page = 1) });
 		}, 500),
 
 		fetchData(page) {
 			this.page = page;
 
-			if (this.searchString !== '')
-				this.getUser({ search: this.searchString, page: this.page });
-			else this.getAllUsers(page);
+			this.getUsers({ search: this.searchString, page: this.page });
+		},
+
+		refreshAndCloseDeleteModal() {
+			this.showDeleteModal = false;
+			this.refresh();
 		}
 	},
 

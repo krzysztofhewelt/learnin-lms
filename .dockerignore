@@ -1,0 +1,9 @@
+node_modules
+vendor
+screenshots
+*.md
+public/build
+public/hot
+lang/php_*.json
+logo.png
+LICENSE

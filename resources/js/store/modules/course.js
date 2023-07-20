@@ -1,5 +1,4 @@
 import axios from 'axios';
-import router from '@/router';
 import dayjs from 'dayjs';
 
 const course = {
@@ -18,32 +17,38 @@ const course = {
 	actions: {
 		async getCourseDetails({ commit }, courseId) {
 			commit('loading', true);
-			commit('clearValidationErrors');
+			commit('resetCourse');
 
-			await axios.get('/courses/details/' + courseId).then((response) => {
-				commit('setCourse', {
-					id: response.data.id,
-					name: response.data.name,
-					description: response.data.description,
-					available_from: response.data.available_from,
-					available_to: response.data.available_to
+			await axios
+				.get('/courses/details/' + courseId)
+				.then((response) => {
+					commit('setCourse', {
+						id: response.data.id,
+						name: response.data.name,
+						description: response.data.description,
+						available_from: response.data.available_from,
+						available_to: response.data.available_to
+					});
+					commit('setCourseUsers', response.data.users);
+					commit('setCourseCategories', response.data.categories);
+					commit('setCourseFiles', response.data.course_files);
+				})
+				.finally(() => {
+					commit('loading', false);
 				});
-				commit('setCourseUsers', response.data.users);
-				commit('setCourseCategories', response.data.categories);
-				commit('setCourseFiles', response.data.course_files);
-			});
-
-			commit('loading', false);
 		},
 
 		async getCourseCategories({ commit }, courseId) {
 			commit('loading', true);
 
-			await axios.get('/categories/course/' + courseId).then((response) => {
-				commit('setCourseCategories', response.data.categories);
-			});
-
-			commit('loading', false);
+			await axios
+				.get('/categories/course/' + courseId)
+				.then((response) => {
+					commit('setCourseCategories', response.data.categories);
+				})
+				.finally(() => {
+					commit('loading', false);
+				});
 		},
 
 		async createOrEditCourse({ commit }, course) {
@@ -58,18 +63,17 @@ const course = {
 				data: course
 			})
 				.then((response) => {
-					commit('setCourse', course);
 					commit('clearValidationErrors');
-					commit('loading', false);
-
 					return response;
 				})
 				.catch((error) => {
 					if (error.response.status === 422)
 						commit('setValidationErrors', error.response.data.errors);
 
-					commit('loading', false);
 					throw error;
+				})
+				.finally(() => {
+					commit('loading', false);
 				});
 		},
 
@@ -79,11 +83,9 @@ const course = {
 			await axios
 				.delete('/courses/delete/' + courseId)
 				.then(() => {
-					commit('loading', false);
 					commit('resetCourse');
-					router.push({ name: 'CoursesUser' });
 				})
-				.catch(() => {
+				.finally(() => {
 					commit('loading', false);
 				});
 		},
@@ -92,17 +94,16 @@ const course = {
 			commit('loading', true);
 
 			await axios
-				.post('/delete-resource/' + courseFileId, {
-					file_type: 'course_file'
-				})
+				.delete('/delete-resource/' + courseFileId + '/course_file')
 				.then(() => {
 					commit(
 						'setCourseFiles',
 						state.courseFiles.filter((file) => file.id !== courseFileId)
 					);
+				})
+				.finally(() => {
+					commit('loading', false);
 				});
-
-			commit('loading', false);
 		},
 
 		async deleteCourseCategory({ commit, state }, categoryId) {
@@ -116,14 +117,12 @@ const course = {
 						state.courseCategories.filter((category) => category.id !== categoryId)
 					);
 				})
-				.catch((error) => {
-					return Promise.reject(error);
+				.finally(() => {
+					commit('loading', false);
 				});
-
-			commit('loading', false);
 		},
 
-		async createOrEditCategory({ dispatch, commit }, { courseId, category }) {
+		async createOrEditCategory({ commit }, { courseId, category }) {
 			commit('loading', true);
 
 			await axios({
@@ -136,18 +135,21 @@ const course = {
 					name: category.name
 				}
 			})
-				.then(() => {
-					dispatch('getCourseCategories', courseId);
+				.then((response) => {
+					if (response.config.method === 'post') commit('addCourseCategory', category);
+					else commit('updateCourseCategory', category);
+
+					category.id = response.data.id;
 					commit('clearValidationErrors');
-					commit('loading', false);
 				})
 				.catch((error) => {
 					if (error.response.status === 422)
 						commit('setValidationErrors', error.response.data.errors);
 
-					commit('loading', false);
-
 					throw error;
+				})
+				.finally(() => {
+					commit('loading', false);
 				});
 		},
 
@@ -161,12 +163,15 @@ const course = {
 				.then(() => {
 					commit('setCourseUsers', participants);
 					commit('clearValidationErrors');
-					commit('loading', false);
 				})
 				.catch((error) => {
-					commit('setValidationErrors', error.response.data.errors);
-					commit('loading', false);
+					if (error.response.status === 422)
+						commit('setValidationErrors', error.response.data.errors);
+
 					throw error;
+				})
+				.finally(() => {
+					commit('loading', false);
 				});
 		}
 	},
@@ -196,10 +201,6 @@ const course = {
 			state.courseCategories = courseCategories;
 		},
 
-		setCourseCategoryTasks(state, tasks) {
-			state.courseCategoryTasks = tasks;
-		},
-
 		setCourseFiles(state, courseFiles) {
 			state.courseFiles = courseFiles;
 		},
@@ -209,19 +210,28 @@ const course = {
 			state.courseCategories = [];
 			state.courseUsers = [];
 			state.courseFiles = [];
+			state.validationErrors = [];
+		},
+
+		addCourseCategory(state, category) {
+			state.courseCategories.push(category);
+		},
+
+		updateCourseCategory(state, category) {
+			state.courseCategories.find((key) => key['id'] === category.id).name = category.name;
 		}
 	},
 
 	getters: {
-		getFormattedDate: (state) => (date) => {
+		getFormattedDate: () => (date) => {
 			return date !== null ? dayjs(date).format('L LT') : '';
 		},
 
-		getISODate: (state) => (date) => {
+		getISODate: () => (date) => {
 			return date !== null ? dayjs(date).format('YYYY-MM-DDTHH:mm') : '';
 		},
 
-		getRelativeTime: (state) => (date) => {
+		getRelativeTime: () => (date) => {
 			return date !== null ? dayjs().to(dayjs(date)) : '';
 		},
 
@@ -243,13 +253,6 @@ const course = {
 
 		isEnded(state) {
 			return state.course.available_to !== null && dayjs() > dayjs(state.course.available_to);
-		},
-
-		getTeachers(state) {
-			return (
-				state.courseUsers &&
-				state.courseUsers.filter((user) => user.account_role === 'teacher')
-			);
 		}
 	}
 };

@@ -12,4 +12,6 @@ return [
 	'assignment_instruction_admin' => 'admin',
 	'assignment_instruction_teacher' => 'teacher',
 	'assignment_select_label' => 'Click on the list below to add new users',
+	'assignment_type_to_search' => 'Enter data to search for users.',
+	'assignment_no_users_found' => 'Not found, or the user is already added.',
 ];

@@ -1,6 +1,8 @@
 * text=auto
 
 *.blade.php diff=html
+*.vue diff=js
+*.js diff=js
 *.css diff=css
 *.html diff=html
 *.md diff=markdown

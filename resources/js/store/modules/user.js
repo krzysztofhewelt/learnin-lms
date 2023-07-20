@@ -18,40 +18,58 @@ const user = {
 
 		courses: [],
 		tasks: [],
-		marks: []
+		marks: [],
+		marksPaginated: []
 	},
 
 	actions: {
+		async getDashboard({ commit }) {
+			commit('loading', true);
+
+			await axios
+				.get('/dashboard')
+				.then((response) => {
+					commit('setUser', response.data.user);
+					commit('setStudent', response.data.user.student);
+					commit('setTeacher', response.data.user.teacher);
+					commit('setCourses', response.data.courses);
+					commit('setTasks', response.data.tasks);
+					commit('setMarks', response.data.marks);
+				})
+				.finally(() => {
+					commit('loading', false);
+				});
+		},
+
 		async getUserDetails({ commit }, userId = '') {
 			commit('loading', true);
 			commit('clearValidationErrors');
 
 			const userUrl = userId === '' ? '/profile' : '/users/show/' + userId;
 
-			await axios.get(userUrl).then((response) => {
-				commit('setUser', {
-					id: response.data.id,
-					name: response.data.name,
-					surname: response.data.surname,
-					account_role: {
-						name: response.data.account_role,
-						label: response.data.account_role
-					},
-					identification_number: response.data.identification_number,
-					email: response.data.email,
-					active: response.data.active,
-					locale: {
-						name: response.data.locale,
-						label: response.data.locale
-					}
+			await axios
+				.get(userUrl)
+				.then((response) => {
+					commit('setUser', {
+						id: response.data.id,
+						name: response.data.name,
+						surname: response.data.surname,
+						account_role: {
+							name: response.data.account_role,
+							label: response.data.account_role
+						},
+						identification_number: response.data.identification_number,
+						email: response.data.email,
+						active: response.data.active
+					});
+
+					if (response.data.teacher !== null) commit('setTeacher', response.data.teacher);
+
+					commit('setStudent', response.data.student);
+				})
+				.finally(() => {
+					commit('loading', false);
 				});
-
-				if (response.data.teacher !== null) commit('setTeacher', response.data.teacher);
-
-				commit('setStudent', response.data.student);
-			});
-
-			commit('loading', false);
 		},
 
 		async createNewUserOrEdit({ commit }, { user, student, teacher }) {
@@ -66,8 +84,7 @@ const user = {
 				identification_number: user.identification_number,
 				email: user.email,
 				password: user.password,
-				active: user.active,
-				userLocale: user.locale && user.locale.name
+				active: user.active
 			};
 
 			if (user.account_role && user.account_role.name === 'student')
@@ -81,27 +98,26 @@ const user = {
 				: '/users/create-or-edit/' + user.id;
 
 			return await axios
-				.post(postUrl, dataUserObject)
+				.put(postUrl, dataUserObject)
 				.then((response) => {
 					commit('clearValidationErrors');
-					commit('loading', false);
-
 					return response;
 				})
 				.catch((error) => {
 					commit('setValidationErrors', error.response.data.errors);
-					commit('loading', false);
-
 					throw error;
+				})
+				.finally(() => {
+					commit('loading', false);
 				});
 		},
 
 		async deleteUser({ commit }, userId) {
 			commit('loading', true);
 
-			await axios.delete('/users/delete/' + userId);
-
-			commit('loading', false);
+			await axios.delete('/users/delete/' + userId).finally(() => {
+				commit('loading', false);
+			});
 		},
 
 		async getUserCourses({ dispatch, commit }, userId = '') {
@@ -109,11 +125,14 @@ const user = {
 
 			const coursesUrl = userId === '' ? '/courses' : '/users/courses/' + userId;
 
-			await axios.get(coursesUrl).then((response) => {
-				commit('setCourses', response.data);
-			});
-
-			commit('loading', false);
+			await axios
+				.get(coursesUrl)
+				.then((response) => {
+					commit('setCourses', response.data);
+				})
+				.finally(() => {
+					commit('loading', false);
+				});
 		},
 
 		async getUserTasks({ dispatch, commit }, userId = '') {
@@ -121,52 +140,64 @@ const user = {
 
 			const tasksUrl = userId === '' ? '/tasks' : '/user/' + userId + '/tasks';
 
-			await axios.get(tasksUrl).then((response) => {
-				// paginate tasks or not
-				commit('setTasks', response.data);
-			});
-
-			commit('loading', false);
+			await axios
+				.get(tasksUrl)
+				.then((response) => {
+					// paginate tasks or not
+					commit('setTasks', response.data);
+				})
+				.finally(() => {
+					commit('loading', false);
+				});
 		},
 
 		async getCategoryTasks({ commit }, courseId) {
 			commit('loading', true);
 
-			await axios.get('/tasks/show/category/' + courseId).then((response) => {
-				commit('setTasks', response.data);
-			});
-
-			commit('loading', false);
+			await axios
+				.get('/tasks/show/category/' + courseId)
+				.then((response) => {
+					commit('setTasks', response.data);
+				})
+				.finally(() => {
+					commit('loading', false);
+				});
 		},
 
-		async getUserMarks({ dispatch, commit }, { userId = '', page = 1 }) {
-			commit('loading', true);
-
-			const marksUrl = userId === '' ? '/marks?page=' + page : '/user/' + userId + '/marks';
-
-			await axios.get(marksUrl).then((response) => {
-				// paginate marks or not
-				commit('setMarks', response.data);
-			});
-
-			commit('loading', false);
-		},
-
-		async updateTeacherInformations({ commit }, { userId, teacher }) {
+		async getUserMarks({ commit }, { page = 1 }) {
 			commit('loading', true);
 
 			await axios
-				.post('/users/update-teacher/' + userId, teacher)
+				.get('/marks', {
+					params: {
+						page: page
+					}
+				})
+				.then((response) => {
+					commit('setMarksPaginated', response.data);
+				})
+				.finally(() => {
+					commit('loading', false);
+				});
+		},
+
+		async updateTeacherInformation({ commit }, { userId, teacher }) {
+			commit('loading', true);
+
+			await axios
+				.patch('/users/update-teacher/' + userId, teacher)
 				.then(() => {
 					commit('clearValidationErrors');
 					commit('setTeacher', teacher);
 				})
 				.catch((error) => {
 					commit('setValidationErrors', error.response.data.errors);
-					throw error;
-				});
 
-			commit('loading', false);
+					throw error;
+				})
+				.finally(() => {
+					commit('loading', false);
+				});
 		}
 	},
 
@@ -218,14 +249,14 @@ const user = {
 
 		setMarks(state, marks) {
 			state.marks = marks;
-		}
+		},
+
+        setMarksPaginated(state, marks) {
+            state.marksPaginated = marks;
+        }
 	},
 
 	getters: {
-		getUserRole(state) {
-			return state.user.account_role && state.user.account_role.name;
-		},
-
 		isUserAdmin(state) {
 			return state.user.account_role && state.user.account_role.name === 'admin';
 		},
@@ -238,11 +269,15 @@ const user = {
 			return state.user.account_role && state.user.account_role.name === 'teacher';
 		},
 
-		getFormattedDate: (state) => (date) => {
+		isOwnAccount(state, _, rootState) {
+			return state.user.id === rootState.login.user.id;
+		},
+
+		getFormattedDate: () => (date) => {
 			return date !== null ? dayjs(date).format('L LT') : '';
 		},
 
-		getFormattedMarkDate: (state) => (date) => {
+		getFormattedMarkDate: () => (date) => {
 			return date !== null ? dayjs(date).format('L') : '';
 		},
 
@@ -294,7 +329,7 @@ const user = {
 		},
 
 		getMarkedTasks(state) {
-			return state.tasks && state.tasks.filter((task) => task.user_marks.length > 0);
+			return state.tasks && state.tasks.filter((task) => task.user_marks && task.user_marks.length > 0);
 		},
 
 		getUpcomingTasks(state) {
@@ -303,7 +338,7 @@ const user = {
 			);
 		},
 
-		getTeachersInCourse: (state) => (course) => {
+		getTeachersInCourse: () => (course) => {
 			return course.users && course.users.filter((user) => user.account_role === 'teacher');
 		}
 	}

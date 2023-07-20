@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -24,6 +23,7 @@ class UserFactory extends Factory
 			'email' => $this->faker->unique()->safeEmail,
 			'password' => bcrypt('User#12345'),
 			'active' => 1,
+			'locale' => env('LOCALE_DEFAULT'),
 		];
 	}
 }

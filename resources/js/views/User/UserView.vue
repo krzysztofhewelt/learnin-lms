@@ -15,8 +15,8 @@
 					class="mt-32 flex flex-col justify-end gap-3 px-3 py-6 text-center sm:mt-0 md:flex-row"
 				>
 					<button
-						class="rounded bg-pink-500 px-4 py-2 text-xs font-bold uppercase text-white no-underline shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-pink-600"
-						v-if="isUserTeacher && this.$route.name === 'ProfileUser'"
+						class="normal_btn"
+						v-if="isUserTeacher && (this.$route.name === 'ProfileUser' || isOwnAccount)"
 						@click="showEditableTeacherModal"
 					>
 						{{ $t('user.teacher_edit') }}
@@ -28,17 +28,17 @@
 							params: { id: $route.params.id }
 						}"
 						v-if="this.$route.name === 'UsersView' && isAdmin"
-						class="rounded bg-pink-500 px-4 py-2 text-xs font-bold uppercase text-white no-underline shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-pink-600"
+						class="normal_btn"
 					>
 						{{ $t('user.edit_this_user') }}
 					</router-link>
 
 					<router-link
 						:to="{ name: 'ProfileChangePassword' }"
-						v-if="this.$route.name === 'ProfileUser'"
-						class="rounded bg-pink-500 px-4 py-2 text-xs font-bold uppercase text-white no-underline shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-pink-600"
+						v-if="this.$route.name === 'ProfileUser' || isOwnAccount"
+						class="normal_btn"
 					>
-						{{ $t('user.change_password_button') }}
+						{{ $t('passwords.change_password_button') }}
 					</router-link>
 				</div>
 			</div>
@@ -94,15 +94,15 @@
 							>{{ teacher.business_email }}</a
 						>
 					</div>
-					<div class="block" v-if="teacher.contact_number != null">
+					<div class="block" v-if="teacher.contact_number">
 						<b>{{ $t('user.contact_number') }}</b
 						>: {{ teacher.contact_number }}
 					</div>
-					<div class="block" v-if="teacher.room != null">
+					<div class="block" v-if="teacher.room">
 						<b>{{ $t('user.room') }}</b
 						>: {{ teacher.room }}
 					</div>
-					<div class="block" v-if="teacher.consultation_hours != null">
+					<div class="block" v-if="teacher.consultation_hours">
 						<b>{{ $t('user.consultation_hours') }}</b
 						>: {{ teacher.consultation_hours }}
 					</div>
@@ -143,7 +143,7 @@ export default {
 
 	computed: {
 		...mapState('user', ['loading', 'user', 'student', 'teacher', 'courses', 'marks']),
-		...mapGetters('user', ['isUserAdmin', 'isUserTeacher', 'isUserStudent']),
+		...mapGetters('user', ['isUserAdmin', 'isUserTeacher', 'isUserStudent', 'isOwnAccount']),
 		...mapGetters('login', ['isAdmin'])
 	},
 

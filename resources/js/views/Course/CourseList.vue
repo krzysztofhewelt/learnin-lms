@@ -35,7 +35,7 @@
 		<div
 			v-for="course in result"
 			:key="course.id"
-			class="flex flex-1 flex-col justify-between rounded-lg bg-white p-3 text-gray-500 transition duration-200 ease-in-out hover:drop-shadow-xl"
+			class="flex flex-1 flex-col justify-between rounded-lg bg-white p-3 text-gray-500 drop-shadow-xl transition duration-200 ease-in-out"
 		>
 			<div>
 				<router-link
@@ -65,14 +65,14 @@
 					</template>
 				</div>
 				<div v-if="course.available_to !== null && currentTab !== 'upcoming'">
-					<b>{{ $t('course.available_to_label') }}:</b>
+					<b>{{ $t('course.available_to') }}:</b>
 					{{ course.available_to }}
 				</div>
 				<div v-if="course.available_to === null && currentTab !== 'upcoming'">
 					{{ $t('course.no_available_to') }}
 				</div>
 				<div v-if="currentTab === 'upcoming'" class="font-bold underline">
-					<b>{{ $t('course.available_from_label') }}:</b>
+					<b>{{ $t('course.available_from') }}:</b>
 					{{ course.available_from }}
 				</div>
 			</div>

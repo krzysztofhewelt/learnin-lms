@@ -12,4 +12,6 @@ return [
 	'assignment_instruction_admin' => 'admin',
 	'assignment_instruction_teacher' => 'teacher (prowadzący)',
 	'assignment_select_label' => 'Kliknij w listę poniżej, aby dodawać nowych użytkowników',
+	'assignment_type_to_search' => 'Wpisz dane, aby wyszukać użytkowników.',
+	'assignment_no_users_found' => 'Nie znaleziono, bądź użytkownik jest już dodany.',
 ];
