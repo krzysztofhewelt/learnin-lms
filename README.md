@@ -87,6 +87,14 @@ docker-compose -f .\docker-compose.yml down
 
 -   email: `email@email.com`
 -   password: `Admin#12345`
+7. **Other users credentials:**
+
+   |          | email                   | passwords  | example            |
+   |----------|-------------------------|------------|--------------------|
+   | students | student[1-15]@email.com | User#12345 | student5@email.com |
+   | teachers | teacher[1-5]@email.com  | User#12345 | teacher1@email.com |
+
+If you don't want these accounts, remove in administration panel.
 
 # Configuration
 
