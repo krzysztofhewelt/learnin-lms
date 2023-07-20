@@ -37,25 +37,22 @@ LearnIn is the next generation learning management system. Provides constant mon
 
 # Screenshots
 
-<details>
-    <summary>Click to show</summary>
-    <img src="screenshots/courseView.jpg" alt="course view">
-    <img src="screenshots/taskView.jpg" alt="task view">
-    <img src="screenshots/courses.jpg" alt="courses">
-    <img src="screenshots/tasks.jpg" alt="tasks">
-    <img src="screenshots/marks.jpg" alt="marks">
-    <img src="screenshots/studentUploads.jpg" alt="students uploads">
-    <img src="screenshots/studentMarks.jpg" alt="students marks">
-    <img src="screenshots/userView.jpg" alt="user view">
-    <img src="screenshots/statistics.jpg" alt="statistics">
-    <img src="screenshots/exampleForm.jpg" alt="example form">
-    <img src="screenshots/exampleForm2.jpg" alt="example form second">
-    <img src="screenshots/courseParticipants.jpg" alt="course participants modal">
-    <img src="screenshots/courseParticipants2.jpg" alt="course participants modal second">
-    <img src="screenshots/upload.jpg" alt="file upload">
-    <img src="screenshots/teacherInformationEdit.jpg" alt="teacher information edit modal">
-    <img src="screenshots/adminExample.jpg" alt="admin example">
-</details>
+<img src="screenshots/courseView.jpg" alt="course view">
+<img src="screenshots/taskView.jpg" alt="task view">
+<img src="screenshots/courses.jpg" alt="courses">
+<img src="screenshots/tasks.jpg" alt="tasks">
+<img src="screenshots/marks.jpg" alt="marks">
+<img src="screenshots/studentUploads.jpg" alt="students uploads">
+<img src="screenshots/studentMarks.jpg" alt="students marks">
+<img src="screenshots/userView.jpg" alt="user view">
+<img src="screenshots/statistics.jpg" alt="statistics">
+<img src="screenshots/exampleForm.jpg" alt="example form">
+<img src="screenshots/exampleForm2.jpg" alt="example form second">
+<img src="screenshots/courseParticipants.jpg" alt="course participants modal">
+<img src="screenshots/courseParticipants2.jpg" alt="course participants modal second">
+<img src="screenshots/upload.jpg" alt="file upload">
+<img src="screenshots/teacherInformationEdit.jpg" alt="teacher information edit modal">
+<img src="screenshots/adminExample.jpg" alt="admin example">
 
 # Getting started
 
