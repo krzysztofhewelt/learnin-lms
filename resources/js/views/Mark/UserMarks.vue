@@ -34,18 +34,18 @@
 					{{ $t('mark.date_of_mark') }}
 				</div>
 				<div class="text-2xl">
-					{{ getFormattedMarkDate(mark.updated_at) }}
+					{{ getFormattedDate(mark.updated_at) }}
 				</div>
 			</div>
 			<div class="px-4">
 				<div class="text-xl font-bold">{{ $t('mark.comment') }}</div>
 				<button
 					class="m-auto text-2xl font-bold text-purple-800 no-underline hover:text-purple-500"
-					v-if="mark.description !== null"
+					v-if="mark.description"
 					@click="mark.showDesc = !mark.showDesc"
 				>
 					{{
-						mark.showDesc === false || !mark.showDesc
+						!mark.showDesc
 							? $t('general.show')
 							: $t('general.hide')
 					}}
@@ -72,7 +72,7 @@
 		</div>
 
 		<div
-			v-if="marksPaginated.data && marksPaginated.data.length === 0 && !loading"
+			v-if="marksPaginated.data?.length === 0 && !loading"
 			class="mt-6 text-2xl font-bold"
 		>
 			{{ $t('general.no_data') }}
@@ -94,8 +94,9 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import Loading from '@/components/Icons/Loading.vue';
+import { getFormattedDate } from '@/utils/dateFormatter';
 
 export default {
 	name: 'UserMarks',
@@ -108,11 +109,11 @@ export default {
 	},
 
 	computed: {
-		...mapState('user', ['loading', 'marksPaginated']),
-		...mapGetters('user', ['getFormattedMarkDate'])
+		...mapState('user', ['loading', 'marksPaginated'])
 	},
 
 	methods: {
+		getFormattedDate,
 		...mapActions('user', ['getUserMarks']),
 
 		showMore() {

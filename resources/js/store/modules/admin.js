@@ -11,7 +11,7 @@ const admin = {
 
 	actions: {
 		async getUsers({ commit }, { search: searchString, page = 1 }) {
-			commit('loading', true);
+			commit('setLoading', true);
 
 			await axios
 				.get('/admin/users', {
@@ -24,12 +24,12 @@ const admin = {
 					commit('setUsers', response.data);
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		},
 
 		async getCourses({ commit }, { search: searchString, page = 1 }) {
-			commit('loading', true);
+			commit('setLoading', true);
 
 			await axios
 				.get('/admin/courses', {
@@ -42,12 +42,12 @@ const admin = {
 					commit('setCourses', response.data);
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		},
 
 		async getTasks({ commit }, { search: searchString, page = 1 }) {
-			commit('loading', true);
+			commit('setLoading', true);
 
 			await axios
 				.get('/admin/tasks', {
@@ -60,13 +60,13 @@ const admin = {
 					commit('setTasks', response.data);
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		}
 	},
 
 	mutations: {
-		loading(state, newLoadingStatus) {
+		setLoading(state, newLoadingStatus) {
 			state.loading = newLoadingStatus;
 		},
 

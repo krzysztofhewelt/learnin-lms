@@ -62,7 +62,8 @@ class Task extends Model
 		$coursesIds = (new Course())->getUserCoursesId(Auth::id());
 
 		return $this->whereIn('course_ID', $coursesIds)
-			->with('course', 'category')
+			->with('course:id,name', 'category:id,name')
+            ->where('available_from', '<=', now())
 			->where('available_to', '>=', now())
 			->orderBy('available_to')
 			->limit(6)

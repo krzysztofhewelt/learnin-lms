@@ -83,13 +83,13 @@
 							<div class="text-zinc-400">
 								{{ $t('course.categories') }}
 							</div>
-							{{ getCategoriesCount > 0 ? getCategoriesCount : 0 }}
+							{{ getCategoriesCount }}
 						</div>
 						<div class="px-2">
 							<div class="text-zinc-400">
 								{{ $t('course.available_from') }}
 							</div>
-							{{ getFormattedDate(course.available_from) }}
+							{{ getFormattedDateTime(course.available_from) }}
 						</div>
 						<div class="px-2">
 							<div class="text-zinc-400">
@@ -98,17 +98,21 @@
 							<Popper
 								v-if="!isEnded"
 								:content="
-									getFormattedDate(course.available_to) ||
+									getFormattedDateTime(course.available_to) ||
 									$t('general.not_available')
 								"
 								hover
 							>
 								{{
-									getRelativeTime(course.available_to) ||
+									getRelativeDate(course.available_to) ||
 									$t('general.not_available')
 								}}
 							</Popper>
-							<Popper v-else :content="getFormattedDate(course.available_to)" hover>
+							<Popper
+								v-else
+								:content="getFormattedDateTime(course.available_to)"
+								hover
+							>
 								<span class="font-bold text-green-600">{{
 									$t('course.ended_course')
 								}}</span>
@@ -234,16 +238,16 @@
 					<div class="py-3" v-for="file in filesLimitedArray" :key="file.id">
 						<button
 							class="break-all text-left font-bold text-purple-800 no-underline hover:text-purple-500"
-							@click="download(file.id, 'course_file')"
+							@click="downloadOneFile(file.id, 'course_file')"
 						>
 							{{ file.filename_original }} ({{ file.file_size }}
 							{{ file.file_size_unit }})
 						</button>
 						<div class="font-sm text-zinc-400">
 							{{ $t('general.updated') }}
-							<Popper :content="getFormattedDate(file.updated_at)" hover>
+							<Popper :content="getFormattedDateTime(file.updated_at)" hover>
 								<span class="underline decoration-dotted">{{
-									getRelativeTime(file.updated_at)
+									getRelativeDate(file.updated_at)
 								}}</span>
 							</Popper>
 						</div>
@@ -284,7 +288,8 @@ import CourseCategoryModal from '@/components/Modals/CourseCategoryModal.vue';
 import UploadModal from '@/components/Modals/UploadModal.vue';
 import ParticipantsModal from '@/components/Modals/ParticipantsModal.vue';
 import CourseAssignmentModal from '@/components/Modals/CourseAssignmentModal.vue';
-import download from '@/utils/download';
+import { downloadOneFile } from '@/utils/download';
+import { getFormattedDateTime, getRelativeDate } from '@/utils/dateFormatter';
 
 export default {
 	name: 'CourseView',
@@ -341,8 +346,6 @@ export default {
 			'courseFiles'
 		]),
 		...mapGetters('course', [
-			'getFormattedDate',
-			'getRelativeTime',
 			'getCategoriesCount',
 			'getCourseUsersCount',
 			'getDescriptionLength',
@@ -352,25 +355,22 @@ export default {
 		...mapGetters('login', ['isTeacher', 'isAdmin']),
 
 		filesLimitedArray: function () {
-			return this.filesExpanded
-				? this.courseFiles
-				: this.courseFiles && this.courseFiles.slice(0, 5);
+			return this.filesExpanded ? this.courseFiles : this.courseFiles?.slice(0, 5);
 		},
 
 		descriptionLimitedString: function () {
 			return this.descriptionExpanded
 				? this.course.description
-				: (this.course.description &&
-						this.course.description.length <= 500 &&
-						this.course.description.slice(0, 500)) ||
-						(this.course.description &&
-							this.course.description.length > 500 &&
-							this.course.description.slice(0, 500).concat('...'));
+				: (this.course.description?.length <= 500 && this.course.description) ||
+						(this.course.description?.length > 500 &&
+							this.course.description?.slice(0, 500).concat('...'));
 		}
 	},
 
 	methods: {
-		download,
+		getRelativeDate,
+		getFormattedDateTime,
+		downloadOneFile,
 		...mapActions('course', ['getCourseDetails']),
 
 		showDeleteResourceModal(resourceType, resourceId) {

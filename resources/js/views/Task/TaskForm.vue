@@ -136,10 +136,11 @@ import BaseInputGroup from '@/components/BaseInputGroup.vue';
 import BaseTextarea from '@/components/BaseTextarea.vue';
 import ButtonSubmit from '@/components/ButtonSubmit.vue';
 import Multiselect from 'vue-multiselect';
-import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
+import { mapActions, mapMutations, mapState } from 'vuex';
 import router from '@/router';
 import { useToast } from 'vue-toastification';
 import MultiselectInputGroup from '@/components/MultiselectInputGroup.vue';
+import { getISODate } from '@/utils/dateFormatter';
 
 export default {
 	name: 'TaskForm',
@@ -156,7 +157,6 @@ export default {
 		...mapState('task', ['loading', 'task', 'validationErrors']),
 		...mapState('course', ['courseCategories']),
 		...mapState('user', ['courses']),
-		...mapGetters('task', ['getISODate']),
 
 		availableFrom: {
 			set: function (val) {
@@ -164,7 +164,7 @@ export default {
 			},
 
 			get: function () {
-				return this.task.available_from && this.getISODate(this.task.available_from);
+				return this.getISODate(this.task.available_from);
 			}
 		},
 
@@ -174,7 +174,7 @@ export default {
 			},
 
 			get: function () {
-				return this.task.available_to && this.getISODate(this.task.available_to);
+				return this.getISODate(this.task.available_to);
 			}
 		}
 	},
@@ -184,6 +184,8 @@ export default {
 		...mapActions('user', ['getUserCourses']),
 		...mapActions('course', ['getCourseCategories']),
 		...mapMutations('task', ['resetTask']),
+
+		getISODate,
 
 		handleSubmit() {
 			const toast = useToast();
@@ -206,11 +208,11 @@ export default {
 		},
 
 		getCategories(option) {
-			this.$store.commit('task/loading', true);
+			this.$store.commit('task/setLoading', true);
 			this.task.category = '';
 
 			this.getCourseCategories(option.id).then(() => {
-				this.$store.commit('task/loading', false);
+				this.$store.commit('task/setLoading', false);
 			});
 		},
 
@@ -223,17 +225,17 @@ export default {
 	created() {
 		if (this.$route.name === 'TasksEdit') {
 			this.showTask(this.$route.params.id).then(() => {
-				this.$store.commit('task/loading', true);
+				this.$store.commit('task/setLoading', true);
 				this.getUserCourses();
 				this.getCourseCategories(this.task.course.id);
-				this.$store.commit('task/loading', false);
+				this.$store.commit('task/setLoading', false);
 			});
 		} else {
-			this.$store.commit('task/loading', true);
+			this.$store.commit('task/setLoading', true);
 			this.resetTask();
 
 			this.getUserCourses().then(() => {
-				this.$store.commit('task/loading', false);
+				this.$store.commit('task/setLoading', false);
 			});
 		}
 	}

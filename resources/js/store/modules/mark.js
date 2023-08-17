@@ -10,7 +10,7 @@ const mark = {
 
 	actions: {
 		async getStudentsMarksForTask({ commit }, taskId) {
-			commit('loading', true);
+			commit('setLoading', true);
 			commit('clearValidationErrors');
 
 			await axios
@@ -26,13 +26,13 @@ const mark = {
 					throw error;
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		},
 
 		// edit user marks
 		async editStudentsMarksForTask({ commit }, { taskId, studentsMarks }) {
-			commit('loading', true);
+			commit('setLoading', true);
 
 			await axios
 				.post('/marks/task/' + taskId, { marks: studentsMarks })
@@ -46,13 +46,13 @@ const mark = {
 					throw error;
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		}
 	},
 
 	mutations: {
-		loading(state, newLoadingStatus) {
+		setLoading(state, newLoadingStatus) {
 			state.loading = newLoadingStatus;
 		},
 

@@ -46,8 +46,8 @@
 				</router-link>
 
 				<div>
-					{{ course.description && course.description.slice(0, 100) }}
-					{{ course.description && course.description.length > 100 ? '...' : '' }}
+					{{ course.description?.slice(0, 100) }}
+					{{ course.description?.length > 100 ? '...' : '' }}
 				</div>
 			</div>
 
@@ -66,14 +66,14 @@
 				</div>
 				<div v-if="course.available_to !== null && currentTab !== 'upcoming'">
 					<b>{{ $t('course.available_to') }}:</b>
-					{{ course.available_to }}
+					{{ getFormattedDateTime(course.available_to) }}
 				</div>
 				<div v-if="course.available_to === null && currentTab !== 'upcoming'">
 					{{ $t('course.no_available_to') }}
 				</div>
 				<div v-if="currentTab === 'upcoming'" class="font-bold underline">
 					<b>{{ $t('course.available_from') }}:</b>
-					{{ course.available_from }}
+					{{ getFormattedDateTime(course.available_from) }}
 				</div>
 			</div>
 		</div>
@@ -86,6 +86,7 @@ import Dropdown from '@/components/Dropdown.vue';
 import Tab from '@/components/Tab.vue';
 import Loading from '@/components/Icons/Loading.vue';
 import Add from '@/components/Icons/Add.vue';
+import { getFormattedDateTime } from '@/utils/dateFormatter';
 
 export default {
 	name: 'CourseList',
@@ -110,6 +111,7 @@ export default {
 	},
 
 	methods: {
+		getFormattedDateTime,
 		...mapActions('user', ['getUserCourses']),
 
 		setCoursesView(type) {

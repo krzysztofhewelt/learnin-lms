@@ -24,7 +24,7 @@ const user = {
 
 	actions: {
 		async getDashboard({ commit }) {
-			commit('loading', true);
+			commit('setLoading', true);
 
 			await axios
 				.get('/dashboard')
@@ -37,12 +37,12 @@ const user = {
 					commit('setMarks', response.data.marks);
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		},
 
 		async getUserDetails({ commit }, userId = '') {
-			commit('loading', true);
+			commit('setLoading', true);
 			commit('clearValidationErrors');
 
 			const userUrl = userId === '' ? '/profile' : '/users/show/' + userId;
@@ -63,34 +63,34 @@ const user = {
 						active: response.data.active
 					});
 
-					if (response.data.teacher !== null) commit('setTeacher', response.data.teacher);
+					if (response.data.teacher) commit('setTeacher', response.data.teacher);
 
 					commit('setStudent', response.data.student);
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		},
 
 		async createNewUserOrEdit({ commit }, { user, student, teacher }) {
-			commit('loading', true);
+			commit('setLoading', true);
 
-			if (!user.id && user.password === '') delete user.password;
+			if (!user.id && !user.password) delete user.password;
 
 			let dataUserObject = {
 				name: user.name,
 				surname: user.surname,
-				account_role: user.account_role && user.account_role.name,
+				account_role: user.account_role?.name,
 				identification_number: user.identification_number,
 				email: user.email,
 				password: user.password,
 				active: user.active
 			};
 
-			if (user.account_role && user.account_role.name === 'student')
+			if (user.account_role?.name === 'student')
 				dataUserObject['student'] = student;
 
-			if (user.account_role && user.account_role.name === 'teacher')
+			if (user.account_role?.name === 'teacher')
 				dataUserObject['teacher'] = teacher;
 
 			const postUrl = !user.id
@@ -108,20 +108,20 @@ const user = {
 					throw error;
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		},
 
 		async deleteUser({ commit }, userId) {
-			commit('loading', true);
+			commit('setLoading', true);
 
 			await axios.delete('/users/delete/' + userId).finally(() => {
-				commit('loading', false);
+				commit('setLoading', false);
 			});
 		},
 
 		async getUserCourses({ dispatch, commit }, userId = '') {
-			commit('loading', true);
+			commit('setLoading', true);
 
 			const coursesUrl = userId === '' ? '/courses' : '/users/courses/' + userId;
 
@@ -131,12 +131,12 @@ const user = {
 					commit('setCourses', response.data);
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		},
 
 		async getUserTasks({ dispatch, commit }, userId = '') {
-			commit('loading', true);
+			commit('setLoading', true);
 
 			const tasksUrl = userId === '' ? '/tasks' : '/user/' + userId + '/tasks';
 
@@ -147,12 +147,12 @@ const user = {
 					commit('setTasks', response.data);
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		},
 
 		async getCategoryTasks({ commit }, courseId) {
-			commit('loading', true);
+			commit('setLoading', true);
 
 			await axios
 				.get('/tasks/show/category/' + courseId)
@@ -160,12 +160,12 @@ const user = {
 					commit('setTasks', response.data);
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		},
 
 		async getUserMarks({ commit }, { page = 1 }) {
-			commit('loading', true);
+			commit('setLoading', true);
 
 			await axios
 				.get('/marks', {
@@ -177,12 +177,12 @@ const user = {
 					commit('setMarksPaginated', response.data);
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		},
 
 		async updateTeacherInformation({ commit }, { userId, teacher }) {
-			commit('loading', true);
+			commit('setLoading', true);
 
 			await axios
 				.patch('/users/update-teacher/' + userId, teacher)
@@ -196,13 +196,13 @@ const user = {
 					throw error;
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		}
 	},
 
 	mutations: {
-		loading(state, newLoadingStatus) {
+		setLoading(state, newLoadingStatus) {
 			state.loading = newLoadingStatus;
 		},
 
@@ -251,95 +251,70 @@ const user = {
 			state.marks = marks;
 		},
 
-        setMarksPaginated(state, marks) {
-            state.marksPaginated = marks;
-        }
+		setMarksPaginated(state, marks) {
+			state.marksPaginated = marks;
+		}
 	},
 
 	getters: {
 		isUserAdmin(state) {
-			return state.user.account_role && state.user.account_role.name === 'admin';
+			return state.user.account_role?.name === 'admin';
 		},
 
 		isUserStudent(state) {
-			return state.user.account_role && state.user.account_role.name === 'student';
+			return state.user.account_role?.name === 'student';
 		},
 
 		isUserTeacher(state) {
-			return state.user.account_role && state.user.account_role.name === 'teacher';
+			return state.user.account_role?.name === 'teacher';
 		},
 
 		isOwnAccount(state, _, rootState) {
 			return state.user.id === rootState.login.user.id;
 		},
 
-		getFormattedDate: () => (date) => {
-			return date !== null ? dayjs(date).format('L LT') : '';
-		},
-
-		getFormattedMarkDate: () => (date) => {
-			return date !== null ? dayjs(date).format('L') : '';
-		},
-
 		getActiveCourses(state) {
-			return (
-				state.courses &&
-				state.courses.filter(
-					(course) =>
-						dayjs() >= dayjs(course.available_from) &&
-						(dayjs() <= dayjs(course.available_to) || course.available_to === null)
-				)
+			return state.courses?.filter(
+				(course) =>
+					dayjs() >= dayjs(course.available_from) &&
+					(dayjs() <= dayjs(course.available_to) || !course.available_to)
 			);
 		},
 
 		getEndedCourses(state) {
-			return (
-				state.courses &&
-				state.courses.filter(
-					(course) => dayjs() > dayjs(course.available_to) && course.available_to !== null
-				)
+			return state.courses?.filter(
+				(course) => course.available_to && dayjs() > dayjs(course.available_to)
 			);
 		},
 
 		getUpcomingCourses(state) {
-			return (
-				state.courses &&
-				state.courses.filter((course) => dayjs() < dayjs(course.available_from))
-			);
+			return state.courses?.filter((course) => dayjs() < dayjs(course.available_from));
 		},
 
 		getActiveTasks(state) {
-			return (
-				state.tasks &&
-				state.tasks.filter(
-					(task) =>
-						dayjs() >= dayjs(task.available_from) &&
-						(dayjs() <= dayjs(task.available_to) || task.available_to === null)
-				)
+			return state.tasks?.filter(
+				(task) =>
+					dayjs() >= dayjs(task.available_from) &&
+					(dayjs() <= dayjs(task.available_to) || !task.available_to)
 			);
 		},
 
 		getExpiredTasks(state) {
-			return (
-				state.tasks &&
-				state.tasks.filter(
-					(task) => dayjs() > dayjs(task.available_to) && task.available_to !== null
-				)
+			return state.tasks?.filter(
+				(task) => task.available_to && dayjs() > dayjs(task.available_to)
 			);
 		},
 
 		getMarkedTasks(state) {
-			return state.tasks && state.tasks.filter((task) => task.user_marks && task.user_marks.length > 0);
+			return state.tasks?.filter((task) => task.user_marks?.length > 0);
 		},
 
 		getUpcomingTasks(state) {
-			return (
-				state.tasks && state.tasks.filter((task) => dayjs() < dayjs(task.available_from))
-			);
+			return state.tasks?.filter((task) => dayjs() < dayjs(task.available_from));
 		},
 
 		getTeachersInCourse: () => (course) => {
-			return course.users && course.users.filter((user) => user.account_role === 'teacher');
+			return course.users?.filter((user) => user.account_role === 'teacher');
 		}
 	}
 };

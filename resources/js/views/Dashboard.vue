@@ -60,11 +60,11 @@
 						</div>
 						<div>
 							<b>{{ $t('course.available_from') }}:</b>
-							{{ getFormattedDate(course.available_from) }}
+							{{ getFormattedDateTime(course.available_from) }}
 						</div>
 						<div v-if="course.available_to !== null">
 							<b>{{ $t('course.available_to') }}:</b>
-							{{ getFormattedDate(course.available_to) }}
+							{{ getFormattedDateTime(course.available_to) }}
 						</div>
 						<div v-else>
 							{{ $t('course.no_available_to') }}
@@ -115,7 +115,7 @@
 								$t('task.available_from')
 							}}</span>
 							<span class="text-2xl">{{
-								getFormattedDate(task.available_from)
+								getFormattedDateTime(task.available_from)
 							}}</span>
 						</div>
 						<div class="px-4">
@@ -123,7 +123,8 @@
 								$t('task.available_to')
 							}}</span>
 							<span class="text-2xl">{{
-								getFormattedDate(task.available_to) || $t('general.not_available')
+								getFormattedDateTime(task.available_to) ||
+								$t('general.not_available')
 							}}</span>
 						</div>
 					</div>
@@ -191,11 +192,11 @@
 
 				<p class="mb-0 mt-6">
 					<b>{{ $t('user.last_success_login') }}:</b>
-					{{ getFormattedDate(user.last_success_login) }}
+					{{ getFormattedDateTime(user.last_success_login) }}
 				</p>
 				<p class="mb-0">
 					<b>{{ $t('user.last_wrong_login') }}:</b>
-					{{ getFormattedDate(user.last_wrong_login) || $t('general.not_available') }}
+					{{ getFormattedDateTime(user.last_wrong_login) || $t('general.not_available') }}
 				</p>
 			</div>
 
@@ -254,6 +255,7 @@ import { mapActions, mapGetters, mapState } from 'vuex';
 import User from '@/components/Icons/User.vue';
 import LoadingScreen from '@/components/LoadingScreen.vue';
 import TeacherModal from '@/components/Modals/TeacherModal.vue';
+import { getFormattedDateTime } from '@/utils/dateFormatter';
 
 export default {
 	name: 'Dashboard',
@@ -267,11 +269,11 @@ export default {
 
 	computed: {
 		...mapGetters('login', ['isStudent', 'isAdmin', 'isTeacher']),
-		...mapGetters('user', ['getFormattedDate']),
 		...mapState('user', ['loading', 'user', 'courses', 'tasks', 'marks', 'teacher', 'student'])
 	},
 
 	methods: {
+		getFormattedDateTime,
 		...mapActions('user', ['getDashboard']),
 
 		showEditableTeacherModal() {

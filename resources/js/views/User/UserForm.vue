@@ -104,7 +104,7 @@
 						{{ $t('validation.student') }}
 					</div>
 
-					<template v-if="user.account_role && user.account_role.name === 'student'">
+					<template v-if="isUserStudent">
 						<div class="col-span-4 mt-4 border-t pt-4 lg:col-span-1 lg:col-start-1">
 							<h1 class="text-2xl font-bold">
 								{{ $t('user.student_fields_of_study') }}
@@ -176,7 +176,7 @@
 						</template>
 					</template>
 
-					<template v-if="user.account_role && user.account_role.name === 'teacher'">
+					<template v-if="isUserTeacher">
 						<div class="col-span-4 lg:col-span-1 lg:col-start-1">
 							<BaseInputGroup
 								id="scien_degree"
@@ -238,7 +238,7 @@
 import LoadingScreen from '@/components/LoadingScreen.vue';
 import BaseInputGroup from '@/components/BaseInputGroup.vue';
 import ButtonSubmit from '@/components/ButtonSubmit.vue';
-import { mapActions, mapState, mapMutations } from 'vuex';
+import {mapActions, mapState, mapMutations, mapGetters} from 'vuex';
 import BasePassword from '@/components/BasePassword.vue';
 import BaseCheckbox from '@/components/BaseCheckbox.vue';
 import Multiselect from 'vue-multiselect';
@@ -278,7 +278,8 @@ export default {
 	},
 
 	computed: {
-		...mapState('user', ['loading', 'user', 'student', 'teacher', 'validationErrors'])
+		...mapState('user', ['loading', 'user', 'student', 'teacher', 'validationErrors']),
+        ...mapGetters('user', ['isUserStudent', 'isUserTeacher'])
 	},
 
 	methods: {

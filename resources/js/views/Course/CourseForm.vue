@@ -63,10 +63,11 @@ import BaseInputGroup from '@/components/BaseInputGroup.vue';
 import BaseTextarea from '@/components/BaseTextarea.vue';
 import ButtonSubmit from '@/components/ButtonSubmit.vue';
 import LoadingScreen from '@/components/LoadingScreen.vue';
-import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
+import { mapActions, mapMutations, mapState } from 'vuex';
 import Multiselect from 'vue-multiselect';
 import { useToast } from 'vue-toastification';
 import router from '@/router';
+import { getISODate } from '@/utils/dateFormatter';
 
 export default {
 	name: 'CourseForm',
@@ -80,7 +81,6 @@ export default {
 
 	computed: {
 		...mapState('course', ['course', 'loading', 'validationErrors']),
-		...mapGetters('course', ['getISODate']),
 
 		availableFrom: {
 			set: function (val) {
@@ -88,7 +88,7 @@ export default {
 			},
 
 			get: function () {
-				return this.course.available_from && this.getISODate(this.course.available_from);
+				return this.getISODate(this.course.available_from);
 			}
 		},
 
@@ -98,7 +98,7 @@ export default {
 			},
 
 			get: function () {
-				return this.course.available_to && this.getISODate(this.course.available_to);
+				return this.getISODate(this.course.available_to);
 			}
 		}
 	},
@@ -106,6 +106,8 @@ export default {
 	methods: {
 		...mapActions('course', ['getCourseDetails', 'createOrEditCourse']),
 		...mapMutations('course', ['resetCourse']),
+
+		getISODate,
 
 		handleSubmit() {
 			const toast = useToast();

@@ -2,7 +2,7 @@
 	<router-link
 		class="block px-3 py-3 no-underline transition-all duration-300"
 		:class="[
-			$route.matched.some(({ name }) => name === routeName)
+			$route.name === routeName || $route.matched[0]?.name === routeParent
 				? 'border-r-2 border-purple-800 font-bold text-purple-800 hover:border-purple-500 hover:text-purple-500'
 				: 'text-gray-400 hover:text-purple-600'
 		]"
@@ -32,7 +32,7 @@ export default {
 
 		routeParent: {
 			type: String,
-			required: true
+			default: null
 		}
 	}
 };

@@ -75,7 +75,7 @@
 					</h1>
 					<div class="inline" v-if="isStudent">
 						<span
-							v-if="userMark !== null"
+							v-if="userMark"
 							class="ml-3 text-lg font-semibold text-green-600"
 						>
 							{{ $t('task.marked') }}
@@ -85,7 +85,7 @@
 						</span>
 					</div>
 				</div>
-				<div class="border-b py-3" v-if="userMark !== null && isStudent">
+				<div class="border-b py-3" v-if="userMark && isStudent">
 					<h1 class="text-xl font-bold">
 						{{ $t('mark.task_marked') }}
 					</h1>
@@ -108,10 +108,10 @@
 							<div class="text-zinc-400">
 								{{ $t('mark.date_of_mark') }}
 							</div>
-							{{ getFormattedMarkDate(userMark.updated_at) }}
+							{{ getFormattedDate(userMark.updated_at) }}
 						</div>
 					</div>
-					<div v-if="userMark.description && userMark.description.length > 0">
+					<div v-if="userMark.description?.length > 0">
 						<div class="mt-2 text-zinc-400">
 							{{ $t('mark.comment') }}
 						</div>
@@ -146,7 +146,7 @@
 							<div class="text-zinc-400">
 								{{ $t('task.available_from') }}
 							</div>
-							{{ getFormattedDate(task.available_from) }}
+							{{ getFormattedDateTime(task.available_from) }}
 						</div>
 						<div class="px-2">
 							<div class="text-zinc-400">
@@ -155,17 +155,17 @@
 							<Popper
 								v-if="!isEnded"
 								:content="
-									getFormattedDate(task.available_to) ||
+									getFormattedDateTime(task.available_to) ||
 									$t('general.not_available')
 								"
 								hover
 							>
 								{{
-									getRelativeTime(task.available_to) ||
+									getRelativeDate(task.available_to) ||
 									$t('general.not_available')
 								}}
 							</Popper>
-							<Popper v-else :content="getFormattedDate(task.available_to)" hover>
+							<Popper v-else :content="getFormattedDateTime(task.available_to)" hover>
 								<div class="font-bold text-green-600">
 									{{ $t('course.ended_course') }}
 								</div>
@@ -185,7 +185,7 @@
 					</h1>
 					<button
 						class="normal_btn mb-2"
-						v-if="studentCanUploadFiles"
+						v-if="checkStudentCanUploadFiles"
 						@click="showUploadsModal('student_upload')"
 					>
 						<Upload class="mr-1 h-4 w-4" />
@@ -205,7 +205,7 @@
 						>
 							<button
 								class="block break-all text-left font-bold text-purple-800 no-underline hover:text-purple-500"
-								@click="download(studentFile.id, 'student_upload')"
+								@click="downloadOneFile(studentFile.id, 'student_upload')"
 							>
 								{{ studentFile.filename_original }} ({{ studentFile.file_size }}
 								{{ studentFile.file_size_unit }})
@@ -214,11 +214,11 @@
 								<span class="font-sm block text-zinc-400">
 									{{ $t('general.updated') }}
 									<Popper
-										:content="getFormattedDate(studentFile.updated_at)"
+										:content="getFormattedDateTime(studentFile.updated_at)"
 										hover
 									>
 										<span class="underline decoration-dotted">{{
-											getRelativeTime(studentFile.updated_at)
+											getRelativeDate(studentFile.updated_at)
 										}}</span>
 									</Popper>
 								</span>
@@ -258,16 +258,16 @@
 					<div class="py-3" v-for="file in refFilesLimitedArray" :key="file.id">
 						<button
 							class="block break-all text-left font-bold text-purple-800 no-underline hover:text-purple-500"
-							@click="download(file.id, 'task_ref')"
+							@click="downloadOneFile(file.id, 'task_ref')"
 						>
 							{{ file.filename_original }} ({{ file.file_size }}
 							{{ file.file_size_unit }})
 						</button>
 						<span class="font-sm block text-zinc-400">
 							{{ $t('general.updated') }}
-							<Popper :content="getFormattedDate(file.updated_at)" hover>
+							<Popper :content="getFormattedDateTime(file.updated_at)" hover>
 								<span class="underline decoration-dotted">{{
-									getRelativeTime(file.updated_at)
+									getRelativeDate(file.updated_at)
 								}}</span>
 							</Popper>
 						</span>
@@ -302,7 +302,8 @@ import { mapActions, mapGetters, mapState } from 'vuex';
 import DeleteModal from '@/components/Modals/DeleteModal.vue';
 import LoadingScreen from '@/components/LoadingScreen.vue';
 import UploadModal from '@/components/Modals/UploadModal.vue';
-import download from '@/utils/download';
+import { downloadOneFile } from '@/utils/download';
+import { getFormattedDate, getFormattedDateTime, getRelativeDate } from '@/utils/dateFormatter';
 
 export default {
 	name: 'TaskView',
@@ -341,14 +342,11 @@ export default {
 	computed: {
 		...mapState('task', ['loading', 'task', 'taskRefFiles', 'studentFiles', 'userMark']),
 		...mapGetters('task', [
-			'getFormattedDate',
-			'getFormattedMarkDate',
-			'getRelativeTime',
 			'getDescriptionLength',
 			'getRefFilesCount',
 			'getStudentFilesCount',
 			'isEnded',
-			'studentCanUploadFiles'
+			'checkStudentCanUploadFiles'
 		]),
 		...mapGetters('login', ['isTeacher', 'isStudent', 'isAdmin']),
 
@@ -371,7 +369,10 @@ export default {
 	},
 
 	methods: {
-		download,
+		getFormattedDateTime,
+		getRelativeDate,
+		getFormattedDate,
+		downloadOneFile,
 		...mapActions('task', ['showTask']),
 
 		showDeleteResourceModal(resourceType, resourceId) {

@@ -24,7 +24,7 @@ return [
 	'read_more' => 'Czytaj więcej',
 	'read_less' => 'Czytaj mniej',
 	'show_more' => 'Pokaż więcej',
-	'show_less' => 'Pokaż minej',
+	'show_less' => 'Pokaż mniej',
 
 	'add_new' => 'Dodaj nowy',
 	'updated' => 'Zaaktualizowany',

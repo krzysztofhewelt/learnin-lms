@@ -15,12 +15,12 @@
 			<p class="mb-4">
 				<b>{{ $t('task.task_name') }}:</b> {{ task.name }}<br />
 				<b>{{ $t('task.available_from') }}:</b>
-				{{ getFormattedDate(task.available_from) }}<br />
+				{{ getFormattedDateTime(task.available_from) }}<br />
 				<b>{{ $t('task.available_to') }}:</b>
-				{{ getFormattedDate(task.available_to) || $t('general.not_available') }}<br />
+				{{ getFormattedDateTime(task.available_to) || $t('general.not_available') }}<br />
 			</p>
 
-			<button class="normal_btn mb-3 mr-3 w-fit" @click="downloadAll(task.id)">
+			<button class="normal_btn mb-3 mr-3 w-fit" @click="downloadZipFile(task.id)">
 				{{ $t('task.download_zip') }}
 			</button>
 
@@ -44,15 +44,15 @@
 						<div v-for="file in student.files" :key="file.file_ID">
 							<button
 								class="block break-all text-left font-bold text-purple-800 no-underline hover:text-purple-500"
-								@click="download(file.file_ID)"
+								@click="downloadOneFile(file.file_ID, 'student_upload')"
 							>
 								{{ file.filename_original }} ({{ file.file_size }}
 								{{ file.file_size_unit }})
 							</button>
 							<div class="text-gray-400">
-								<Popper :content="getFormattedDate(file.updated_at)" hover>
+								<Popper :content="getFormattedDateTime(file.updated_at)" hover>
 									<span class="underline decoration-dotted">{{
-										getRelativeTime(file.updated_at)
+										getRelativeDate(file.updated_at)
 									}}</span>
 								</Popper>
 							</div>
@@ -65,77 +65,26 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import LoadingScreen from '@/components/LoadingScreen.vue';
 import Popper from 'vue3-popper';
+import { getFormattedDateTime, getRelativeDate } from '@/utils/dateFormatter';
+import { downloadOneFile, downloadZipFile } from '@/utils/download';
 
 export default {
 	name: 'TaskStudentUploads',
 	components: { LoadingScreen, Popper },
 
 	computed: {
-		...mapState('task', ['loading', 'task', 'allStudentFilesInTask']),
-		...mapGetters('task', ['getFormattedDate', 'getRelativeTime'])
+		...mapState('task', ['loading', 'task', 'allStudentFilesInTask'])
 	},
 
 	methods: {
-		...mapActions('task', ['getStudentFilesInTask']),
-
-		download(fileId) {
-			axios
-				.post(
-					'/download/' + fileId,
-					{
-						file_type: 'student_upload'
-					},
-					{
-						responseType: 'blob'
-					}
-				)
-				.then((res) => {
-					let filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-					let matches = filenameRegex.exec(res.headers['content-disposition']);
-					let filename;
-
-					if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
-
-					let fileURL = window.URL.createObjectURL(new Blob([res.data]));
-					let fileLink = document.createElement('a');
-
-					fileLink.href = fileURL;
-					fileLink.setAttribute('download', filename);
-					document.body.appendChild(fileLink);
-
-					fileLink.click();
-				});
-		},
-
-		async downloadAll(taskId) {
-			this.$store.commit('task/loading', true);
-
-			await axios
-				.get('/tasks/students_uploads/' + taskId + '/zip', {
-					responseType: 'blob'
-				})
-				.then((res) => {
-					let filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-					let matches = filenameRegex.exec(res.headers['content-disposition']);
-					let filename;
-
-					if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
-
-					let fileURL = window.URL.createObjectURL(new Blob([res.data]));
-					let fileLink = document.createElement('a');
-
-					fileLink.href = fileURL;
-					fileLink.setAttribute('download', filename);
-					document.body.appendChild(fileLink);
-
-					fileLink.click();
-				});
-
-			this.$store.commit('task/loading', false);
-		}
+		downloadZipFile,
+		downloadOneFile,
+		getRelativeDate,
+		getFormattedDateTime,
+		...mapActions('task', ['getStudentFilesInTask'])
 	},
 
 	created() {

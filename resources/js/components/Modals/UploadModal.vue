@@ -30,7 +30,7 @@
 				<div
 					class="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 p-8"
 					:class="{ 'bg-zinc-100': uploadDragoverEvent }"
-					@dragover.prevent="onUploadDragoverEvent($event)"
+					@dragover.prevent="onUploadDragEnter"
 					@drop.prevent="onUploadDropEvent($event)"
 					@dragenter="onUploadDragEnter"
 					@dragleave="onUploadDragLeave"
@@ -47,7 +47,7 @@
 								<input
 									id="file-upload"
 									name="file-upload"
-									@change="onAddInputFiles"
+									@change="onAddFiles($event.target.files)"
 									type="file"
 									class="sr-only"
 									multiple
@@ -161,7 +161,6 @@ export default {
 					obj.type &&
 					['none', 'student_upload', 'task_ref', 'course_file'].includes(obj.type) &&
 					obj.id &&
-					obj.id &&
 					Number.isInteger(obj.id)
 				);
 			}
@@ -172,9 +171,6 @@ export default {
 		return {
 			uploading: false,
 			files: [],
-			pageX: 0,
-			pageY: 0,
-			uploadDragoverTracking: false,
 			uploadDragoverEvent: false,
 			uploadPercentage: 0,
 			controller: null
@@ -185,15 +181,13 @@ export default {
 		...mapActions('course', ['getCourseDetails']),
 		...mapActions('task', ['showTask']),
 
-		onAddInputFiles(e) {
-			let inputFiles = e.target.files;
+    onAddFiles(files) {
+      if (!files) return;
 
-			if (!inputFiles) return;
-
-			[...inputFiles].forEach((f) => {
-				if (this.fileValidator(f)) this.files.push(f);
-			});
-		},
+      [...files].forEach((f) => {
+        if (this.fileValidator(f)) this.files.push(f);
+      });
+    },
 
 		getPrettyUnitSize(filesize) {
 			const units = ['B', 'KB', 'MB', 'GB'];
@@ -214,29 +208,9 @@ export default {
 			this.uploadDragoverEvent = false;
 		},
 
-		onUploadDragoverEvent(e) {
-			this.uploadDragoverEvent = true;
-			this.uploadDragoverTracking = true;
-			this.pageX = e.pageX;
-			this.pageY = e.pageY;
-		},
-
 		onUploadDropEvent(e) {
 			this.uploadDragoverEvent = false;
-			this.uploadDragoverTracking = false;
-			this.pageX = 0;
-			this.pageY = 0;
-			this.droppedFiles(e);
-		},
-
-		droppedFiles(e) {
-			let droppedFiles = e.dataTransfer.files;
-
-			if (!droppedFiles) return;
-
-			[...droppedFiles].forEach((f) => {
-				if (this.fileValidator(f)) this.files.push(f);
-			});
+			this.onAddFiles(e.dataTransfer.files);
 		},
 
 		fileValidator(file) {

@@ -64,7 +64,7 @@
 					{{ $t('task.available_from') }}
 				</div>
 				<div class="text-2xl">
-					{{ getFormattedDate(task.available_from) }}
+					{{ getFormattedDateTime(task.available_from) }}
 				</div>
 			</div>
 			<div class="px-4">
@@ -72,7 +72,7 @@
 					{{ $t('task.available_to') }}
 				</div>
 				<div class="text-2xl">
-					{{ getFormattedDate(task.available_to) || $t('general.not_available') }}
+					{{ getFormattedDateTime(task.available_to) || $t('general.not_available') }}
 				</div>
 			</div>
 			<div class="px-4" v-if="currentTab === 'marked'">
@@ -97,6 +97,7 @@ import { mapActions, mapGetters, mapState } from 'vuex';
 import Loading from '@/components/Icons/Loading.vue';
 import Tab from '@/components/Tab.vue';
 import Add from '@/components/Icons/Add.vue';
+import { getFormattedDateTime } from '@/utils/dateFormatter';
 
 export default {
 	name: 'TaskList',
@@ -115,13 +116,13 @@ export default {
 			'getActiveTasks',
 			'getExpiredTasks',
 			'getMarkedTasks',
-			'getUpcomingTasks',
-			'getFormattedDate'
+			'getUpcomingTasks'
 		]),
 		...mapGetters('login', ['isTeacher', 'isStudent'])
 	},
 
 	methods: {
+		getFormattedDateTime,
 		...mapActions('user', ['getUserTasks', 'getCategoryTasks']),
 
 		setTasksView(type) {

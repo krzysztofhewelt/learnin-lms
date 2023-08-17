@@ -1,6 +1,6 @@
-export default (fileId, fileType) => {
+const download = (url) => {
 	axios
-		.get('/download/' + fileId + '/' + fileType, {
+		.get(url, {
 			responseType: 'blob'
 		})
 		.then((res) => {
@@ -20,3 +20,11 @@ export default (fileId, fileType) => {
 			fileLink.click();
 		});
 };
+
+export const downloadOneFile = (fileId, fileType) => {
+	download('/download/' + fileId + '/' + fileType);
+}
+
+export const downloadZipFile = (taskId) => {
+	download('/tasks/students_uploads/' + taskId + '/zip')
+}

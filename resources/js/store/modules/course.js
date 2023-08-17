@@ -16,7 +16,7 @@ const course = {
 
 	actions: {
 		async getCourseDetails({ commit }, courseId) {
-			commit('loading', true);
+			commit('setLoading', true);
 			commit('resetCourse');
 
 			await axios
@@ -34,12 +34,12 @@ const course = {
 					commit('setCourseFiles', response.data.course_files);
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		},
 
 		async getCourseCategories({ commit }, courseId) {
-			commit('loading', true);
+			commit('setLoading', true);
 
 			await axios
 				.get('/categories/course/' + courseId)
@@ -47,15 +47,13 @@ const course = {
 					commit('setCourseCategories', response.data.categories);
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		},
 
 		async createOrEditCourse({ commit }, course) {
-			commit('loading', true);
+			commit('setLoading', true);
 			commit('clearValidationErrors');
-
-			if (course.available_to === '') delete course.available_to;
 
 			return await axios({
 				method: !course.id ? 'post' : 'patch',
@@ -73,12 +71,12 @@ const course = {
 					throw error;
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		},
 
 		async deleteCourse({ commit }, courseId) {
-			commit('loading', true);
+			commit('setLoading', true);
 
 			await axios
 				.delete('/courses/delete/' + courseId)
@@ -86,12 +84,12 @@ const course = {
 					commit('resetCourse');
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		},
 
 		async deleteCourseFile({ commit, state }, courseFileId) {
-			commit('loading', true);
+			commit('setLoading', true);
 
 			await axios
 				.delete('/delete-resource/' + courseFileId + '/course_file')
@@ -102,12 +100,12 @@ const course = {
 					);
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		},
 
 		async deleteCourseCategory({ commit, state }, categoryId) {
-			commit('loading', true);
+			commit('setLoading', true);
 
 			await axios
 				.delete('/categories/delete/' + categoryId)
@@ -118,12 +116,12 @@ const course = {
 					);
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		},
 
 		async createOrEditCategory({ commit }, { courseId, category }) {
-			commit('loading', true);
+			commit('setLoading', true);
 
 			await axios({
 				method: category.id === -1 ? 'post' : 'patch',
@@ -149,12 +147,12 @@ const course = {
 					throw error;
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		},
 
 		async assignToCourse({ dispatch, commit }, { courseId, participants }) {
-			commit('loading', true);
+			commit('setLoading', true);
 
 			await axios
 				.post('/courses/assign/' + courseId, {
@@ -171,13 +169,13 @@ const course = {
 					throw error;
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		}
 	},
 
 	mutations: {
-		loading(state, newLoadingStatus) {
+		setLoading(state, newLoadingStatus) {
 			state.loading = newLoadingStatus;
 		},
 
@@ -223,36 +221,24 @@ const course = {
 	},
 
 	getters: {
-		getFormattedDate: () => (date) => {
-			return date !== null ? dayjs(date).format('L LT') : '';
-		},
-
-		getISODate: () => (date) => {
-			return date !== null ? dayjs(date).format('YYYY-MM-DDTHH:mm') : '';
-		},
-
-		getRelativeTime: () => (date) => {
-			return date !== null ? dayjs().to(dayjs(date)) : '';
-		},
-
 		getCategoriesCount(state) {
-			return state.courseCategories && state.courseCategories.length;
+			return state.courseCategories?.length;
 		},
 
 		getCourseUsersCount(state) {
-			return state.courseUsers && state.courseUsers.length;
+			return state.courseUsers?.length;
 		},
 
 		getDescriptionLength(state) {
-			return state.course.description && state.course.description.length;
+			return state.course.description?.length;
 		},
 
 		getCourseFilesCount(state) {
-			return state.courseFiles && state.courseFiles.length;
+			return state.courseFiles?.length;
 		},
 
 		isEnded(state) {
-			return state.course.available_to !== null && dayjs() > dayjs(state.course.available_to);
+			return state.course.available_to && dayjs() > dayjs(state.course.available_to);
 		}
 	}
 };

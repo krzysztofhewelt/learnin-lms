@@ -82,7 +82,6 @@
 					<SidebarLink
 						:name="$t('sidebar.users')"
 						route-name="AdminUsers"
-						route-parent="Admin"
 						v-if="isAdmin"
 						@click="mobileSidebarOpen = false"
 					>
@@ -92,7 +91,6 @@
 					<SidebarLink
 						:name="$t('sidebar.courses')"
 						route-name="AdminCourses"
-						route-parent="Admin"
 						v-if="isAdmin"
 						@click="mobileSidebarOpen = false"
 					>
@@ -102,7 +100,6 @@
 					<SidebarLink
 						:name="$t('sidebar.tasks')"
 						route-name="AdminTasks"
-						route-parent="Admin"
 						v-if="isAdmin"
 						@click="mobileSidebarOpen = false"
 					>

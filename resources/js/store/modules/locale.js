@@ -24,13 +24,13 @@ const locale = {
 	},
 
 	mutations: {
+        setLoading(state, newLoadingStatus) {
+            state.loading = newLoadingStatus;
+        },
+
 		setUserLocale(state, locale) {
 			state.locale = locale;
 			localStorage.setItem('locale', locale);
-		},
-
-		setLoading(state, newLoadingStatus) {
-			state.loading = newLoadingStatus;
 		}
 	}
 };

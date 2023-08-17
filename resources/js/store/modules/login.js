@@ -12,7 +12,7 @@ const login = {
 
 	actions: {
 		async login({ commit }, { email, password }) {
-			commit('loading', true);
+			commit('setLoading', true);
 
 			await axios
 				.post('/login', {
@@ -38,7 +38,7 @@ const login = {
 					throw error;
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		},
 
@@ -61,7 +61,7 @@ const login = {
 	},
 
 	mutations: {
-		loading(state, newLoadingStatus) {
+		setLoading(state, newLoadingStatus) {
 			state.loading = newLoadingStatus;
 		},
 
@@ -95,15 +95,15 @@ const login = {
 
 	getters: {
 		isAdmin(state) {
-			return state.user && state.user.account_role === 'admin';
+			return state.user?.account_role === 'admin';
 		},
 
 		isTeacher(state) {
-			return state.user && state.user.account_role === 'teacher';
+			return state.user?.account_role === 'teacher';
 		},
 
 		isStudent(state) {
-			return state.user && state.user.account_role === 'student';
+			return state.user?.account_role === 'student';
 		}
 	}
 };

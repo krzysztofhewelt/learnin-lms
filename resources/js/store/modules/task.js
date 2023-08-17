@@ -16,7 +16,7 @@ const task = {
 
 	actions: {
 		async showTask({ commit }, taskId) {
-			commit('loading', true);
+			commit('setLoading', true);
 
 			await axios
 				.get('/tasks/show/' + taskId)
@@ -36,18 +36,16 @@ const task = {
 					commit('setUserMark', response.data.userMark);
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		},
 
 		async createOrEditTask({ commit }, task) {
-			commit('loading', true);
+			commit('setLoading', true);
 			commit('clearValidationErrors');
 
-			task.course_ID = task.course && task.course.id;
-			task.course_category = task.category && task.category.id;
-
-			if (task.available_to === '') delete task.available_to;
+			task.course_ID = task.course?.id;
+			task.course_category = task.category?.id;
 
 			return await axios({
 				method: !task.id ? 'post' : 'patch',
@@ -67,13 +65,13 @@ const task = {
 					throw error;
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		},
 
 		// delete task
 		async deleteTask({ commit }, taskId) {
-			commit('loading', true);
+			commit('setLoading', true);
 
 			await axios
 				.delete('/tasks/delete/' + taskId)
@@ -81,12 +79,12 @@ const task = {
 					commit('resetTask');
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		},
 
 		async deleteStudentFile({ commit, state }, fileId) {
-			commit('loading', true);
+			commit('setLoading', true);
 
 			await axios
 				.delete('/delete-resource/' + fileId + '/student_upload')
@@ -97,12 +95,12 @@ const task = {
 					);
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		},
 
 		async deleteTaskRefFile({ commit, state }, fileId) {
-			commit('loading', true);
+			commit('setLoading', true);
 
 			await axios
 				.delete('/delete-resource/' + fileId + '/task_ref')
@@ -113,12 +111,12 @@ const task = {
 					);
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		},
 
 		async getStudentFilesInTask({ commit }, taskId) {
-			commit('loading', true);
+			commit('setLoading', true);
 
 			await axios
 				.get('/tasks/students_uploads/' + taskId)
@@ -127,13 +125,13 @@ const task = {
 					commit('setAllStudentFilesInTask', response.data.student_files);
 				})
 				.finally(() => {
-					commit('loading', false);
+					commit('setLoading', false);
 				});
 		}
 	},
 
 	mutations: {
-		loading(state, newLoadingStatus) {
+		setLoading(state, newLoadingStatus) {
 			state.loading = newLoadingStatus;
 		},
 
@@ -175,43 +173,27 @@ const task = {
 	},
 
 	getters: {
-		getFormattedDate: () => (date) => {
-			return date !== null ? dayjs(date).format('L LT') : '';
-		},
-
-		getFormattedMarkDate: () => (date) => {
-			return date !== null ? dayjs(date).format('L') : '';
-		},
-
-		getRelativeTime: () => (date) => {
-			return date !== null ? dayjs().to(dayjs(date)) : '';
-		},
-
-		studentCanUploadFiles(state) {
+		checkStudentCanUploadFiles(state) {
 			return (
 				dayjs() >= dayjs(state.task.available_from) &&
-				(state.task.available_to === null || dayjs() <= dayjs(state.task.available_to))
+				(!state.task.available_to || dayjs() <= dayjs(state.task.available_to))
 			);
 		},
 
-		getISODate: () => (date) => {
-			return date !== null ? dayjs(date).format('YYYY-MM-DDTHH:mm') : '';
-		},
-
 		getDescriptionLength(state) {
-			return state.task.description && state.task.description.length;
+			return state.task.description?.length;
 		},
 
 		getRefFilesCount(state) {
-			return state.taskRefFiles && state.taskRefFiles.length;
+			return state.taskRefFiles?.length;
 		},
 
 		getStudentFilesCount(state) {
-			return state.studentFiles && state.studentFiles.length;
+			return state.studentFiles?.length;
 		},
 
 		isEnded(state) {
-			return state.task.available_to !== null && dayjs() > dayjs(state.task.available_to);
+			return state.task.available_to && dayjs() > dayjs(state.task.available_to);
 		}
 	}
 };
