@@ -20,13 +20,22 @@
 				{{ getFormattedDateTime(task.available_to) || $t('general.not_available') }}<br />
 			</p>
 
-			<button class="normal_btn mb-3 mr-3 w-fit" @click="downloadZipFile(task.id)">
+			<p v-if="!allStudentFilesInTask.length" class="text-xl font-bold text-red-500">
+				{{ $t('course.no_students_assigned') }}
+			</p>
+
+			<button
+				class="normal_btn mb-3 mr-3 w-fit"
+				@click="downloadZipFile(task.id)"
+				v-if="allStudentFilesInTask.length"
+			>
 				{{ $t('task.download_zip') }}
 			</button>
 
 			<router-link
 				:to="{ name: 'MarksTask', params: { id: $route.params.id } }"
 				class="normal_btn"
+				v-if="allStudentFilesInTask.length"
 			>
 				{{ $t('task.issue_grades') }}
 			</router-link>
