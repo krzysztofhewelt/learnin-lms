@@ -7,8 +7,7 @@
 
     LimitRequestBody 268435456
 
-    # Change it, when project is located in subdirectory/subdirectories
-    RewriteBase "/" # default dev and docker mode
+    # Uncomment it, when project is located in subdirectory/subdirectories
     # RewriteBase "/learnin" # production mode - "learnin" directory in root WWW directory
 
     # Handle Authorization Header
