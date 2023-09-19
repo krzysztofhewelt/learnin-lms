@@ -8,7 +8,8 @@
     LimitRequestBody 268435456
 
     # Uncomment it, when project is located in subdirectory/subdirectories
-    # RewriteBase "/learnin" # production mode - "learnin" directory in root WWW directory
+    # production mode - "learnin" directory in root WWW directory, removes /public in URL
+    # RewriteBase "/learnin"
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
