@@ -68,9 +68,9 @@ There are three ways to deploy LearnIn:
 You can configure the project by your own needs.
 To do this, open .env file (cloned from .env.dev or .env.prod or .env.docker) and change parameters.
 
-1. [Database credentials](INSTALLATION.md#project-location)
+1. [Database credentials](INSTALLATION.md#database)
 
-2. [Project directory](INSTALLATION.md#database)
+2. [Project directory](INSTALLATION.md#project-location)
 
 3. [Localization - language](INSTALLATION.md#localization)
 
