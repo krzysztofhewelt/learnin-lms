@@ -3,8 +3,8 @@
 		<Dropdown>
 			<div class="font-bold text-gray-400 transition-all duration-300 hover:text-purple-600">
 				<template v-if="!loading">
-					<img :src="getCurrentLanguageImage" class="inline h-4 w-7" :alt="locale" />
-					<span class="ml-1.5">{{ $t('languages.' + locale) }}</span>
+					<img :src="getCurrentLanguageImage" class="inline h-4 w-7" :alt="loadedLocale" />
+					<span class="ml-1.5">{{ $t('languages.' + loadedLocale) }}</span>
 				</template>
 				<template v-else> <Loading class="h-5 w-5" /> </template>
 			</div>
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { loadLanguageAsync } from 'laravel-vue-i18n';
+import {getActiveLanguage, loadLanguageAsync} from 'laravel-vue-i18n';
 import { mapActions, mapState } from 'vuex';
 import SidebarLink from '@/components/SidebarLink.vue';
 import Popper from 'vue3-popper';
@@ -41,11 +41,17 @@ export default {
 	name: 'DropdownLanguage',
 	components: { Loading, Dropdown, SidebarLink, Popper },
 
+    data() {
+        return {
+            loadedLocale: getActiveLanguage()
+        }
+    },
+
 	computed: {
-		...mapState('locale', ['locale', 'loading']),
+		...mapState('locale', ['loading']),
 
 		getCurrentLanguageImage() {
-			return new URL(`../assets/${this.locale}.png`, import.meta.url).href;
+			return new URL(`../assets/${this.loadedLocale}.png`, import.meta.url).href;
 		}
 	},
 
@@ -56,6 +62,7 @@ export default {
 			close();
 
 			loadLanguageAsync(lang);
+            this.loadedLocale = lang;
 			this.setLocale(lang);
 		}
 	}
