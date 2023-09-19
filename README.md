@@ -13,7 +13,7 @@
 
 # About
 
-LearnIn is the next generation learning management system. Provides constant monitoring of students in the progress of teaching. Create courses and tasks, issue grades for students, check uploaded files by students, add course and task referential files, generate statistics, and more.
+LearnIn is the next generation learning management system. Provides constant monitoring of students in the progress of teaching. Create courses and tasks, issue grades for students, check uploaded files by students, add course and task referential files, generate statistics, and more. Powered by Laravel Framework for backend, Vue.js for frontend and MariaDB for database.
 
 <div align="center">
     <img src="screenshots/dashboard.jpg" alt="dashboard">
