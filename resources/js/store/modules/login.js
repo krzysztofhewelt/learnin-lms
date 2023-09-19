@@ -30,7 +30,7 @@ const login = {
 				.catch((error) => {
 					if (
 						error.response.status === 401 ||
-						error.response.status === 423 ||
+						error.response.status === 422 ||
 						error.response.status === 429
 					)
 						commit('loginErrors', error.response.data.errors);

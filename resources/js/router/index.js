@@ -190,7 +190,7 @@ const routes = [
 ];
 
 const router = createRouter({
-	history: createWebHistory(),
+	history: createWebHistory(import.meta.env.BASE_ROOT_DIR),
 	routes
 });
 
@@ -207,7 +207,7 @@ router.beforeEach((to, from, next) => {
 		if (authRequired && !loggedIn) return next('/login');
 
 		// check account role
-		const account_role = login.state.user && login.state.user.account_role;
+		const account_role = login.state.user?.account_role;
 		if (to.meta.role && !to.meta.role.includes(account_role)) {
 			return next('/');
 		}

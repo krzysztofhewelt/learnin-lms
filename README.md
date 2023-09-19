@@ -13,7 +13,7 @@
 
 # About
 
-LearnIn is the next generation learning management system. Provides constant monitoring of students in the progress of teaching. Create courses and tasks, issue grades for students, check uploaded files by students, add course and task referential files, generate statistics, and more.
+LearnIn is the next generation learning management system. Provides constant monitoring of students in the progress of teaching. Create courses and tasks, issue grades for students, check uploaded files by students, add course and task referential files, generate statistics, and more. Powered by Laravel Framework for backend, Vue.js for frontend and MariaDB for database.
 
 <div align="center">
     <img src="screenshots/dashboard.jpg" alt="dashboard">
@@ -56,63 +56,29 @@ LearnIn is the next generation learning management system. Provides constant mon
 
 # Getting started
 
-### Production environment
+Full installation guide for most users with requirements was described in [Standard installation](INSTALLATION.md#standard-installation).
 
-1. Copy .env.example file to .env.
-
-```
-cp .env.example .env
-```
-
-2. In project directory run docker compose command:
-
-```
-docker-compose -f .\docker-compose.yml up -d --build
-```
-
-3. Seed database with admin account:
-
-```
-docker exec -it app sh -c "php /var/www/html/artisan db:seed"
-```
-
-4. To stop project just type command:
-
-```
-docker-compose -f .\docker-compose.yml down
-```
-
-5. App is on address `http://localhost:80/`
-6. **The default admin account credentials:**
-
--   email: `email@email.com`
--   password: `Admin#12345`
-7. **Other users credentials:**
-
-   |          | email                   | passwords  | example            |
-   |----------|-------------------------|------------|--------------------|
-   | students | student[1-15]@email.com | User#12345 | student5@email.com |
-   | teachers | teacher[1-5]@email.com  | User#12345 | teacher1@email.com |
-
-If you don't want these accounts, remove in administration panel.
+There are three ways to deploy LearnIn:
+* [production](INSTALLATION.md#standard-installation) - for most users, prepared to deploy on your web server, 
+* [development](INSTALLATION.md#development-environment) - for feature development,
+* [docker](INSTALLATION.md#docker-development) - docker environment.
 
 # Configuration
 
 You can configure the project by your own needs.
-To do this, open .env file (cloned from .env.example).
+To do this, open .env file (cloned from .env.dev or .env.prod or .env.docker) and change parameters.
 
-1. Change database connection information.
+1. [Database credentials](INSTALLATION.md#database)
 
-```dotenv
-DB_CONNECTION=mysql
-DB_HOST=mariadb
-DB_PORT=3306
-DB_DATABASE=learnin
-DB_USERNAME=root
-DB_PASSWORD=examplepassword
-```
+2. [Project directory](INSTALLATION.md#project-location)
 
-2. It's highly recommend to run the scheduler (that cleans old generated .zip files by teachers every 12 hours):
+3. [Localization - language](INSTALLATION.md#localization)
+
+4. [Apache configuration - optional](INSTALLATION.md#apacheconf)
+
+5. [NGINX configuration - optional](INSTALLATION.md#nginxconf)
+   
+6. It's highly recommend to run the scheduler (that cleans old generated .zip files by teachers every 3 hours):
 
 **In Docker:**
 ```
@@ -122,18 +88,6 @@ docker exec -it app sh -c "php /var/www/html/artisan schedule:work"
 **Locally:**
 ```
 php artisan schedule:work
-```
-
-2. Optional: Change default locale and timezone.
-
-```dotenv
-LOCALE_TIMEZONE=UTC
-LOCALE_DEFAULT=en
-LOCALE_FAKER=en
-```
-3. Optional: Change API SERVER URL:
-```dotenv
-API_URL=http://localhost:8000/api
 ```
 
 # Used technologies and tools
