@@ -20,7 +20,7 @@ class CleanZipUploads extends Command
 	 *
 	 * @var string
 	 */
-	protected $description = 'Removes .zip files from uploads that files is older than 1 hour';
+	protected $description = 'Removes .zip files from uploads that files is older than 3 hours';
 
 	/**
 	 * Execute the console command.
@@ -34,7 +34,7 @@ class CleanZipUploads extends Command
 			$time = Storage::lastModified($file);
 			$fileModifiedDateTime = Carbon::parse($time);
 
-			if (now()->gt($fileModifiedDateTime->addHour())) {
+			if (now()->gt($fileModifiedDateTime->addHours(3))) {
 				Storage::disk('local')->delete($file);
 			}
 		}

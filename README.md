@@ -1,13 +1,12 @@
 <h1 align="center">
     <img src="logo.png" alt="application logo">
-    ![application logo](logo.png)
 </h1>
 
 <p align="center">
     <a href="#features">Features</a>&nbsp;&nbsp; | &nbsp;
     <a href="#screenshots">Screenshots</a>&nbsp; | &nbsp;    
     <a href="#getting-started">Getting started</a>&nbsp; | &nbsp;
-    <a href="#installation">Installation</a>&nbsp; | &nbsp;
+    <a href="#configuration">Configuration</a>&nbsp; | &nbsp;
     <a href="#used-technologies-and-tools">Technologies and tools</a>&nbsp; | &nbsp;
     <a href="#license">License</a>
 </p>
@@ -57,10 +56,10 @@ LearnIn is the next generation learning management system. Provides constant mon
 
 # Getting started
 
-Full installation guide for most users was described in [Standard installation](INSTALLATION.md#standard-installation).
+Full installation guide for most users with requirements was described in [Standard installation](INSTALLATION.md#standard-installation).
 
-There are three ways to deploy Learnin:
-* [production](INSTALLATION.md#standard-installation) - for most users, prepared to deploy on your local server, 
+There are three ways to deploy LearnIn:
+* [production](INSTALLATION.md#standard-installation) - for most users, prepared to deploy on your web server, 
 * [development](INSTALLATION.md#development-environment) - for feature development,
 * [docker](INSTALLATION.md#docker-development) - docker environment.
 
@@ -79,7 +78,7 @@ To do this, open .env file (cloned from .env.dev or .env.prod or .env.docker) an
 
 5. [NGINX configuration - optional](INSTALLATION.md#nginxconf)
    
-5. It's highly recommend to run the scheduler (that cleans old generated .zip files by teachers every 12 hours):
+6. It's highly recommend to run the scheduler (that cleans old generated .zip files by teachers every 3 hours):
 
 **In Docker:**
 ```
