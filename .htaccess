@@ -1,0 +1,4 @@
+RewriteEngine On
+
+# block everything except /public/
+RewriteRule !^public/ - [F,NC]
