@@ -11,6 +11,27 @@
     <a href="#license">License</a>
 </p>
 
+# Learnin TODO Roadmap
+### New features and bug fixes for later time.
+
+1. Add import/export users (.csv)
+2. Create multiple users (and generate password)
+3. Add avatars and course thumbnails
+4. Add availability to reset password
+5. Add new course/task on dashboard
+6. ...
+
+### Bugs and improvements
+1. After editing user by admin it should not redirect to user's page
+2. Fix input border in searchable selects
+3. Do refactor:
+    * abandon principle "fat model, thin controller" and make services
+4. Extend docker compose by worker queue for cleaning generated zips directory + add crontab file
+5. Update all dependencies
+6. Migrate to NGINX and add PHP-FPM
+7. Write unit tests (Pest/PHP Unit)
+
+
 # About
 
 LearnIn is the next generation learning management system. Provides constant monitoring of students in the progress of teaching. Create courses and tasks, issue grades for students, check uploaded files by students, add course and task referential files, generate statistics, and more. Powered by Laravel Framework for backend, Vue.js for frontend and MariaDB for database.
